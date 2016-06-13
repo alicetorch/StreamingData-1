@@ -1,0 +1,65 @@
+<<<<<<< bcdd92e4330ef42c95e2a44c7ffc726c2f444fe9
+<html>
+<body>
+	<div id = "record-events">
+		<p>This is a test of websockets</p>
+		<div id = "test-buttons">
+			<button type ="button" name ="researchButton" id = "button1">Button 1</button>
+			<button type ="button" name ="researchButton" id = "button2">Button 2</button>
+		</div>
+	</div>
+	<script>
+	// open websocket connection 
+	var socket = io.connect();
+	(function(){
+
+		experimentr.startTimer('websocketTest')
+
+		//record all mouse movement 
+		document.onmousemove = experimentr.sendMouseMovement;
+
+	})();
+
+	//send information to websocket unless it is the next button. If next button move to next module
+	d3.select('body').selectAll('button').on('click', function(){
+		pressed(d3.select(this).attr('id'));
+
+		if (d3.select(this).attr('name') == 'researchButton'){
+			validate();
+		}else{ 
+			//stops  recording and transmitting mouse events
+			document.onmousemove = experimentr.stopMouseMovementRec;
+			socket.emit('disconnect');
+			experimentr.next();
+		};
+
+	});
+
+	//when a button is pressed send information to redis via websocket
+	function pressed(buttonTitle){
+		var timePressed = experimentr.now('websocketTest');
+		timestamp = new Date().getTime();
+		postId = 1234
+		socket.emit('mouseClick',{buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp});
+	};
+
+	//allows for the next button to be pressed
+	function validate() {
+		experimentr.endTimer('demo');
+		experimentr.release();
+	}
+
+	</script>
+</body>
+</html>
+=======
+<div id = "record-events">
+	<p>This is a test of websockets</p>
+	<div id = "test-buttons">
+		<input type ="button" value = "button1" onClick = "pressed()">
+		<input type ="button" value = "button2" onClick = "pressed()">
+	</div>
+</div>
+<script>
+</script>
+>>>>>>> added file with buttons. Setting up socket io
