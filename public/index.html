@@ -4,9 +4,12 @@
 <title>Survey</title>
 
 <!-- Calls to /scripts are redirected to /node_modules/ on the server -->
+<script src = "/scripts/d3-request/build/d3-request.min.js"></script>
 <script src="/scripts/d3/d3.min.js"></script>
 <script src="experimentr.js"></script>
 <script src ="/scripts/socket.io-client/socket.io.js"></script>
+<script src = "/scripts/d3-queue/build/d3-queue.min.js"></script>
+
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 
@@ -14,9 +17,8 @@
 
 <script>
 experimentr.sequence([
-<<<<<<< HEAD:public/index.html
-  'modules/record-events/',
   'modules/vizData/',
+  'modules/conditions/d1/spd1/',
   'modules/debrief/'
 ]).start();
 

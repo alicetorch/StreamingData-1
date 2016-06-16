@@ -1,0 +1,254 @@
+<HMTL>
+	<head>
+		<link rel="stylesheet" type="text/css" href="experiments/fullyFunctTest/fullyFunctStyle.css">
+	</head>
+	<body>
+		<div id = 'fullyFunctTest'>
+			<p>This test records all events, selects, and reports anomalies</p>
+
+			<div id = "test-buttons">
+				<button type ="button" name ="researchButton" id = "button1">Anomaly in graph 1</button>
+				<button type ="button" name ="researchButton" id = "button2">Anomaly in graph 2</button>
+				<button type ="button" name ="researchButton" id = "button3">Anomaly in graph 3</button>
+			</div>
+
+		</div>
+		<script>	
+
+		var socket = io.connect();
+		(function(){
+
+			experimentr.startTimer('websocketTest')
+
+		//record all mouse movement 
+		document.onmousemove = experimentr.sendMouseMovement;
+
+	})();
+
+	
+
+	
+	d3.select('body').selectAll('button').on('click', function(){
+		pressed(d3.select(this).attr('id'));	
+
+		if (d3.select(this).attr('name') == 'researchButton'){
+			if (typeof(extent) != "undefined") {
+						var rangeExtent = [extent[0] , extent[1] ]; //convert
+						var rangeWidth  = rangeExtent[1] - rangeExtent[0];
+					}
+
+
+					validate();
+				}else{ 
+			//stops  recording and transmitting mouse events
+			document.onmousemove = experimentr.stopMouseMovementRec;
+			socket.emit('disconnect');
+			experimentr.next();
+		};
+
+	});
+
+	//when a button is pressed send information to redis via websocket
+	function pressed(buttonTitle){
+		var timePressed = experimentr.now('websocketTest');
+		timestamp = new Date().getTime();
+		postId = 1234
+		socket.emit('mouseClick',{buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp});
+	};
+
+	window.addEventListener("keydown", checkKeyPressed, false);
+	var copyIndex = 1;
+	function checkKeyPressed(e) {
+		if (e.keyCode == "13") {
+			update("A",1);
+			update("B",2);
+			update("C",3);
+			copyIndex = copyIndex + 1;
+		}
+	}
+
+
+	function update(d,i){
+		var orig = d3.select(".lineClick"+i);
+		var origNode = orig.node();
+		var copy = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true),origNode.nextSibling))
+		.attr("class","lineCopy"+d+copyIndex)
+		.attr("id","lineCopy"+i)
+		.style("visibility","visible");
+
+		var string = ".lineCopy"+d+(copyIndex-1);
+		var preNode = d3.select(string)
+		.remove();	
+	}	
+
+
+	var n = 30;
+	var margin = {top:20, right:20, bottom:20, left:20},
+	width = 600 - margin.left - margin.right,
+	height = 500 - margin.top - margin.bottom;
+	var duration = 200000;
+
+
+
+
+	var x = d3.scale.linear()
+	.domain([0,n-1])
+	.range([0,width]);
+	var y = d3.scale.linear()
+	.domain([-0.5, 0.5])
+	.range([height/3, 0]);
+
+	var y2 = d3.scale.linear()
+	.domain([-0.5, 0.5])
+	.range([height*2/3, height/3]);
+
+	var y3 = d3.scale.linear()
+	.domain([-0.5, 0.5])
+	.range([height, height*2/3]);
+//The moving line part   
+
+
+
+var svgContainer = d3.select("body").append("svg")
+.attr("width", 1500)
+.attr("height", 1000);
+
+
+
+
+var xAxis=d3.svg.axis().scale(x).orient("bottom");
+
+var svg	= svgContainer.append("g")
+.attr("transform", "translate(" +40+ "," + 20 + ")");
+svg.append("g")
+.attr("class","x axis")
+.attr("transform","translate(0," + y(0)+")")
+.call(xAxis);
+
+svg.append("defs").append("clipPath")
+.attr("id","clip")
+.append("rect")
+.attr("width",width)
+.attr("height",height+500);
+
+svg.append("defs").append("clipPath")
+.attr("id","clip2")
+.append("rect")
+.attr("transform","translate(0,0)")
+.attr("width",width)
+.attr("height",height+500);
+
+svg.append("g")
+.attr("class", "x axis")
+.attr("transform", "translate(0," + y2(0) + ")")
+.call(xAxis);
+
+svg.append("g")
+.attr("class", "x axis")
+.attr("transform", "translate(0," + y3(0) + ")")
+.call(xAxis);
+
+d3.tsv("data/caseTest1.tsv", type, function(error,data){
+	
+	var line  = d3.svg.line()
+	.x(function(d,i){return x(d.index);})
+	.y(function(d,i){return y(d.value);})
+	.interpolate("basis");
+
+	var path =svg.append("g")
+	.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.datum(data)
+		.attr("class","line1")
+		.attr("d",line)
+		
+
+	})
+
+d3.tsv("data/caseTest2.tsv", type, function(error,data){
+
+	var line = d3.svg.line()
+	.x(function(d,i){return x(d.index);})
+	.y(function(d,i){return y2(d.value);})
+	.interpolate("basis");
+
+
+	var path = svg.append("g")
+	.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.datum(data)
+		.attr("class","line2")
+		.attr("d",line)
+	
+	
+	
+
+	})
+
+d3.tsv("data/caseTest3.tsv", type, function(error,data){
+
+	var line = d3.svg.line()
+	.x(function(d,i){return x(d.index);})
+	.y(function(d,i){return y3(d.value);})
+	.interpolate("basis");
+
+
+	var path = svg.append("g")
+	.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.datum(data)
+		.attr("class","line3")
+		.attr("d",line)
+		
+	})
+
+
+
+
+//This is the display part
+var svgClick = svgContainer.append("g")
+.attr("id","svgClick")
+.attr("transform", "translate(" +640+ "," + 20 + ")");
+
+svgClick.append("g")
+.attr("class","x axis")
+.attr("transform","translate(0," + y(0)+")")
+.call(xAxis);
+
+svgClick.append("defs").append("clipPath")
+.attr("id","clip")
+.append("rect")
+.attr("width",width)
+.attr("height",height+500);
+
+
+svgClick.append("g")
+.attr("class", "x axis")
+.attr("transform", "translate(0," + y2(0) + ")")
+.call(xAxis);
+
+svgClick.append("g")
+.attr("class", "x axis")
+.attr("transform", "translate(0," + y3(0) + ")")
+.call(xAxis);
+
+
+function type(d){
+	d.index = +d.index;
+	d.value = +d.value;
+	return d;
+}
+
+
+
+function validate() {
+	experimentr.endTimer('demo');
+	experimentr.release();
+}
+
+</script>
+</body> 
+</HTML>

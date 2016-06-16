@@ -6,7 +6,6 @@
   "dependencies": {
     "csv": "0.2.x",
     "d3": "^3.5.16",
-<<<<<<< bcdd92e4330ef42c95e2a44c7ffc726c2f444fe9
     "express": "^3.21.2",
     "forever": "0.15.x",
     "json2csv": "2.x",
@@ -14,13 +13,6 @@
     "redis": "0.8.x",
     "socket.io": "^1.4.6",
     "socketio": "^1.0.0",
-=======
-    "express": "3.x",
-    "forever": "0.15.x",
-    "json2csv": "2.x",
-    "redis": "0.8.x",
-    "socket.io": "^1.4.6",
->>>>>>> added file with buttons. Setting up socket io
     "underscore": "1.8.x"
   },
   "scripts": {
