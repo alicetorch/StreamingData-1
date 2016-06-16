@@ -4331,3 +4331,44 @@ $1
 *1
 $8
 Flushall
+*2
+$6
+SELECT
+$1
+0
+*4
+$5
+hmset
+$3
+key
+$8
+ipirk4vm
+$15
+[object Object]
+*4
+$5
+hmset
+$3
+key
+$8
+ipirxp2i
+$15
+[object Object]
+*4
+$5
+hmset
+$3
+key
+$4
+1234
+$15
+[object Object]
+*4
+$5
+hmset
+$3
+key
+$8
+ipirxp2i
+$15
+[object Object]
