@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+</head>
+<body>
+<style>
+svg {
+  font: 10px sans-serif;
+}
+
+.line1{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+.line2{
+	fill: none;
+	stroke: #FDDC25;
+	stroke-width: 2px;
+	
+}
+.line3{
+	fill: none;
+	stroke: #3C63A9;
+	stroke-width: 2px;
+	
+}
+.lineClick1{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+#lineCopy1{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+.lineClick2{
+	fill: none;
+	stroke: #FDDC25;
+	stroke-width: 2px;
+	opacity: 0.5;
+}
+#lineCopy2{
+	fill: none;
+	stroke: #FDDC25;
+	stroke-width: 2px;
+}
+.lineClick3{
+	fill: none;
+	stroke: #3C63A9;
+	stroke-width: 2px;
+	opacity: 0.5;
+}
+#lineCopy3{
+	fill: none;
+	stroke: #3C63A9;
+	stroke-width: 2px;
+}
+.axis path,
+.axis line{
+	fill:none;
+	stroke:black;
+	shape-rendering: crispEdges;
+
+}
+</style>
+
+<script>
+window.addEventListener("keydown", checkKeyPressed, false);
+var copyIndex = 1;
+function checkKeyPressed(e) {
+    if (e.keyCode == "13" || e.keyCode == "32") {
+    e.preventDefault();
+    update("A",1);
+	update("B",2);
+	update("C",3);
+	copyIndex = copyIndex + 1;
+    }
+}
+function windowClicked(e) {
+  	update("A",1);
+	update("B",2);
+	update("C",3);
+	copyIndex = copyIndex + 1;
+}
+window.addEventListener("click",windowClicked);
+
+function update(d,i){
+	var orig = d3.select(".lineClick"+i);
+	var origNode = orig.node();
+	var copy = d3.select(origNode.parentNode.appendChild(origNode.cloneNode(true),origNode.nextSibling))
+		.attr("class","lineCopy"+d+copyIndex)
+		.attr("id","lineCopy"+i)
+		.style("visibility","visible");
+
+	var string = ".lineCopy"+d+(copyIndex-1);
+	var preNode = d3.select(string)
+		.remove();	
+}	
+var n = 80;
+var margin = {top:20, right:20, bottom:20, left:20},
+	width = 600 - margin.left - margin.right,
+	height = 500 - margin.top - margin.bottom;
+var duration = 200000;
+var x = d3.scale.linear()
+	.domain([0,n-1])
+	.range([0,width]);
+var y = d3.scale.linear()
+    .domain([-1.5, 1.5])
+    .range([height/3, 0]);
+    
+var y2 = d3.scale.linear()
+    .domain([-0.5, 0.5])
+    .range([height*2/3, height/3]);
+  
+var y3 = d3.scale.linear()
+    .domain([-0.5, 0.5])
+    .range([height, height*2/3]);
+//The moving line part      
+var svgContainer = d3.select("body").append("svg")
+    .attr("width", 1500)
+    .attr("height", 1000);
+//var svg = d3.select(svgInterface)
+var svg	= svgContainer.append("g")
+    .attr("transform", "translate(" +40+ "," + 20 + ")");
+svg.append("g")
+	.attr("class","x axis")
+	.attr("transform","translate(0," + y(0)+")")
+	.call(d3.svg.axis().scale(x).orient("bottom"));
+	
+svg.append("defs").append("clipPath")
+	.attr("id","clip")
+	.append("rect")
+	.attr("width",width)
+	.attr("height",height+500);
+svg.append("defs").append("clipPath")
+	.attr("id","clip2")
+	.append("rect")
+	.attr("transform","translate(0,0)")
+	.attr("width",width)
+	.attr("height",height+500);
+
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + y2(0) + ")")
+    .call(d3.svg.axis().scale(x).orient("bottom"));
+    
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + y3(0) + ")")
+    .call(d3.svg.axis().scale(x).orient("bottom"));
+
+
+//var yD = 0;
+d3.tsv("data/test.tsv", type, function(error,data){
+	var offSet = 0;
+	var disData = data.slice(0,80);
+	data.splice(0,80);
+	var line = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){return y(d.value);})
+		.interpolate("basis");
+
+	var path = svg.append("g")
+		.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.datum(disData)
+		.attr("class","line1")
+		.attr("d",line);
+	tick();
+	function tick(){
+	disData.push(data.slice(0,1)[0]);
+	console.log(disData);
+	data.splice(0,1);
+	path
+		.attr("d",line)
+		.attr("transform",null)
+		.transition()
+		.duration(100)
+		.ease("linear")
+		.attr("transform", "translate(" + x(-1) + ",0)")
+		.each("end",tick);
+	//console.log('slice', offSet);
+	//offSet += x(data.slice(0,1)[0].index);
+	//offSet += 1;
+	disData.shift();
+}
+})
+
+
+
+
+//This is the display part
+
+function type(d){
+	d.index = +d.index;
+	d.value = +d.value;
+	return d;
+}
+
+</script>
+</body>
+</html>

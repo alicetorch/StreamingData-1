@@ -15,6 +15,7 @@
 <script>
 experimentr.sequence([
   'modules/consent/',
+  'modules/spatial/',
   'modules/vizData/',
   'modules/debrief/'
 ]).start();
