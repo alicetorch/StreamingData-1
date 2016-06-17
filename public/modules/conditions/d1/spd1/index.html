@@ -47,7 +47,7 @@
 		}
 	}
 
-
+	var pageId = 'd1Spd1';
 	function pressed(buttonTitle, type){
 		var isPresent = checkForAnamoly();
 		console.log('is anomolyPresent' + isPresent); 
@@ -56,34 +56,34 @@
 		timestamp = new Date().getTime();
 		// console.log('mouse pressed. Socket emit ')
 		var postId = experimentr.postId();
-		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent});
+		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
 	};
 
 
 
 
-	var n = 80;
+	var n = 30;
 	var margin = {top:20, right:20, bottom:20, left:20},
 	width = 600 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
-	var duration = 100;
+	var duration = 10;
 
 
 
 
 	var x = d3.scale.linear()
 	.domain([0,n-1])
-	.range([0,width]);()
+	.range([0,width]);
 	var y = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([-0.5, 0.5])
 	.range([height/3, 0]);
 
 	var y2 = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([-0.5, 0.5])
 	.range([height*2/3, height/3]);
 
 	var y3 = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([-0.5, 0.5])
 	.range([height, height*2/3]);
 //The moving line part   
 
@@ -140,9 +140,9 @@ function setUp(error, data1, data2, data3){
 	if (error) throw error;
 
 
-	var disData1 = data1.slice(0,n);
-	var disData2 = data2.slice(0,n);
-	var disData3 = data3.slice(0,n);
+	var disData1 = data1.slice(0,40);
+	var disData2 = data2.slice(0,40);
+	var disData3 = data3.slice(0,40);
 
 
 	var line1  = d3.svg.line()

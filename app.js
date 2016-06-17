@@ -3,11 +3,12 @@
 
 // Example run command: `node app.js 9000 6380 true`; listen on port 9000, connect to redis on 6380, debug printing on.
 
-var express     = require('express')
+var express   = require('express')
 , http        = require('http')
 , redis       = require('redis')
 , io          = require('socket.io')
-,fs           = require('fs')
+, fs          = require('fs')
+, flatten     = require('flat')
 , redisClient
 , port        = process.argv[2] || 4000
 , rport       = process.argv[3] || 6379
@@ -18,12 +19,7 @@ var express     = require('express')
 redisClient = redis.createClient(rport)
 redisClient.on('connect', function() {
   console.log('Connected to redis.')
-})
-
-
-
-//Creating a hit that links to hostedWebApo
-
+});
 
 
 var mouseAction = [];
@@ -31,8 +27,12 @@ var mouseLocation = [];
 
 // Data handling
 var save = function save(d) {
-  console.log('this is d', d)
-  redisClient.hmset("key", d.postId, d)
+  var postId = d.postId;
+  var pageId = d.pageId;
+
+  console.log(d.pageId);
+  var stringD = JSON.stringify(d);
+  redisClient.hmset(postId, pageId, stringD);
 
   if( debug )
     console.log('saved to redis: ' + d.postId +', at: '+ (new Date()).toString())
@@ -60,14 +60,14 @@ app.post('/finish', function(req, res) {
 })
 
 // handle posts  from front front end for mouse movement and mouse action information
-function handleCollectedDataPost(postId){
+function handleCollectedDataPost(postId , pageId){
   // console.log('nuggets in redis')
 
   var sendInBulk = {mouseLocation, mouseAction}
-   console.log(sendInBulk)
-
+   //console.log(sendInBulk)
+   console.log(postId);
   //sendInBulk = JSON.stringify(JSON.stringify(sendInBulk))
-  sendInBulk = {'postId': postId, 'data':sendInBulk}
+  sendInBulk = {'postId': postId, 'pageId': pageId, 'data':sendInBulk}
   save(sendInBulk)
 
   mouseLocation = [];
@@ -110,8 +110,9 @@ io.listen(server).on('connection', function (socket) {
   socket.on('mouseClick', function(msg){
     console.log('mouseCLICKED!!!'+ msg.buttonTitle);
     if(msg.buttonTitle=='next-button'){
+      console.log(msg)
       // console.log('mouse clicked and stuff is being sent away!! ')
-      handleCollectedDataPost(msg.postId, msg.timestamp);
+      handleCollectedDataPost(msg.postId, msg.pageId);
     }else{
       mouseAction.push({'timestamp': msg.timePressed, 'interactionType': msg.interactionType, 'buttonTitle':msg.buttonTitle, 'AnomalyPresent': msg.AnomalyPresent})
       // console.log('click event: ' + msg.buttonTitle + msg.timePressed);
