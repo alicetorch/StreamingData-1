@@ -1,0 +1,61 @@
+svg {
+  font: 10px sans-serif;
+}
+
+
+.line1{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+.line2{
+	fill: none;
+	stroke: brown;
+	stroke-width: 2px;
+	
+}
+.line3{
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 2px;
+	
+}
+.lineClick1{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+#lineCopy1{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+.lineClick2{
+	fill: none;
+	stroke: brown;
+	stroke-width: 2px;
+	opacity: 0.5;
+}
+#lineCopy2{
+	fill: none;
+	stroke: brown;
+	stroke-width: 2px;
+}
+.lineClick3{
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 2px;
+	opacity: 0.5;
+}
+#lineCopy3{
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 2px;
+}
+.axis path,
+.axis line{
+	fill:none;
+	stroke:black;
+	shape-rendering: crispEdges;
+
+}
