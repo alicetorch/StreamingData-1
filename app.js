@@ -31,7 +31,7 @@ var mouseLocation = [];
 
 // Data handling
 var save = function save(d) {
-   // console.log(d)
+  console.log('this is d', d)
   redisClient.hmset("key", d.postId, d)
 
   if( debug )
