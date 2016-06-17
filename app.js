@@ -7,8 +7,6 @@ var express     = require('express')
 , http        = require('http')
 , redis       = require('redis')
 , io          = require('socket.io')
-, mturk       = require('mturk-api')
-,fs           = require('fs')
 , redisClient
 , port        = process.argv[2] || 4000
 , rport       = process.argv[3] || 6379
@@ -17,93 +15,10 @@ var express     = require('express')
 
 // Database setup
 redisClient = redis.createClient(rport)
+
 redisClient.on('connect', function() {
   console.log('Connected to redis.')
 })
-
-
-
-// var fileName = '../config.js'
-// var config;
-
-// try {
-//   config = require(fileName);
-//   console.log(config.keys.awsAccess);
-// }
-// catch (err) {
-//   config = {}
-//   console.log("unable to read file '" + fileName + "': ", err)
-//   console.log("see secret-config-sample.json for an example")
- 
-// }
-
-
-
-var Mturkconfig = {
-    access: "<<REMOVED>>",
-    secret: "<<REMOVED>>",
-    sandbox: true 
-};
-
-
- 
-var api = mturk.createClient(Mturkconfig);
-
-// api.req('GetAccountBalance').then(function(response){
-//   console.log(response)
-// }, function(error){
-//   //Handle error 
-//});
-
-debugger;
-
-var _questionString = '<ExternalQuestion xmlns = "http://mechanicalturk.amazonaws.com/AWSMechanicalTurkDataSchemas/2006-07-14/ExternalQuestion.xsd"> <ExternalURL>"http://ec2-54-172-19-199.compute-1.amazonaws.com/"</ExternalURL><FrameHeight>400</FrameHeight></ExternalQuestion>'
-
-var _HITOption = {
-      Title: "why is this not working. "
-    , Keywords: "photo"
-    , Description: "Say Yes or No to the question."
-    , Reward: {Amount: '0.01', CurrencyCode: 'USD', FormattedPrice: '$0.01'}
-    , AssignmentDurationInSeconds: 180 // in 3 minutes 
-    , AutoApprovalDelayInSeconds: 28800 // auto approve the worker's anwser and pay to him/her 
-    , MaxAssignments: 100 // 100 worker 
-    , QualificationRequirement: [
-        {
-            QualificationTypeId: '000000000000000000L0', // HIT Approval Rate % 
-            Comparator: 'GreaterThan',
-            IntegerValue: [60],
-            RequiredToPreview: true
-        },
-        {
-            QualificationTypeId: '000000000000000000S0', // HIT Reject Rate % 
-            Comparator: 'LessThan',
-            IntegerValue: [10],
-            RequiredToPreview: true
-        },
-        {
-            QualificationTypeId: '00000000000000000060', // Adult Content Qualification 
-            Comparator: 'EqualTo',
-            IntegerValue: [1],
-            RequiredToPreview: true
-        }]
-    , Question: _questionString
-    , LifetimeInSeconds: 86400 * 3 // 3 days 
-};
-
-
-api.req('CreateHIT', _HITOption).then(function(response){
-  debugger;
-  console.log(response)
-}, function(error){
-  debugger;
-  console.log(error)
-});
-
-
-
-//Creating a hit that links to hostedWebApo
-
-
 
 var mouseAction = [];
 var mouseLocation = [];
@@ -111,7 +26,7 @@ var mouseLocation = [];
 // Data handling
 var save = function save(d) {
    // console.log(d)
-  Client.hmset("key", d.postId, d)
+  redisClient.hmset("key", d.postId, d)
 
   if( debug )
     console.log('saved to redis: ' + d.postId +', at: '+ (new Date()).toString())
