@@ -56,6 +56,8 @@
 		timestamp = new Date().getTime();
 		// console.log('mouse pressed. Socket emit ')
 		var postId = experimentr.postId();
+		console.log('post id in experiment', postId);
+		console.log('this is postID', postId);
 		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
 	};
 
