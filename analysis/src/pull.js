@@ -19,14 +19,6 @@ function keys () {
 
 function data (k, i, arr) {
   client.hgetall(k, function (err, obj) {
-    dataset.push(obj)
-    console.log('\n')
-    console.log('\n')
-    console.log(obj);
-    if(i === arr.length-1) log(dataset)
+  console.log(JSON.stringify(obj));
   });
-}
-
-function log (obj) {
-  console.log(JSON.stringify(obj))
 }
