@@ -1,29 +1,32 @@
 <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <p style = "text-align:center">
-	<img src = "logo-small.png" width = "150px"/>
-	<div class = "content">
-	</p>
-	<p style = "text-align:center">
-		Thank you for agreeing to participate in this research study. <br/> During this experiment, you will be shown a series of patterns...
-	</p>
-	<p class = "instruction" style = "text-align:center">
-		Press &#8592 to go back &#8195 &#8195 &#8195 &#8195 &#8195 &#8195 &#8195 Press &#x2192 to continue
-	</p>
+<img src = "logo-small.png" width = "100px"/>
+<div class = "content">
+</p>
+<p style = "text-align:center">
+Welcome to Human Computation & Visualization Laboratory
+</p>
+<p style = "text-align:center">
+Here are some tips for you to complete this survey...
+</p>
+<p class = "instruction" style = "text-align:center">
+ Press &#8592 to go back &#8195 &#8195 &#8195 &#8195 &#8195 &#8195 &#8195 Press &#x2192 to continue
+</p>
 </div>
 
 <style>
 p{
-	font-family: verdana;
-	font-size: 20px;
-	padding
+font-family: verdana;
+font-size: 20px;
+padding
 }
 .instruction{
-	color:#B5B5B4;
+color:#B5B5B4;
 }
 .content{
-	width:800;
-	margin-left:auto;
-	margin-right:auto;
+width:800;
+margin-left:auto;
+margin-right:auto;
 }
 .axis path,
 .axis line{
@@ -58,90 +61,106 @@ p{
 	stroke: black;
 	stroke-width: 2px;
 }
-
+.line2{
+	fill: none;
+	stroke: brown;
+	stroke-width: 2px;
+	
+}
+.line3{
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 2px;
+	
+}
 </style>
 <script>
 window.addEventListener("keydown", checkKeyPressed, false);
 var step = -1;
 //console.log(step);
 function checkKeyPressed(e) {
-	if (e.keyCode == "39") {
-		step += 1;
-		e.preventDefault();
-		d3.select(".line")
-		.remove();
-		d3.select("text")
-		.remove();
-		d3.select(".text")
-		.remove();
-		d3.select("#lineCopy")
-		.remove();
-		var model =  d3.select(".model")
-		.remove();
-		update(step);
+    if (e.keyCode == "39") {
+    step += 1;
+    e.preventDefault();
+    d3.select(".line")
+    	.remove();
+    d3.select(".line2")
+    	.remove();
+    d3.select(".line3")
+    	.remove();
+    d3.select("text")
+    	.remove();
+    d3.select(".text")
+    	.remove();
+    d3.select("#lineCopy")
+    	.remove();
+    var model =  d3.select(".model")
+    	.remove();
+    update(step);
     //console.log(step);
-}
-if (e.keyCode == "37") {
-	step -= 1;
-	e.preventDefault();
-	d3.select(".line")
-	.remove();
-	d3.select("text")
-	.remove();
-	d3.select(".text")
-	.remove();
-	d3.select(".model")
-	.remove();
-	d3.select("#lineCopy")
-	.remove();
-	update(step);
+    }
+    if (e.keyCode == "37") {
+    step -= 1;
+    e.preventDefault();
+    d3.select(".line")
+    	.remove();
+    d3.select(".line2")
+    	.remove();
+    d3.select(".line3")
+    	.remove();
+    d3.select("text")
+    	.remove();
+    d3.select(".text")
+    	.remove();
+    d3.select(".model")
+    	.remove();
+    d3.select("#lineCopy")
+    	.remove();
+    update(step);
     //console.log(step);
-}    	
-}
-
+    }    	
+    }
+  
 var n = 10;
 var duration = 300000;
 var x = d3.scale.linear()
-.domain([0,n-1])
-.range([0,350]);
+		.domain([0,n-1])
+		.range([0,350]);
 var y = d3.scale.linear()
-.domain([-0.6,0.6])
-.range([200,0]);
+		.domain([-0.6,0.6])
+		.range([200,0]);
 var xModel = d3.scale.linear()
-.domain([0,10])
-.range([0,200]);
+		.domain([0,10])
+		.range([0,200]);
 var yModel = d3.scale.linear()
-.domain([-0.6,0.6])
-.range([100,0]);
-var svg = d3.select("#experimentr")
-.append("svg:svg")
+		.domain([-0.6,0.6])
+		.range([100,0]);
+var svg = d3.select("body")
+		.append("svg:svg")
 		//.attr("id","svg")
 		//.attr("align","center")
-		.attr("width",720)
-		.attr("height",400)
+		.attr("width",800)
+		.attr("height",600)
 		.append("g");
-		d3.select("body").attr("align","center");
+d3.select("body").attr("align","center");
 
-		var xDouble = d3.scale.linear()
+var xDouble = d3.scale.linear()
 		.domain([0,n-1])
 		.range([0,300]);
 /*svg.append("g")
 	.attr("class","x axis")
 	.attr("transform","translate(240," + y(0)+")")
 	.call(d3.svg.axis().scale(x).orient("bottom"));*/
-	var data0 = [{"x":0, "y":0.25},{"x":1, "y":-0.25},{"x":2, "y":0.25},{"x":3, "y":-0.25},{"x":4, "y":0.25},{"x":5, "y":-0.25},{"x":6, "y":0.25},{"x":7, "y":-0.25},{"x":8, "y":0.25},{"x":9, "y":-0.25}];
-	var	data1 = [{"x":0, "y":-0.25},{"x":1, "y":0.25},{"x":2, "y":-0.15},{"x":3, "y":0.15},{"x":4, "y":-0.2},{"x":5, "y":0.25},{"x":6, "y":-0.3},{"x":7, "y":0.15},{"x":8, "y":-0.1},{"x":9, "y":0}];
-	var	data3 = [{"x":0, "y":0.25},{"x":0.5, "y":-0.25},{"x":1, "y":0.25},{"x":1.5, "y":-0.25},{"x":2, "y":0.25},{"x":2.5, "y":-0.25},{"x":3.5, "y":0.25},{"x":4.5, "y":-0.25},{"x":5.5, "y":0.25},{"x":6.5, "y":-0.25}];
-	var	data2 = [{"x":0, "y":0.25},{"x":1, "y":-0.25},{"x":2, "y":1},{"x":3, "y":-0.25},{"x":4, "y":0.25},{"x":5, "y":-0.5},{"x":6, "y":0.25},{"x":7, "y":-0.25},{"x":8, "y":0.25},{"x":9, "y":-0.25}];
-	var dataSet = [data0,data1,data2,data3];
+var data0 = [{"x":0, "y":0.25},{"x":1, "y":-0.25},{"x":2, "y":0.25},{"x":3, "y":-0.25},{"x":4, "y":0.25},{"x":5, "y":-0.25},{"x":6, "y":0.25},{"x":7, "y":-0.25},{"x":8, "y":0.25},{"x":9, "y":-0.25}];
+var	data1 = [{"x":0, "y":-0.25},{"x":1, "y":0.25},{"x":2, "y":-0.15},{"x":3, "y":0.15},{"x":4, "y":-0.2},{"x":5, "y":0.25},{"x":6, "y":-0.3},{"x":7, "y":0.15},{"x":8, "y":-0.1},{"x":9, "y":0}];
+var	data2 = [{"x":0, "y":0.25},{"x":0.5, "y":-0.25},{"x":1, "y":0.25},{"x":1.5, "y":-0.25},{"x":2, "y":0.25},{"x":2.5, "y":-0.25},{"x":3.5, "y":0.25},{"x":4.5, "y":-0.25},{"x":5.5, "y":0.25},{"x":6.5, "y":-0.25}];
+var	data3 = [{"x":0, "y":0.25},{"x":1, "y":-0.25},{"x":2, "y":1},{"x":3, "y":-0.25},{"x":4, "y":0.25},{"x":5, "y":-0.5},{"x":6, "y":0.25},{"x":7, "y":-0.25},{"x":8, "y":0.25},{"x":9, "y":-0.25}];
+var dataSet = [data0,data1,data2,data3];
 //console.log(dataSet);
 
-
+//console.log(step);
 function update(i){
-
-	svg.selectAll("text").remove();
-
-	if (i <=3 ){
+if (i >=0 && i <=3 ){
 //console.log("sddfd");
 var fileName = "data/file"+i+".tsv";
 var modelName = "data"+i;
@@ -149,12 +168,12 @@ var modelName = "data"+i;
 d3.tsv(fileName, type, function(error,data){
 	//console.log(dataSet);
 	var line = d3.svg.line()
-	.x(function(d,i){return x(d.index);})
-	.y(function(d,i){return y(d.value);})
-	.interpolate("basis");
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y(d.value);})
+		.interpolate("basis");
 	var path = svg.append("g")
-	.append("path")
-		//.attr("transform","translate(0,50)")
+		.append("path")
+		.attr("transform","translate(0,50)")
 		.datum(data)
 		.attr("class","line")
 		.attr("d",line)
@@ -162,56 +181,37 @@ d3.tsv(fileName, type, function(error,data){
 		.duration(duration)
 		.ease("linear")
 		.attr("transform","translate("+x(-1999) + ",0)");
-	/*var modelLine = d3.svg.line()
+	var modelLine = d3.svg.line()
 		.x(function(d,i){return xModel(d.x);})
 		.y(function(d,i){return yModel(d.y);})
 		.interpolate("basis");
-	var modelPath = svg.append("g")
+var modelPath = svg.append("g")
 		.append("path")
 		.attr("transform","translate(300,0)")
 		.attr("class","model")
 		//.datum(data0)
-		.attr("d",modelLine(dataSet[i]));*/
-	})	
-var stringList = ["This is a normal pattern", "This is also a normal pattern","There might be some values that look odd.","Sometimes the pattern might stretch or compress."];
+		.attr("d",modelLine(dataSet[i]));
+})	
+var stringList = ["This is a normal pattern", "This is also a normal pattern","This is when the graph shrinks and stretches", "There might also be some anomalies"];
 var string = svg.append("text")
-.attr("class","text")
-.text(stringList[i])
-.attr("x",360)
-.attr("y",250)
-.attr("font-size","20px")
-.attr("fill","#B5B5B4");
+			.attr("class","text")
+			.text(stringList[i])
+			.attr("x",400)
+			.attr("y",250)
+			.attr("font-size","20px")
+			.attr("fill","#B5B5B4");
 //console.log(string);
-
-if (i == 2) {
-	svg.append("text")
-	.attr("class","text")
-	.text("This is an ANOMALY.")
-	.attr("x",360)
-	.attr("y",280)
-	.attr("font-size","20px")
-	.attr("fill","#B5B5B4");
-} else if (i == 3) {
-	svg.append("text")
-	.attr("class","text")
-	.text("This is ALSO an ANOMALY.")
-	.attr("x",360)
-	.attr("y",280)
-	.attr("font-size","20px")
-	.attr("fill","#B5B5B4");
-}
-
 }
 else {
 	if (i == 4){
-		d3.tsv("data/file3.tsv", type, function(error,data){
+	d3.tsv("data/file3.tsv", type, function(error,data){
 	//console.log(dataSet);
 	var line = d3.svg.line()
-	.x(function(d,i){return x(d.index);})
-	.y(function(d,i){return y(d.value);})
-	.interpolate("basis");
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y(d.value);})
+		.interpolate("basis");
 	var path = svg.append("g")
-	.attr("clip-path","url(#clip)")
+		.attr("clip-path","url(#clip)")
 		//.attr("id","path")
 		.append("path")
 		.attr("transform","translate(0,0)")
@@ -222,50 +222,111 @@ else {
 		.duration(duration)
 		.ease("linear")
 		.attr("transform","translate("+x(-1999) + ",0)");
+	
+	svg.append("text")
+			.attr("class","text")
+			.text("When you see an abnormal pattern (shrinking, stretching or anomaly),")
+			.attr("x",400)
+			.attr("y",250)
+			.attr("font-size","20px")
+			.attr("fill","#B5B5B4");
+	svg.append("text")
+			.attr("class","text")
+			.text("press ENTER key, SPACEBAR, or click your mouse")
+			.attr("x",400)
+			.attr("y",280)
+			.attr("font-size","20px")
+			.attr("fill","#B5B5B4");
+})
+	
+}
 
-		svg.append("text")
-		.attr("class","text")
-		.text("Whenever you see an ANOMALY")
-		.attr("x",360)
-		.attr("y",250)
-		.attr("font-size","20px")
-		.attr("fill","#B5B5B4");
-
-		svg.append("text")
-		.attr("class","text")
-		.text("(shrinking, stretching or odd-looking value),")
-		.attr("x",360)
-		.attr("y",280)
-		.attr("font-size","20px")
-		.attr("fill","#B5B5B4");
-
-		svg.append("text")
-		.attr("class","text")
-		.text("press the ENTER key, SPACEBAR, or click your mouse")
-		.attr("x",360)
-		.attr("y",310)
-		.attr("font-size","20px")
-		.attr("fill","#B5B5B4");
+	if (i == 5){
+	d3.tsv("data/caseTest1.tsv", type, function(error,data){
+	//console.log(dataSet);
+	var line = d3.svg.line()
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y(d.value);})
+		.interpolate("basis");
+	var path = svg.append("g")
+		.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.attr("transform","translate(0,0)")
+		.datum(data)
+		.attr("class","line")
+		.attr("id","line")
+		.attr("d",line)
+		.transition()
+		.duration(duration)
+		.ease("linear")
+		.attr("transform","translate("+x(-1999) + ",0)");
 	})
-
-}
-if (i == 5){
+	d3.tsv("data/caseTest2.tsv", type, function(error,data){
+	//console.log(dataSet);
+	var line = d3.svg.line()
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y(d.value);})
+		.interpolate("basis");
+	var path = svg.append("g")
+		.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.attr("transform","translate(0,100)")
+		.datum(data)
+		.attr("class","line2")
+		.attr("id","line")
+		.attr("d",line)
+		.transition()
+		.duration(duration)
+		.ease("linear")
+		.attr("transform","translate("+x(-1999) + ",0)");
+	})
+	d3.tsv("data/caseTest3.tsv", type, function(error,data){
+	//console.log(dataSet);
+	var line = d3.svg.line()
+		.x(function(d,i){return x(d.index);})
+		.y(function(d,i){return y(d.value);})
+		.interpolate("basis");
+	var path = svg.append("g")
+		.attr("clip-path","url(#clip)")
+		//.attr("id","path")
+		.append("path")
+		.attr("transform","translate(0,200)")
+		.datum(data)
+		.attr("class","line3")
+		.attr("d",line)
+		.transition()
+		.duration(duration)
+		.ease("linear")
+		.attr("transform","translate("+x(-1999) + ",0)")
+		.style("stroke","brown");
+	})
 	svg.append("text")
-	.attr("class","text")
-	.attr("x",360)
-	.attr("y",100)
-	.attr("font-size","20px")
-	.attr("fill","black")
-	.text("There will be three different lines in each test");
+		.attr("class","text")
+		.attr("x",400)
+		.attr("y",400)
+		.attr("font-size","20px")
+		.attr("fill","black")
+		.text("There will be three different lines in each test");
 	svg.append("text")
-	.attr("class","text")
-	.attr("x",360)
-	.attr("y",150)
-	.attr("font-size","20px")
-	.attr("fill","black")
-	.text("Each test will take 5 minites to finish");
+		.attr("class","text")
+		.attr("x",400)
+		.attr("y",450)
+		.attr("font-size","20px")
+		.attr("fill","black")
+		.text("Each test will take 5 minites to finish");
 }
-
+	if (i == 6){
+		svg.append("text")
+		.attr("class","text")
+		.attr("x",400)
+		.attr("y",100)
+		.attr("font-size","20px")
+		.attr("fill","black")
+		.text("Click ENTER to begin your test");
+	}
+	
 }
 
 
