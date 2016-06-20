@@ -14,6 +14,8 @@ var express   = require('express')
 , debug       = process.argv[4] || null
 , socketPort  = process.argv[5] || 80
 
+
+
 // Database setup
 redisClient = redis.createClient(rport)
 redisClient.on('connect', function() {
