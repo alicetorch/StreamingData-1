@@ -154,7 +154,7 @@ svg.append("g")
 
 
 //var yD = 0;
-d3.tsv("data/test.tsv", type, function(error,data){
+d3.tsv("data/slow3.tsv", type, function(error,data){
 	var offSet = 0;
 	var disData = data.slice(0,80);
 	data.splice(0,80);
@@ -173,7 +173,7 @@ d3.tsv("data/test.tsv", type, function(error,data){
 	tick();
 	function tick(){
 	disData.push(data.slice(0,1)[0]);
-	console.log(disData);
+	//console.log(disData);
 	data.splice(0,1);
 	path
 		.attr("d",line)
