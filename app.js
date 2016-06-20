@@ -7,6 +7,7 @@ var express   = require('express')
 , http        = require('http')
 , redis       = require('redis')
 , io          = require('socket.io')
+, fs          = require('fs')
 , redisClient
 , port        = process.argv[2] || 4000
 , rport       = process.argv[3] || 6379
@@ -15,7 +16,6 @@ var express   = require('express')
 
 // Database setup
 redisClient = redis.createClient(rport)
-
 redisClient.on('connect', function() {
   console.log('Connected to redis.')
 });
@@ -26,8 +26,6 @@ var mouseLocation = [];
 
 // Data handling
 var save = function save(d) {
-   // console.log(d)
-  Client.hmset("key", d.postId, d)
 
   console.log(d.pageId);
   var stringD = JSON.stringify(d);
