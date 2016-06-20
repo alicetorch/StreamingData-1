@@ -38,7 +38,7 @@ experimentr = function() {
           (doc && doc.scrollTop  || body && body.scrollTop  || 0) -
           (doc && doc.clientTop  || body && body.clientTop  || 0 );
         }
-        console.log(event.pageX + ' '+ event.pageY);
+        // console.log(event.pageX + ' '+ event.pageY);
         timeNow = new Date().getTime();
         socket.emit('mouseMove',{timestamp: timeNow, mouseX: event.pageX, mouseY: event.pageY});
     };

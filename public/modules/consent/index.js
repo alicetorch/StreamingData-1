@@ -24,6 +24,7 @@
 
   function validate() {
     if( data.workerId ) {
+      data.pageId = "consent";
       experimentr.addData(data);
 
       if( workers.indexOf(data.workerId) == -1 ) {
