@@ -118,7 +118,9 @@ function checkKeyPressed(e) {
     	.remove();
     update(step);
     //console.log(step);
-    }    	
+    }
+    if(e.keyCode == "13"){
+		experimentr.release();    }
     }
   
 var n = 10;
@@ -135,12 +137,12 @@ var xModel = d3.scale.linear()
 var yModel = d3.scale.linear()
 		.domain([-0.6,0.6])
 		.range([100,0]);
-var svg = d3.select("body")
+var svg = d3.select(".content")
 		.append("svg:svg")
 		//.attr("id","svg")
 		//.attr("align","center")
 		.attr("width",800)
-		.attr("height",600)
+		.attr("height",400)
 		.append("g");
 d3.select("body").attr("align","center");
 
