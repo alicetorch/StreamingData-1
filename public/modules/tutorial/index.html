@@ -65,7 +65,7 @@ var step = -1;
 //console.log(step);
 function checkKeyPressed(e) {
     if (e.keyCode == "39") {
-    step += 1;
+    step = 1;
     e.preventDefault();
     d3.select(".line")
     	.remove();
@@ -161,7 +161,7 @@ d3.tsv(fileName, type, function(error,data){
 		.transition()
 		.duration(duration)
 		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)");
+		.attr("transform","translate(",x(-1999),",0)");
 	
 })	
 var stringList = ["This is a normal pattern", "This is also a normal pattern","There might be some values that look odd.","Sometimes the pattern might stretch or compress."];
@@ -212,7 +212,7 @@ else {
 		.transition()
 		.duration(duration)
 		.ease("linear")
-		.attr("transform","translate("+x(-1999) + ",0)");
+		.attr("transform","translate("+x(-1999) +",0)");
 	
 	svg.append("text")
 			.attr("class","text")
@@ -240,31 +240,97 @@ else {
 })
 	
 }
-	if (i == 5){
-	svg.append("text")
-		.attr("class","text")
-		.attr("x",360)
-		.attr("y",100)
-		.attr("font-size","20px")
-		.attr("fill","black")
-		.text("There will be three different lines in each test");
-	svg.append("text")
-		.attr("class","text")
-		.attr("x",360)
-		.attr("y",150)
-		.attr("font-size","20px")
-		.attr("fill","black")
-		.text("Each test will take 5 minites to finish");
-	}
-	experimentr.release();
-	
+if (i == 5){
+ 	d3.tsv("data/caseTest1.tsv", type, function(error,data){
+ 	//console.log(dataSet);
+ 	var line = d3.svg.line()
+ 		.x(function(d,i){return x(d.index);})
+ 		.y(function(d,i){return y(d.value);})
+ 		.interpolate("basis");
+ 	var path = svg.append("g")
+ 		.attr("clip-path","url(#clip)")
+ 		//.attr("id","path")
+ 		.append("path")
+ 		.attr("transform","translate(0,0)")
+ 		.datum(data)
+ 		.attr("class","line")
+ 		.attr("id","line")
+ 		.attr("d",line)
+ 		.transition()
+ 		.duration(duration)
+ 		.ease("linear")
+ 		.attr("transform","translate(",x(-1999),  ",0)");
+ 	})
+ 	d3.tsv("data/caseTest2.tsv", type, function(error,data){
+ 	//console.log(dataSet);
+ 	var line = d3.svg.line()
+ 		.x(function(d,i){return x(d.index);})
+ 		.y(function(d,i){return y(d.value);})
+ 		.interpolate("basis");
+ 	var path = svg.append("g")
+ 		.attr("clip-path","url(#clip)")
+ 		//.attr("id","path")
+ 		.append("path")
+ 		.attr("transform","translate(0,100)")
+ 		.datum(data)
+ 		.attr("class","line2")
+ 		.attr("id","line")
+ 		.attr("d",line)
+ 		.transition()
+ 		.duration(duration)
+ 		.ease("linear")
+ 		.attr("transform","translate(",x(-1999),  ",0)");
+ 	})
+ 	d3.tsv("data/caseTest3.tsv", type, function(error,data){
+ 	//console.log(dataSet);
+ 	var line = d3.svg.line()
+ 		.x(function(d,i){return x(d.index);})
+ 		.y(function(d,i){return y(d.value);})
+ 		.interpolate("basis");
+ 	var path = svg.append("g")
+ 		.attr("clip-path","url(#clip)")
+ 		//.attr("id","path")
+ 		.append("path")
+ 		.attr("transform","translate(0,200)")
+ 		.datum(data)
+ 		.attr("class","line3")
+ 		.attr("d",line)
+ 		.transition()
+ 		.duration(duration)
+ 		.ease("linear")
+ 		.attr("transform","translate(",x(-1999),",0)")
+ 		.style("stroke","brown");
+ 	})
+  	svg.append("text")
+  		.attr("class","text")
+  		.attr("x",400)
+ 		.attr("y",400)
+  		.attr("font-size","20px")
+  		.attr("fill","black")
+  		.text("There will be three different lines in each test");
+  	svg.append("text")
+  		.attr("class","text")
+  		.attr("x",400)
+ 		.attr("y",450)
+  		.attr("font-size","20px")
+  		.attr("fill","black")
+  		.text("Each test will take 5 minites to finish");
+  }
+ 	if (i == 6){
+ 		svg.append("text")
+ 		.attr("class","text")
+ 		.attr("x",400)
+ 		.attr("y",100)
+ 		.attr("font-size","20px")
+ 		.attr("fill","black")
+ 		.text("Click NEXT to begin your test");
+ 	}
+
 }
-
-
 }
 function type(d){
-	d.index = +d.index;
-	d.value = +d.value;
+	d.index = d.index;
+	d.value = d.value;
 	return d;
 }
 
