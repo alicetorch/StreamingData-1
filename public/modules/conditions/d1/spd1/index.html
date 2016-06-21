@@ -95,9 +95,9 @@ svg.append("g")
 .attr("transform", "translate(0," + y3(0) + ")")
 .call(xAxis);
 var q = d3.queue();
-q.defer(d3.tsv, "data/medium1.tsv")
-q.defer(d3.tsv, "data/medium2.tsv")
-q.defer(d3.tsv, "data/medium3.tsv")
+q.defer(d3.tsv, "data/slow1.tsv")
+q.defer(d3.tsv, "data/slow2.tsv")
+q.defer(d3.tsv, "data/slow3.tsv")
 .await(setUp); 
 function setUp(error, data1, data2, data3){
 	if (error) throw error;
