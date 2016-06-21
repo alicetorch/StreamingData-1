@@ -1,3 +1,4 @@
+<body>
 <p style = "text-align:center">
 <img src = "logo-small.png" width = "150px"/>
 <div class = "content">
@@ -115,13 +116,18 @@ margin-right:auto;
 
 </style>
 <script>
-window.addEventListener("keydown", checkKeyPressed, false);
+
+
+Mousetrap.bind('left', function(e, n) { checkKeyPressed(n); });
+Mousetrap.bind('right',function(e, n) { checkKeyPressed(n); });
+
+
 var step = -1;
-//console.log(step);
-function checkKeyPressed(e) {
-    if (e.keyCode == "39") {
+
+function checkKeyPressed(key) {
+	console.log('called function', key);
+    if (key == "right") {
     step += 1;
-    e.preventDefault();
     d3.select(".line")
     	.remove();
     d3.select("text")
@@ -142,9 +148,8 @@ function checkKeyPressed(e) {
     update(step);
    
     }
-    if (e.keyCode == "37") {
+    if (key == "left") {
     step -= 1;
-    e.preventDefault();
     d3.select(".line")
     	.remove();
     d3.select("text")
@@ -165,10 +170,7 @@ function checkKeyPressed(e) {
     update(step);
     
     }  
-
-    if(e.keyCode == '13'){
-    	experimentr.release();
-    }  	
+ 	
     }
   
 var n = 10;
@@ -403,3 +405,4 @@ function type(d){
 }
 
 </script>
+</body>

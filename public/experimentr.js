@@ -124,6 +124,7 @@ experimentr = function() {
   // Enables the Next button so the user can proceed in the experiment.
   experimentr.release = function() {
     d3.select('#next-button').attr('disabled', null);
+    Mousetrap.reset();
   }
 
   // On some multi-part modules, it is helpful to hide the next button until it is needed.
