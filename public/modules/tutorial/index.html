@@ -121,6 +121,7 @@ margin-right:auto;
 Mousetrap.bind('left', function(e, n) { checkKeyPressed(n); });
 Mousetrap.bind('right',function(e, n) { checkKeyPressed(n); });
 
+experimentr.hideNext();
 
 var step = -1;
 
@@ -393,6 +394,7 @@ if (i == 5){
  		.attr("font-size","20px")
  		.attr("fill","black")
  		.text("Click NEXT to begin your test");
+ 		experimentr.showNext();
  		experimentr.release();
  	}
 
