@@ -31,7 +31,62 @@ margin-right:auto;
 	shape-rendering: crispEdges;
 
 }
-
+p{
+font-family: verdana;
+font-size: 20px;
+padding
+}
+.instruction{
+color:#B5B5B4;
+}
+.content{
+width:800;
+margin-left:auto;
+margin-right:auto;
+}
+.axis path,
+.axis line{
+	fill:none;
+	stroke:black;
+	shape-rendering: crispEdges;
+}
+.line{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+.model{
+	fill: none;
+	stroke: #B5B5B4;
+	stroke-width: 2px;
+}
+.text{
+	text-anchor:middle;
+	font-family: verdana;
+	
+}
+#lineCopy{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+.lineClick{
+	fill: none;
+	stroke: black;
+	stroke-width: 2px;
+}
+.line2{
+	fill: none;
+	stroke: brown;
+	stroke-width: 2px;
+	
+}
+.line3{
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 2px;
+	
+}
 .line{
 	fill: none;
 	stroke: black;
@@ -65,7 +120,7 @@ var step = -1;
 //console.log(step);
 function checkKeyPressed(e) {
     if (e.keyCode == "39") {
-    step = 1;
+    step += 1;
     e.preventDefault();
     d3.select(".line")
     	.remove();
@@ -75,10 +130,17 @@ function checkKeyPressed(e) {
     	.remove();
     d3.select("#lineCopy")
     	.remove();
+    d3.select(".line1")
+    	.remove();
+    d3.select(".line2")
+    	.remove();
+    d3.select(".line3")
+    	.remove();
     var model =  d3.select(".model")
     	.remove();
+    console.log('moving forward'+step);
     update(step);
-    //console.log(step);
+   
     }
     if (e.keyCode == "37") {
     step -= 1;
@@ -93,8 +155,15 @@ function checkKeyPressed(e) {
     	.remove();
     d3.select("#lineCopy")
     	.remove();
+    d3.select(".line1")
+    	.remove();
+    d3.select(".line2")
+    	.remove();
+    d3.select(".line3")
+    	.remove();
+   	console.log('moving back' + step);
     update(step);
-    //console.log(step);
+    
     }  
 
     if(e.keyCode == '13'){
@@ -118,8 +187,6 @@ var yModel = d3.scale.linear()
 		.range([100,0]);
 var svg = d3.select(".content")
 		.append("svg:svg")
-		//.attr("id","svg")
-		//.attr("align","center")
 		.attr("width",720)
 		.attr("height",400)
 		.append("g");
@@ -137,7 +204,7 @@ var dataSet = [data0,data1,data2,data3];
 
 
 function update(i){
-
+console.log(i);
 svg.selectAll("text").remove();
 
 if (i >=0 && i <=3 ){
@@ -161,7 +228,7 @@ d3.tsv(fileName, type, function(error,data){
 		.transition()
 		.duration(duration)
 		.ease("linear")
-		.attr("transform","translate(",x(-1999),",0)");
+		.attr("transform","translate("+x(-1999)+",0)");
 	
 })	
 var stringList = ["This is a normal pattern", "This is also a normal pattern","There might be some values that look odd.","Sometimes the pattern might stretch or compress."];
@@ -259,7 +326,7 @@ if (i == 5){
  		.transition()
  		.duration(duration)
  		.ease("linear")
- 		.attr("transform","translate(",x(-1999),  ",0)");
+ 		.attr("transform","translate("+x(-1999)+",0)");
  	})
  	d3.tsv("data/caseTest2.tsv", type, function(error,data){
  	//console.log(dataSet);
@@ -279,7 +346,7 @@ if (i == 5){
  		.transition()
  		.duration(duration)
  		.ease("linear")
- 		.attr("transform","translate(",x(-1999),  ",0)");
+ 		.attr("transform","translate("+x(-1999)+",0)");
  	})
  	d3.tsv("data/caseTest3.tsv", type, function(error,data){
  	//console.log(dataSet);
@@ -298,7 +365,7 @@ if (i == 5){
  		.transition()
  		.duration(duration)
  		.ease("linear")
- 		.attr("transform","translate(",x(-1999),",0)")
+ 		.attr("transform","translate("+x(-1999)+",0)")
  		.style("stroke","brown");
  	})
   	svg.append("text")
@@ -324,6 +391,7 @@ if (i == 5){
  		.attr("font-size","20px")
  		.attr("fill","black")
  		.text("Click NEXT to begin your test");
+ 		experimentr.release();
  	}
 
 }
