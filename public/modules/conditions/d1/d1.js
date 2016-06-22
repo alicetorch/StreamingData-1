@@ -1,15 +1,15 @@
 
-var D1 = function(){
-
-D1.init = function(container, speed, range ) {
-var socket = io.connect();
+init = function(){
+	console.log('init');
+	
 	(function(){
-
+		var socket = io.connect();
+		socket.on('connect',function() {
+      	console.log('Client has connected to the server!');
+    	});
+    	document.onmousemove = experimentr.sendMouseMovement(io);
 		experimentr.startTimer('websocketTest')
-
-		//record all mouse movement 
-		document.onmousemove = experimentr.sendMouseMovement;
-
+		
 	})();
 
 	d3.select('body').selectAll('button').on('click',function(){
@@ -51,11 +51,11 @@ var socket = io.connect();
 
 
 
-	var n = 30;
+	var n = 80;
 	var margin = {top:20, right:20, bottom:20, left:20},
 	width = 600 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
-	var duration = 10;
+	var duration = 50;
 
 
 
@@ -64,15 +64,15 @@ var socket = io.connect();
 	.domain([0,n-1])
 	.range([0,width]);
 	var y = d3.scale.linear()
-	.domain([-0.5, 0.5])
+	.domain([-1.5, 1.5])
 	.range([height/3, 0]);
 
 	var y2 = d3.scale.linear()
-	.domain([-0.5, 0.5])
+	.domain([-1.5, 1.5])
 	.range([height*2/3, height/3]);
 
 	var y3 = d3.scale.linear()
-	.domain([-0.5, 0.5])
+	.domain([-1.5, 1.5])
 	.range([height, height*2/3]);
 //The moving line part   
 
@@ -119,9 +119,9 @@ svg.append("g")
 
 
 var q = d3.queue();
-q.defer(d3.tsv, "data/caseTest1.tsv")
-q.defer(d3.tsv, "data/caseTest2.tsv")
-q.defer(d3.tsv, "data/caseTest3.tsv")
+q.defer(d3.tsv, "data/slow1.tsv")
+q.defer(d3.tsv, "data/slow2.tsv")
+q.defer(d3.tsv, "data/slow3.tsv")
 .await(setUp); 
 
 
@@ -129,9 +129,9 @@ function setUp(error, data1, data2, data3){
 	if (error) throw error;
 
 
-	var disData1 = data1.slice(0,40);
-	var disData2 = data2.slice(0,40);
-	var disData3 = data3.slice(0,40);
+	var disData1 = data1.slice(0,80);
+	var disData2 = data2.slice(0,80);
+	var disData3 = data3.slice(0,80);
 
 
 	var line1  = d3.svg.line()
@@ -241,5 +241,7 @@ function validate() {
 	experimentr.endTimer('demo');
 	experimentr.release();
 };
-}
+
 }();
+
+window.onload = init;

@@ -99,6 +99,7 @@ var server = http.createServer(app).listen(port, function (err) {
 server.listen(socketPort)
 
 io.listen(server).on('connection', function (socket) {
+  console.log('connected');
   socket.on('mouseMove', function (msg) {
     mouseLocation.push({'timestamp': msg.timestamp, 'X': msg.mouseX, 'Y': msg.mouseY})
     // console.log('mouse movement Received: '+ msg.mouseX+ ' , ' + msg.mouseY);
