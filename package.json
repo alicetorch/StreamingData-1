@@ -10,6 +10,7 @@
     "forever": "0.15.x",
     "json2csv": "2.x",
     "lodash": "^4.13.1",
+    "mousetrap": "^1.6.0",
     "redis": "0.8.x",
     "socket.io": "^1.4.6",
     "socketio": "^1.0.0",
