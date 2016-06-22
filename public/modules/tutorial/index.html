@@ -88,170 +88,169 @@ function update(i){
     	.remove();
     	
     d3.select("#container").attr("height", 450);
-    
     experimentr.hideNext();
 	
 	
 
-if (i >=0 && i <=3 ){
+	if (i >=0 && i <=3 ){
 
-	var fileName = "data/file"+i+".tsv";
-	var modelName = "data"+i;
+		var fileName = "data/file"+i+".tsv";
+		var modelName = "data"+i;
 
-	d3.tsv(fileName, type, function(error,data){
+		d3.tsv(fileName, type, function(error,data){
 
-		var line = d3.svg.line()
-			.x(function(d,i){return x(d.index);})
-			.y(function(d,i){return y(d.value);})
-			.interpolate("cardinal");
+			var line = d3.svg.line()
+				.x(function(d,i){return x(d.index);})
+				.y(function(d,i){return y(d.value);})
+				.interpolate("cardinal");
 		
-		var path = svg.append("g")
-			.append("path")
-			.datum(data)
-			.attr("class","line")
-			.attr("d",line)
-			.transition()
-				.duration(duration)
-				.ease("linear")
-				.attr("transform","translate("+x(-1999)+",0)");
-	})	
+			var path = svg.append("g")
+				.append("path")
+				.datum(data)
+				.attr("class","line")
+				.attr("d",line)
+				.transition()
+					.duration(duration)
+					.ease("linear")
+					.attr("transform","translate("+x(-1999)+",0)");
+		})	
 
-	var stringList = ["This is a normal pattern.", "This is also a normal pattern.","There might be some values that look odd.","Sometimes the pattern might stretch or compress."];
+		var stringList = ["This is a normal pattern.", "This is also a normal pattern.","There might be some values that look odd.","Sometimes the pattern might stretch or compress."];
 	
-	var string = svg.append("text")
-				.text(stringList[i])
+		var string = svg.append("text")
+					.text(stringList[i])
+					.attr("x",360)
+					.attr("y",250);
+
+		if (i == 2) {
+			svg.append("text")
+				.text("This is an ANOMALY.")
 				.attr("x",360)
-				.attr("y",250);
-
-	if (i == 2) {
-		svg.append("text")
-			.text("This is an ANOMALY.")
-			.attr("x",360)
-			.attr("y",280);
-	} else if (i == 3) {
-		svg.append("text")
-			.text("This is ALSO an ANOMALY.")
-			.attr("x",360)
-			.attr("y",280);
-	}
+				.attr("y",280);
+		} else if (i == 3) {
+			svg.append("text")
+				.text("This is ALSO an ANOMALY.")
+				.attr("x",360)
+				.attr("y",280);
+		}
 	
-} else if (i == 4){
+	} else if (i == 4){
 
- 	d3.tsv("data/caseTest1.tsv", type, function(error,data){
-		var line = d3.svg.line()
-			.x(function(d,i){return x(d.index);})
-			.y(function(d,i){return y(d.value);})
-			.interpolate("cardinal");
-		var path = svg.append("g")
-			.attr("clip-path","url(#clip)")
-			.append("path")
-			.attr("transform","translate(0,0)")
-			.datum(data)
-			.attr("class","line")
-			.attr("d",line)
-			.transition()
+		d3.tsv("data/caseTest1.tsv", type, function(error,data){
+			var line = d3.svg.line()
+				.x(function(d,i){return x(d.index);})
+				.y(function(d,i){return y(d.value);})
+				.interpolate("cardinal");
+			var path = svg.append("g")
+				.attr("clip-path","url(#clip)")
+				.append("path")
+				.attr("transform","translate(0,0)")
+				.datum(data)
+				.attr("class","line")
+				.attr("d",line)
+				.transition()
+					.duration(duration)
+					.ease("linear")
+					.attr("transform","translate("+x(-1999)+",0)");
+		})
+	
+		d3.tsv("data/caseTest2.tsv", type, function(error,data){
+			var line = d3.svg.line()
+				.x(function(d,i){return x(d.index);})
+				.y(function(d,i){return y(d.value);})
+				.interpolate("cardinal");
+		
+			var path = svg.append("g")
+				.attr("clip-path","url(#clip)")
+				.append("path")
+				.attr("transform","translate(0,100)")
+				.style("stroke", "brown")
+				.datum(data)
+				.attr("class","line")
+				.attr("d",line)
+				.transition()
 				.duration(duration)
 				.ease("linear")
 				.attr("transform","translate("+x(-1999)+",0)");
- 	})
- 	
- 	d3.tsv("data/caseTest2.tsv", type, function(error,data){
-		var line = d3.svg.line()
-			.x(function(d,i){return x(d.index);})
-			.y(function(d,i){return y(d.value);})
-			.interpolate("cardinal");
-		
-		var path = svg.append("g")
-			.attr("clip-path","url(#clip)")
-			.append("path")
-			.attr("transform","translate(0,100)")
-			.style("stroke", "brown")
-			.datum(data)
-			.attr("class","line")
-			.attr("d",line)
-			.transition()
-			.duration(duration)
-			.ease("linear")
-			.attr("transform","translate("+x(-1999)+",0)");
- 	})
- 	
- 	d3.tsv("data/caseTest3.tsv", type, function(error,data){
-		var line = d3.svg.line()
-			.x(function(d,i){return x(d.index);})
-			.y(function(d,i){return y(d.value);})
-			.interpolate("cardinal");
-		var path = svg.append("g")
-			.attr("clip-path","url(#clip)")
-			.append("path")
-			.attr("transform","translate(0,200)")
-			.style("stroke", "steelblue")
-			.datum(data)
-			.attr("class","line")
-			.attr("d",line)
-			.transition()
-			.duration(duration)
-			.ease("linear")
-			.attr("transform","translate("+x(-1999)+",0)")
-			.style("stroke","brown");
- 	})
- 	
-  	svg.append("text")
-  		.attr("x",400)
- 		.attr("y",400)
-  		.text("During the experiment, you will be asked to monitor");
-  		
-  	svg.append("text")
-  		.attr("x",400)
- 		.attr("y",430)
-  		.style("font-weight", "bold")
-  		.text(" 3 lines simultaneously.");
-  		
-  } else if (i == 5){
+		})
 	
-	svg.append("text")
-			.text("Whenever you see an ANOMALY")
-			.attr("x",360)
-			.attr("y",50);
+		d3.tsv("data/caseTest3.tsv", type, function(error,data){
+			var line = d3.svg.line()
+				.x(function(d,i){return x(d.index);})
+				.y(function(d,i){return y(d.value);})
+				.interpolate("cardinal");
+			var path = svg.append("g")
+				.attr("clip-path","url(#clip)")
+				.append("path")
+				.attr("transform","translate(0,200)")
+				.style("stroke", "steelblue")
+				.datum(data)
+				.attr("class","line")
+				.attr("d",line)
+				.transition()
+				.duration(duration)
+				.ease("linear")
+				.attr("transform","translate("+x(-1999)+",0)")
+				.style("stroke","brown");
+		})
+	
+		svg.append("text")
+			.attr("x",400)
+			.attr("y",400)
+			.text("During the experiment, you will be asked to monitor");
+		
+		svg.append("text")
+			.attr("x",400)
+			.attr("y",430)
+			.style("font-weight", "bold")
+			.text(" 3 lines simultaneously.");
+		
+	  } else if (i == 5){
+	
+		svg.append("text")
+				.text("Whenever you see an ANOMALY")
+				.attr("x",360)
+				.attr("y",50);
 			
-	svg.append("text")
-			.text("(shrinking, stretching or odd-looking value),")
-			.attr("x",360)
-			.attr("y",80);
+		svg.append("text")
+				.text("(shrinking, stretching or odd-looking value),")
+				.attr("x",360)
+				.attr("y",80);
 			
-	svg.append("text")
-			.text("press the ENTER key, SPACEBAR, or click your mouse.")
-			.attr("x",360)
-			.attr("y",110);
+		svg.append("text")
+				.text("press the ENTER key, SPACEBAR, or click your mouse.")
+				.attr("x",360)
+				.attr("y",110);
 
-	svg.append("text")
-			.text("Anomalies may be present in just one line,")
-			.attr("x",360)
-			.attr("y",180);
+		svg.append("text")
+				.text("Anomalies may be present in just one line,")
+				.attr("x",360)
+				.attr("y",180);
 			
-	svg.append("text")
-			.text("or in multiple lines at the same time.")
-			.attr("x",360)
-			.attr("y",210);
+		svg.append("text")
+				.text("or in multiple lines at the same time.")
+				.attr("x",360)
+				.attr("y",210);
 			
-	svg.append("text")
-			.text("You need only respond")
-			.attr("x",250)
-			.attr("y",280);
+		svg.append("text")
+				.text("You need only respond")
+				.attr("x",250)
+				.attr("y",280);
 			
-	svg.append("text")
-			.text("ONCE per incident")
-			.attr("x",475)
-			.attr("y",280)
-			.style("font-weight", "bold");
+		svg.append("text")
+				.text("ONCE per incident")
+				.attr("x",475)
+				.attr("y",280)
+				.style("font-weight", "bold");
 			
-	svg.append("text")
-			.text("regardless of how many lines contain the anomaly.")
-			.attr("x",360)
-			.attr("y",310);
+		svg.append("text")
+				.text("regardless of how many lines contain the anomaly.")
+				.attr("x",360)
+				.attr("y",310);
 			
-	experimentr.showNext();
- 	experimentr.release();	
-} 
+		experimentr.showNext();
+		experimentr.release();	
+	} 
 }
 
 function type(d){
