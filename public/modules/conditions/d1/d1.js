@@ -1,6 +1,6 @@
 
-init = function(){
-	console.log('init');
+init = function(className){
+	console.log(className);
 	
 	(function(){
 		var socket = io.connect();
@@ -76,9 +76,9 @@ init = function(){
 	.range([height, height*2/3]);
 //The moving line part   
 
+d3.select("body").classed(className);
 
-
-var svgContainer = d3.select("#cat1spd1").append("svg")
+var svgContainer = d3.select("#"+className).append("svg")
 .attr("width", 1500)
 .attr("height", 500);
 
@@ -244,4 +244,4 @@ function validate() {
 
 }();
 
-window.onload = init;
+// window.onload = init;
