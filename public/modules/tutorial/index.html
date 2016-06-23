@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="modules/conditions/d1/spd1/d1Spd1.css">
 <style>
 p{
 	font-family: verdana;
@@ -77,6 +78,18 @@ var y = d3.scale.linear()
 		.domain([-0.6,0.6])
 		.range([200,0]);
 
+var y1 = d3.scale.linear()
+	.domain([-1.5, 1.5])
+	.range([150, 50]);
+
+var y2 = d3.scale.linear()
+	.domain([-1.5, 1.5])
+	.range([250, 150]);
+
+var y3 = d3.scale.linear()
+	.domain([-1.5, 1.5])
+	.range([350, 250]);
+
 var svg = d3.select(".content")
 		.append("svg:svg")
 		.attr("id", "container")
@@ -94,6 +107,8 @@ function update(i){
 	svg.selectAll(".line")
     	.remove();
     svg.selectAll("text")
+    	.remove();
+    svg.selectAll("#line")
     	.remove();
     	
     d3.select("#container").attr("height", 450);
@@ -156,74 +171,139 @@ function update(i){
 	
 	} else if (i == 4){
 
-		d3.tsv("data/caseTest1.tsv", type, function(error,data){
-			var line = d3.svg.line()
-				.x(function(d,i){return x(d.index);})
-				.y(function(d,i){return y(d.value);})
-				.interpolate("cardinal");
-			var path = svg.append("g")
-				.attr("clip-path","url(#clip)")
-				.append("path")
-				.attr("transform","translate(0,0)")
-				.datum(data)
-				.attr("class","line")
-				.attr("d",line)
+		var q = d3.queue();
+q.defer(d3.tsv, "data/slow1.tsv")
+q.defer(d3.tsv, "data/slow2.tsv")
+q.defer(d3.tsv, "data/slow3.tsv")
+.await(setUp); 
+
+
+function setUp(error, data1, data2, data3){
+	if (error) throw error;
+
+
+	var disData1 = data1.slice(0,80);
+	var disData2 = data2.slice(0,80);
+	var disData3 = data3.slice(0,80);
+
+
+	var line1  = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){ return  y1(parseFloat(d.value));})
+		.interpolate("basis");
+
+	var line2 = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){ return  y2(parseFloat(d.value));})
+		.interpolate("basis");
+
+	var line3 = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){ return  y3(parseFloat(d.value));})
+		.interpolate("basis");
+
+	var path1 =svg.append("g")
+		.attr("clip-path","url(#clip)")
+		.append("path")
+		.datum(disData1)
+		.attr("class","line1")
+		.attr("id","line")
+		.attr("d",line1);
+
+	var path2 = svg.append("g")
+		.attr("clip-path","url(#clip)")
+		.append("path")
+		.datum(disData2)
+		.attr("class","line2")
+		.attr("id","line")
+		.attr("d",line2);
+
+	var path3= svg.append("g")
+		.attr("clip-path","url(#clip)")
+		.append("path")
+		.datum(disData3)
+		.attr("class","line3")
+		.attr("id","line")
+		.attr("d",line3);
+	svg.append("text")
+				.text("In the test")
+				.attr("x",360)
+				.attr("y",20);
+	svg.append("text")
+				.text("There will be 3 lines being displayed at the same time")
+				.attr("x",360)
+				.attr("y",60);
+	console.log('true lenght', disData1.length+disData2.length+disData3.length );
+
+	tick();
+
+	function tick(){
+
+
+		disData1.push(data1.slice(0,1)[0]);
+		data1.splice(0,1);
+		if(data1.length>=1){
+			path1
+				.attr("d",line1)
+				.attr("transform",null)
 				.transition()
-					.duration(duration)
-					.ease("linear")
-					.attr("transform","translate("+x(-1999)+",0)");
-		})
-	
-		d3.tsv("data/caseTest2.tsv", type, function(error,data){
-			var line = d3.svg.line()
-				.x(function(d,i){return x(d.index);})
-				.y(function(d,i){return y(d.value);})
-				.interpolate("cardinal");
-		
-			var path = svg.append("g")
-				.attr("clip-path","url(#clip)")
-				.append("path")
-				.attr("transform","translate(0,100)")
-				.style("stroke", "brown")
-				.datum(data)
-				.attr("class","line")
-				.attr("d",line)
-				.transition()
-				.duration(duration)
+				.duration(100)
 				.ease("linear")
-				.attr("transform","translate("+x(-1999)+",0)");
-		})
-	
-		d3.tsv("data/caseTest3.tsv", type, function(error,data){
-			var line = d3.svg.line()
-				.x(function(d,i){return x(d.index);})
-				.y(function(d,i){return y(d.value);})
-				.interpolate("cardinal");
-			var path = svg.append("g")
-				.attr("clip-path","url(#clip)")
-				.append("path")
-				.attr("transform","translate(0,200)")
-				.style("stroke", "steelblue")
-				.datum(data)
-				.attr("class","line")
-				.attr("d",line)
+				.attr("transform", "translate(" + x(-1) + ",0)")
+			disData1.shift();
+
+			disData2.push(data2.slice(0,1)[0]);
+			data2.splice(0,1);
+			path2
+				.attr("d",line2)
+				.attr("transform",null)
 				.transition()
-				.duration(duration)
+				.duration(100)
 				.ease("linear")
-				.attr("transform","translate("+x(-1999)+",0)")
-				.style("stroke","brown");
-		})
+				.attr("transform", "translate(" + x(-1) + ",0)")
+			disData2.shift();
+
+			disData3.push(data3.slice(0,1)[0]);;
+			data3.splice(0,1);
+			path3
+				.attr("d",line3)
+				.attr("transform",null)
+				.transition()
+				.duration(100)
+				.ease("linear")
+				.attr("transform", "translate(" + x(-1) + ",0)")
+				.each("end",tick);
+			disData3.shift();
+	}else{
+		validate();
+	}
 	
-		svg.append("text")
-			.attr("x",400)
-			.attr("y",400)
-			.text("During the experiment, you will be asked to monitor");
-		
-		svg.append("text")
-			.attr("x",400)
-			.attr("y",430)
-			.style("font-weight", "bold")
-			.text(" 3 lines simultaneously.");
+	};
+
+	
+
+
+};
+
+
+function checkForAnamoly(){
+	allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
+	allNoise= allPoints.map(function(a) {return a.noise;});
+	console.log(allNoise);
+	return allNoise.includes("T");
+
+};
+
+function type(d){
+	d.index = +d.index;
+	d.value = +d.value;
+	return d;
+};
+
+function validate() {
+	experimentr.endTimer('demo');
+	experimentr.release();
+};
 		
 	  } else if (i == 5){
 	
