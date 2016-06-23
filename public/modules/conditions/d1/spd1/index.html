@@ -76,6 +76,7 @@
 	var x = d3.scale.linear()
 	.domain([0,n-1])
 	.range([0,width]);
+	
 	var y = d3.scale.linear()
 	.domain([-1.5, 1.5])
 	.range([height/3, 0]);
@@ -97,7 +98,7 @@ var svgContainer = d3.select("#cat1spd1").append("svg")
 
 
 
-var xAxis=d3.svg.axis().scale(x).orient("bottom");
+var xAxis=d3.svg.axis().scale(x).orient("bottom").tickFormat(function (d) { return ''; });
 
 var svg	= svgContainer.append("g")
 .attr("transform", "translate(" +40+ "," + 20 + ")");
