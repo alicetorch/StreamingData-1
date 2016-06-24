@@ -14,16 +14,7 @@ init = function(){
 		
 	})();
 
-	d3.select('body').selectAll('button').on('click',function(){
-		pressed(d3.select(this).attr('id') , "button");
-		console.log('button pressed');
-		if (d3.select(this).attr('name') !== 'researchButton'){
-				//stops  recording and transmitting mouse events
-				document.onmousemove = experimentr.stopMouseMovementRec;
-				socket.emit('disconnect');
-				experimentr.next();
-			};
-		});
+	
 
 
 	window.addEventListener("keydown", checkKeyPressed, false);
@@ -80,8 +71,17 @@ d3.select("#"+className)
 	.append("button")
 		.text('Anomaly Detected')
 		.attr('id', 'button1')
-		.attr('name','researchButton');
-	
+		.attr('name','researchButton')
+		.on('click',function(){
+		pressed(d3.select(this).attr('id') , "button");
+		console.log('button pressed');
+		if (d3.select(this).attr('name') !== 'researchButton'){
+				//stops  recording and transmitting mouse events
+				document.onmousemove = experimentr.stopMouseMovementRec;
+				socket.emit('disconnect');
+				experimentr.next();
+			};
+		});
 
 
 var svgContainer = d3.select("#"+className).append("svg")
