@@ -225,14 +225,18 @@ function setUp(error, data1, data2, data3){
 		.attr("class","line3")
 		.attr("id","line")
 		.attr("d",line3);
+
 	svg.append("text")
-				.text("In the test")
-				.attr("x",360)
-				.attr("y",20);
+		.text("During the experiment, you will be asked to monitor")
+		.attr("x",360)
+		.attr("y",320);
+
 	svg.append("text")
-				.text("There will be 3 lines being displayed at the same time")
-				.attr("x",360)
-				.attr("y",60);
+		.text("3 lines simultaneously.")
+		.attr("x",360)
+		.attr("y",350)
+		.style("font-weight", "bold");
+
 	console.log('true lenght', disData1.length+disData2.length+disData3.length );
 
 	tick();
