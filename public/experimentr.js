@@ -7,7 +7,6 @@ experimentr = function() {
 
   // Add a random postId for each new participant
   data.postId = (+new Date()).toString(36);
-
   // Accessor for postId
   experimentr.postId = function() {
     return data.postId;
@@ -18,7 +17,14 @@ experimentr = function() {
   };
 
   // send all mousemovement to websocket to save to redis. 
-  experimentr.sendMouseMovement = function(event) {
+  experimentr.sendMouseMovement = function(event, socket) {
+
+    var socket = io.connect();
+    socket.on('connect',function() {
+        console.log('Client has connected to the server! FROM experimentr');
+      });
+
+  
       var dot, eventDoc, doc, body, pageX, pageY;
 
         event = event || window.event; // IE-ism

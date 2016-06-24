@@ -1,2 +1,2 @@
-node_modules/*.orig
 node_modules/
+appendonly.aof
