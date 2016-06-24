@@ -6,6 +6,8 @@
   "dependencies": {
     "csv": "0.2.x",
     "d3": "^3.5.16",
+    "d3-queue": "^3.0.1",
+    "d3-request": "^1.0.0",
     "express": "^3.21.2",
     "forever": "0.15.x",
     "json2csv": "2.x",
