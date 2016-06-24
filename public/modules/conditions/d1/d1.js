@@ -184,9 +184,7 @@ function setUp(error, data1, data2, data3){
 
 		disData1.push(data1.slice(0,1)[0]);
 		data1.splice(0,1);
-		console.log('data.length', data1.length)
 		if(data1.length>=1){
-			console.log('move');
 			path1
 				.attr("d",line1)
 				.attr("transform",null)
@@ -219,7 +217,6 @@ function setUp(error, data1, data2, data3){
 				.each("end",tick);
 			disData3.shift();
 	}else{
-		console.log('validate')
 		validate();
 
 	}
