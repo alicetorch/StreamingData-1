@@ -78,15 +78,15 @@
 	.range([0,width]);
 	
 	var y = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([-2.5, 2.5])
 	.range([height/3, 0]);
 
 	var y2 = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([-2.5, 2.5])
 	.range([height*2/3, height/3]);
 
 	var y3 = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([-2.5, 2.5])
 	.range([height, height*2/3]);
 //The moving line part   
 
@@ -144,8 +144,8 @@ function setUp(error, data1, data2, data3){
 
 
 	var disData1 = data1.slice(0,80);
-	var disData2 = data2.slice(0,80);
-	var disData3 = data3.slice(0,80);
+	var disData2 = data2.slice(0,90);
+	var disData3 = data3.slice(0,84);
 
 
 	var line1  = d3.svg.line()
