@@ -1,6 +1,6 @@
 
-init = function(className){
-	console.log(className);
+init = function(){
+	console.log('d1.js loaded');
 	
 	(function(){
 		var socket = io.connect();
@@ -48,35 +48,39 @@ init = function(className){
 		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
 	};
 
-
-
-
 	var n = 80;
+	var domain1 = -1.5;
+	var domain2 = 1.5;
 	var margin = {top:20, right:20, bottom:20, left:20},
 	width = 600 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
-	var duration = 50;
-
-
-
+	
 
 	var x = d3.scale.linear()
 	.domain([0,n-1])
 	.range([0,width]);
 	var y = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([domain1, domain2])
 	.range([height/3, 0]);
 
 	var y2 = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([domain1, domain2])
 	.range([height*2/3, height/3]);
 
 	var y3 = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([domain1, domain2])
 	.range([height, height*2/3]);
 //The moving line part   
 
-d3.select("body").classed(className);
+d3.select("#"+className)
+	.append('div')
+	.attr('id', 'test-buttons')
+	.append("button")
+		.text('Anomaly Detected')
+		.attr('id', 'button1')
+		.attr('name','researchButton');
+	
+
 
 var svgContainer = d3.select("#"+className).append("svg")
 .attr("width", 1500)
@@ -129,9 +133,9 @@ function setUp(error, data1, data2, data3){
 	if (error) throw error;
 
 
-	var disData1 = data1.slice(0,80);
-	var disData2 = data2.slice(0,80);
-	var disData3 = data3.slice(0,80);
+	var disData1 = data1.slice(0,n);
+	var disData2 = data2.slice(0,n);
+	var disData3 = data3.slice(0,n);
 
 
 	var line1  = d3.svg.line()
@@ -170,7 +174,6 @@ function setUp(error, data1, data2, data3){
 		.attr("class","line3")
 		.attr("d",line3);
 
-	console.log('true lenght', disData1.length+disData2.length+disData3.length );
 
 	tick();
 
@@ -216,10 +219,6 @@ function setUp(error, data1, data2, data3){
 	}
 	
 	};
-
-	
-
-
 };
 
 
@@ -244,4 +243,4 @@ function validate() {
 
 }();
 
-// window.onload = init;
+
