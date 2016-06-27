@@ -7,23 +7,13 @@ init = function(){
 	(function(){
 		socket = io.connect();
 		socket.on('connect',function() {
-      	console.log('Client has connected to the server!');
-    	});
-    	document.onmousemove = experimentr.sendMouseMovement(io);
+			console.log('Client has connected to the server!');
+		});
+		document.onmousemove = experimentr.sendMouseMovement(io);
 		experimentr.startTimer('websocketTest')
 		
 	})();
 
-	d3.select('body').selectAll('button').on('click',function(){
-		pressed(d3.select(this).attr('id') , "button");
-		console.log('button pressed');
-		if (d3.select(this).attr('name') !== 'researchButton'){
-				//stops  recording and transmitting mouse events
-				document.onmousemove = experimentr.stopMouseMovementRec;
-				socket.emit('disconnect');
-				experimentr.next();
-			};
-		});
 
 
 	window.addEventListener("keydown", checkKeyPressed, false);
@@ -75,13 +65,22 @@ init = function(){
 //The moving line part   
 
 d3.select("#"+className)
-	.append('div')
-	.attr('id', 'test-buttons')
-	.append("button")
-		.text('Anomaly Detected')
-		.attr('id', 'button1')
-		.attr('name','researchButton');
-	
+.append('div')
+.attr('id', 'test-buttons')
+.append("button")
+.text('Anomaly Detected')
+.attr('id', 'button1')
+.attr('name','researchButton')
+.on('click',function(){
+	pressed(d3.select(this).attr('id') , "button");
+	console.log('button pressed');
+	if (d3.select(this).attr('name') !== 'researchButton'){
+				//stops  recording and transmitting mouse events
+				document.onmousemove = experimentr.stopMouseMovementRec;
+				socket.emit('disconnect');
+				experimentr.next();
+			};
+		});
 
 
 var svgContainer = d3.select("#"+className).append("svg")
@@ -141,40 +140,40 @@ function setUp(error, data1, data2, data3){
 
 
 	var line1  = d3.svg.line()
-		.x(function(d,i){return x(i);})
-		.y(function(d){ return  y(parseFloat(d.value));})
-		.interpolate("basis");
+	.x(function(d,i){return x(i);})
+	.y(function(d){ return  y(parseFloat(d.value));})
+	.interpolate("basis");
 
 	var line2 = d3.svg.line()
-		.x(function(d,i){return x(i);})
-		.y(function(d){ return  y2(parseFloat(d.value));})
-		.interpolate("basis");
+	.x(function(d,i){return x(i);})
+	.y(function(d){ return  y2(parseFloat(d.value));})
+	.interpolate("basis");
 
 	var line3 = d3.svg.line()
-		.x(function(d,i){return x(i);})
-		.y(function(d){ return  y3(parseFloat(d.value));})
-		.interpolate("basis");
+	.x(function(d,i){return x(i);})
+	.y(function(d){ return  y3(parseFloat(d.value));})
+	.interpolate("basis");
 
 	var path1 =svg.append("g")
-		.attr("clip-path","url(#clip)")
-		.append("path")
-		.datum(disData1)
-		.attr("class","line1")
-		.attr("d",line1);
+	.attr("clip-path","url(#clip)")
+	.append("path")
+	.datum(disData1)
+	.attr("class","line1")
+	.attr("d",line1);
 
 	var path2 = svg.append("g")
-		.attr("clip-path","url(#clip)")
-		.append("path")
-		.datum(disData2)
-		.attr("class","line2")
-		.attr("d",line2);
+	.attr("clip-path","url(#clip)")
+	.append("path")
+	.datum(disData2)
+	.attr("class","line2")
+	.attr("d",line2);
 
 	var path3= svg.append("g")
-		.attr("clip-path","url(#clip)")
-		.append("path")
-		.datum(disData3)
-		.attr("class","line3")
-		.attr("d",line3);
+	.attr("clip-path","url(#clip)")
+	.append("path")
+	.datum(disData3)
+	.attr("class","line3")
+	.attr("d",line3);
 
 
 	tick();
@@ -186,41 +185,41 @@ function setUp(error, data1, data2, data3){
 		data1.splice(0,1);
 		if(data1.length>=1){
 			path1
-				.attr("d",line1)
-				.attr("transform",null)
-				.transition()
-				.duration(duration)
-				.ease("linear")
-				.attr("transform", "translate(" + x(-1) + ",0)")
+			.attr("d",line1)
+			.attr("transform",null)
+			.transition()
+			.duration(duration)
+			.ease("linear")
+			.attr("transform", "translate(" + x(-1) + ",0)")
 			disData1.shift();
 
 			disData2.push(data2.slice(0,1)[0]);
 			data2.splice(0,1);
 			path2
-				.attr("d",line2)
-				.attr("transform",null)
-				.transition()
-				.duration(duration)
-				.ease("linear")
-				.attr("transform", "translate(" + x(-1) + ",0)")
+			.attr("d",line2)
+			.attr("transform",null)
+			.transition()
+			.duration(duration)
+			.ease("linear")
+			.attr("transform", "translate(" + x(-1) + ",0)")
 			disData2.shift();
 
 			disData3.push(data3.slice(0,1)[0]);;
 			data3.splice(0,1);
 			path3
-				.attr("d",line3)
-				.attr("transform",null)
-				.transition()
-				.duration(duration)
-				.ease("linear")
-				.attr("transform", "translate(" + x(-1) + ",0)")
-				.each("end",tick);
+			.attr("d",line3)
+			.attr("transform",null)
+			.transition()
+			.duration(duration)
+			.ease("linear")
+			.attr("transform", "translate(" + x(-1) + ",0)")
+			.each("end",tick);
 			disData3.shift();
-	}else{
-		validate();
+		}else{
+			validate();
 
-	}
-	
+		}
+		
 	};
 };
 
@@ -243,6 +242,35 @@ function validate() {
 	experimentr.endTimer('demo');
 	experimentr.release();
 };
+
+function countdown( elementName, minutes, seconds ){
+	var element, endTime, hours, mins, msLeft, time;
+	
+	function twoDigits( n )
+	{
+		return (n <= 9 ? "0" + n : n);
+	}
+	
+	function updateTimer()
+	{
+		msLeft = endTime - (+new Date);
+		if ( msLeft < 1000 ) {
+			element.innerHTML = "countdown's over!";
+		} else {
+			time = new Date( msLeft );
+			hours = time.getUTCHours();
+			mins = time.getUTCMinutes();
+			element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
+			setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
+		}
+	}
+	
+	element = document.getElementById( elementName );
+	endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
+	updateTimer();
+}
+
+countdown( "countdown", 5, 0 );
 
 }();
 
