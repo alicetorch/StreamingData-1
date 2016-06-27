@@ -1,5 +1,5 @@
 console.log("VARS loaded");
 var className = "cat1spd1"
-var duration = 100; 
+var duration = 82; 
 
 
