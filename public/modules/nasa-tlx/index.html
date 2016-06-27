@@ -59,45 +59,46 @@ Very Low<input type="range" name ="frustration" min="0.0" max="1.0" value="0" st
 
 
 <script>
-(function() {
+(function(){
   var data = {};
 
   experimentr.startTimer('nasatlx');
   //d3.select('#status').text(experimentr.status());
-  
+  var i = 0; 
+
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'name' ? this : null; })
-  .on('change', function() { data.name = this.value; validate(); });
+  .on('change', function() {  data.name = this.value; validate(); });
   
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'task' ? this : null; })
-  .on('change', function() { data.task = this.value; validate(); });
+  .on('change', function() {   data.task = this.value; validate(); });
   
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'date' ? this : null; })
-  .on('change', function() { data.date= this.value; validate(); });
+  .on('change', function() {  data.date= this.value; validate(); });
   
   ////////////////////////////////////////////////////////////////////////////
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'mental_demand' ? this : null; })
-  .on('change', function() { data.mental_demand = this.value; validate(); });
+  .on('change', function() {   data.mental_demand = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'physical_demand' ? this : null; })
-  .on('change', function() { data.physical_demand = this.value; validate(); });
+  .on('change', function() {  data.physical_demand = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'temporal_demand' ? this : null; })
-  .on('change', function() { data.temporal_demand = this.value; validate(); });
+  .on('change', function() {  data.temporal_demand = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'performance' ? this : null; })
-  .on('change', function() { data.performance = this.value; validate(); });
+  .on('change', function() {  data.performance = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'effort' ? this : null; })
-  .on('change', function() { data.effort = this.value; validate(); });
+  .on('change', function() {  data.effort = this.value; validate(); });
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'frustration' ? this : null; })
