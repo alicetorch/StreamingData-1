@@ -28,6 +28,17 @@ init = function(){
 
 	var pageId = 'd1Spd1';
 	function pressed(buttonTitle, type){
+
+			d3.select(".border")
+			.transition()
+			.duration(500)
+			.attr("rx",70)
+			.attr("ry",70)
+			.transition()
+			.duration(500)
+			.attr("rx",20)
+			.attr("ry",20);
+
 		var isPresent = checkForAnamoly();
 		console.log('is anomolyPresent' + isPresent); 
 
@@ -41,8 +52,8 @@ init = function(){
 	};
 
 	var n = 80;
-	var domain1 = -1.5;
-	var domain2 = 1.5;
+	var domain1 = -2.5;
+	var domain2 = 2.5;
 	var margin = {top:20, right:20, bottom:20, left:20},
 	width = 600 - margin.left - margin.right,
 	height = 500 - margin.top - margin.bottom;
@@ -87,6 +98,18 @@ var svgContainer = d3.select("#"+className).append("svg")
 .attr("width", 1500)
 .attr("height", 500);
 
+
+var borderPath = svgContainer.append("rect")
+	.attr("class","border")
+	.attr("x",40)
+	.attr("y",20)
+	.attr("width",width)
+	.attr("height",height)
+	.style("stroke","#A4A4A4")
+	.style("fill","none")
+	.style("stroke-width",3)
+	.attr("rx",20)
+	.attr("ry",20);
 
 
 var xAxis=d3.svg.axis().scale(x).orient("bottom");
@@ -135,7 +158,7 @@ function setUp(error, data1, data2, data3){
 
 
 	var disData1 = data1.slice(0,n);
-	var disData2 = data2.slice(0,n);
+	var disData2 = data2.slice(0,90);
 	var disData3 = data3.slice(0,n);
 
 
