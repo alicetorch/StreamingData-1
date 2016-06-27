@@ -21,7 +21,7 @@ experimentr = function() {
 
     var socket = io.connect();
     socket.on('connect',function() {
-      console.log('Client has connected to the server! FROM experimentr');
+      // console.log('Client has connected to the server! FROM experimentr');
     });
 
 
@@ -46,7 +46,6 @@ experimentr = function() {
         }
         // console.log(event.pageX + ' '+ event.pageY);
         timeNow = new Date().getTime();
-        console.log('shold be emitting');
         socket.emit('mouseMove',{timestamp: timeNow, mouseX: event.pageX, mouseY: event.pageY});
       };
 
