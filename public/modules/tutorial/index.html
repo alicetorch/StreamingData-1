@@ -68,26 +68,29 @@ function checkKeyPressed(key) {
 }
   
 var n = 10;
-var duration = 600000;
+var duration = 200000;
 
 var x = d3.scale.linear()
-		.domain([0,n-1])
+		.domain([0,40])
 		.range([0,350]);
-		
+
+var x2 = d3.scale.linear()
+		.domain([0,10])
+		.range([0,350]);			
 var y = d3.scale.linear()
 		.domain([-0.6,0.6])
 		.range([200,0]);
 
 var y1 = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([-2.5, 2.5])
 	.range([150, 50]);
 
 var y2 = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([-2.5, 2.5])
 	.range([250, 150]);
 
 var y3 = d3.scale.linear()
-	.domain([-1.5, 1.5])
+	.domain([-2.5, 2.5])
 	.range([350, 250]);
 
 var svg = d3.select(".content")
@@ -135,7 +138,7 @@ function update(i){
 		d3.tsv(fileName, type, function(error,data){
 
 			var line = d3.svg.line()
-				.x(function(d,i){return x(d.index);})
+				.x(function(d,i){return x2(d.index);})
 				.y(function(d,i){return y(d.value);})
 				.interpolate("cardinal");
 		
@@ -162,7 +165,8 @@ function update(i){
 				.text("This is an ANOMALY.")
 				.attr("x",360)
 				.attr("y",280);
-		} else if (i == 3) {
+		} 
+		 if (i == 3) {
 			svg.append("text")
 				.text("This is ALSO an ANOMALY.")
 				.attr("x",360)
