@@ -17,7 +17,7 @@ experimentr = function() {
   };
 
   // send all mousemovement to websocket to save to redis. 
-  experimentr.sendMouseMovement = function(event, socket) {
+  experimentr.sendMouseMovement = function(event) {
 
     var socket = io.connect();
     socket.on('connect',function() {
@@ -46,12 +46,13 @@ experimentr = function() {
         }
         // console.log(event.pageX + ' '+ event.pageY);
         timeNow = new Date().getTime();
+        console.log('shold be emitting');
         socket.emit('mouseMove',{timestamp: timeNow, mouseX: event.pageX, mouseY: event.pageY});
       };
 
-      experimentr.stopMouseMovementRec = function(event){
-        event.stopPropagation();
-      }
+experimentr.stopMouseMovementRec = function(event){
+  event.stopPropagation();
+}
 
   // Starts the experiment by loading the first module
   experimentr.start = function() {

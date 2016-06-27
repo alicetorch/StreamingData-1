@@ -9,7 +9,7 @@ init = function(){
 		socket.on('connect',function() {
 			console.log('Client has connected to the server!');
 		});
-		document.onmousemove = experimentr.sendMouseMovement(io);
+		document.onmousemove = experimentr.sendMouseMovement;
 		experimentr.startTimer('websocketTest')
 		
 	})();
