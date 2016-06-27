@@ -28,8 +28,9 @@ var mouseLocation = [];
 
 // Data handling
 var save = function save(d) {
+  console.log ('in save')
 
-  console.log(d.pageId);
+  console.log('pageId in save', d.pageId);
   var stringD = JSON.stringify(d);
 
   redisClient.hmset(d.postId, d.pageId, stringD);
@@ -65,7 +66,9 @@ function handleCollectedDataPost(postId , pageId){
 
   var sendInBulk = {mouseLocation, mouseAction}
    //console.log(sendInBulk)
-   console.log(postId);
+   console.log('postId', postId);
+   console.log('pageId', pageId);
+   console.log('in handle handleCollectedDataPost', pageId);
   //sendInBulk = JSON.stringify(JSON.stringify(sendInBulk))
   sendInBulk = {'postId': postId, 'pageId': pageId, 'data':sendInBulk}
   save(sendInBulk)
@@ -111,6 +114,7 @@ io.listen(server).on('connection', function (socket) {
 
   socket.on('mouseClick', function(msg){
     console.log('mouseCLICKED!!!'+ msg.buttonTitle);
+    console.log('message title', msg.buttonTitle);
     if(msg.buttonTitle=='next-button'){
       console.log(msg)
       // console.log('mouse clicked and stuff is being sent away!! ')

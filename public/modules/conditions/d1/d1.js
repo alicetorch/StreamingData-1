@@ -28,7 +28,7 @@ init = function(){
 
 	var pageId = 'd1Spd1';
 	function pressed(buttonTitle, type){
-
+			console.log('button title', buttonTitle);
 			d3.select(".border")
 			.transition()
 			.duration(500)
@@ -47,7 +47,7 @@ init = function(){
 		// console.log('mouse pressed. Socket emit ')
 		var postId = experimentr.postId();
 		console.log('post id in experiment', postId);
-		console.log('this is postID', postId);
+		console.log('this is pageID', pageId);
 		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
 	};
 
@@ -84,14 +84,8 @@ d3.select("#"+className)
 .attr('name','researchButton')
 .on('click',function(){
 	pressed(d3.select(this).attr('id') , "button");
-	console.log('button pressed');
-	if (d3.select(this).attr('name') !== 'researchButton'){
-				//stops  recording and transmitting mouse events
-				document.onmousemove = experimentr.stopMouseMovementRec;
-				socket.emit('disconnect');
-				experimentr.next();
-			};
-		});
+	console.log(' research button pressed');
+	});
 
 
 var svgContainer = d3.select("#"+className).append("svg")
@@ -254,7 +248,7 @@ function setUp(error, data1, data2, data3){
 function checkForAnamoly(){
 	allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
 	allNoise= allPoints.map(function(a) {return a.noise;});
-	console.log(allNoise);
+	console.log('noise function',allNoise);
 	return allNoise.includes("T");
 
 };
@@ -283,6 +277,10 @@ function countdown( elementName, minutes, seconds ){
 		msLeft = endTime - (+new Date);
 		if ( msLeft < 1000 ) {
 			element.innerHTML = "countdown's over!";
+			Mousetrap.reset();
+			document.onmousemove = experimentr.stopMouseMovementRec;
+     		pressed('next-button', "button");
+    		socket.emit('disconnect');
 		} else {
 			time = new Date( msLeft );
 			hours = time.getUTCHours();
@@ -297,7 +295,7 @@ function countdown( elementName, minutes, seconds ){
 	updateTimer();
 }
 
-countdown( "countdown", 5, 0 );
+countdown( "countdown", 1, 0 );
 
 }();
 
