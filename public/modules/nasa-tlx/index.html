@@ -12,11 +12,6 @@
 
 <hr style="height:5px;border:none;color:#333;background-color:#333; align:"LEFT";" />
 
-<form>
-Name:  <input type="text" name="name">
-Task:  <input type="text" name="task">
-Date:  <input type="text" name="date">
-</form>
 
 <h3>Mental Demand</h3>
 <p>How mentally demanding was the task?</p>
@@ -66,17 +61,6 @@ Very Low<input type="range" name ="frustration" min="0.0" max="1.0" value="0" st
   //d3.select('#status').text(experimentr.status());
   var i = 0; 
 
-  d3.selectAll('input')
-  .filter(function(d) { return this.name === 'name' ? this : null; })
-  .on('change', function() {  data.name = this.value; validate(); });
-  
-  d3.selectAll('input')
-  .filter(function(d) { return this.name === 'task' ? this : null; })
-  .on('change', function() {   data.task = this.value; validate(); });
-  
-  d3.selectAll('input')
-  .filter(function(d) { return this.name === 'date' ? this : null; })
-  .on('change', function() {  data.date= this.value; validate(); });
   
   ////////////////////////////////////////////////////////////////////////////
 
