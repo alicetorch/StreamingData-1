@@ -17,7 +17,9 @@ p{
 	stroke: black;
 	stroke-width: 2px;
 }
-
+svg:not(:root) {
+    overflow: scroll;
+}
 svg text{
 	text-anchor:middle;
 	font-family: verdana;
@@ -122,7 +124,7 @@ svg text{
 			if (i == 0) {
 				d3.select("#back-button").style("visibility", "hidden");
 				d3.select("#forward-button").style("visibility", "visible");
-			} else if (i == 9) {
+			} else if (i == 7) {
 				d3.select("#back-button").style("visibility", "visible");
 				d3.select("#forward-button").style("visibility", "hidden");
 			} else {
@@ -137,23 +139,23 @@ svg text{
 				var fileName = "data/file"+i+".tsv";
 				var modelName = "data"+i;
 				if( i <2 ){
-				d3.tsv(fileName, type, function(error,data){
+					d3.tsv(fileName, type, function(error,data){
 
-					var line = d3.svg.line()
-					.x(function(d,i){return x2(d.index);})
-					.y(function(d,i){return y(d.value);})
-					.interpolate("cardinal");
+						var line = d3.svg.line()
+						.x(function(d,i){return x2(d.index);})
+						.y(function(d,i){return y(d.value);})
+						.interpolate("cardinal");
 
-					var path = svg.append("g")
-					.append("path")
-					.datum(data)
-					.attr("class","line")
-					.attr("d",line)
-					.transition()
-					.duration(duration)
-					.ease("linear")
-					.attr("transform","translate("+x(-1999)+",0)");
-				})	
+						var path = svg.append("g")
+						.append("path")
+						.datum(data)
+						.attr("class","line")
+						.attr("d",line)
+						.transition()
+						.duration(duration)
+						.ease("linear")
+						.attr("transform","translate("+x(-1999)+",0)");
+					})	
 				}
 				var stringList = ["This is a normal pattern.", "This is also a normal pattern.","There might be some values that look odd.","Sometimes the pattern might stretch or compress."];
 
@@ -161,25 +163,25 @@ svg text{
 
 				if (i == 2) {
 
-					// svg.append("image")
-					// .attr("xlink:href", "modules/tutorial/anomaly.png")
-					// .attr("width", 600)
-					// .attr("height", 600)			
-					// .attr("x",75)
-					// .attr("y",-150);
+					svg.append("image")
+					.attr("xlink:href", "modules/tutorial/anomaly.png")
+					.attr("width", 600)
+					.attr("height", 600)			
+					.attr("x",75)
+					.attr("y",-150);
 
 					svg.append("text")
 					.text("This is an ANOMALY.")
 					.attr("x",360)
-					.attr("y",400);
+					.attr("y",300);
 
-				var string = svg.append("text")
-				.text(stringList[i])
-				.attr("x",360)
-				.attr("y",280);
+					var string = svg.append("text")
+					.text(stringList[i])
+					.attr("x",360)
+					.attr("y",280);
 
 				} 
-				if (i == 3) {
+				else if (i == 3) {
 
 
 					svg.append("image")
@@ -192,20 +194,20 @@ svg text{
 					svg.append("text")
 					.text("This is ALSO an ANOMALY.")
 					.attr("x",360)
-					.attr("y",400);
+					.attr("y",300);
 
-				var string = svg.append("text")
-				.text(stringList[i])
-				.attr("x",360)
-				.attr("y",280);
+					var string = svg.append("text")
+					.text(stringList[i])
+					.attr("x",360)
+					.attr("y",280);
 
 
 				}
 				else{
-				var string = svg.append("text")
-				.text(stringList[i])
-				.attr("x",360)
-				.attr("y",250);
+					var string = svg.append("text")
+					.text(stringList[i])
+					.attr("x",360)
+					.attr("y",250);
 				}
 
 			} else if (i == 4){
@@ -336,80 +338,101 @@ svg text{
 
 			} else if (i == 5){
 
-		svg.append("text")
+				svg.append("text")
 				.text("Whenever you see an ANOMALY")
 				.attr("x",360)
 				.attr("y",50);
 
-		svg.append("text")
+				svg.append("text")
 				.text("(shrinking, stretching or odd-looking value),")
 				.attr("x",360)
 				.attr("y",80);
 
-		svg.append("text")
+				svg.append("text")
 				.text("press the ENTER key, SPACEBAR, or click your mouse.")
 				.attr("x",360)
 				.attr("y",110);
 
-		svg.append("image")
-					.attr("xlink:href", "modules/tutorial/several.png")
-					.attr("width", 600)
-					.attr("height", 600)
-					.attr("x",75)
-					.attr("y",-50);
+				svg.append("image")
+				.attr("xlink:href", "modules/tutorial/several.png")
+				.attr("width", 600)
+				.attr("height", 600)
+				.attr("x",75)
+				.attr("y",-50);
 
-		svg.append("text")
+				svg.append("text")
 				.text("You need only respond")
 				.attr("x",250)
 				.attr("y",400);
-		svg.append("text")
+				svg.append("text")
 				.text("ONCE per incident")
 				.attr("x",475)
 				.attr("y",400)
 				.style("font-weight", "bold");
-		svg.append("text")
+
+				svg.append("text")
 				.text("regardless of how many lines contain the anomaly.")
 				.attr("x",360)
 				.attr("y",420);
 
 
+			} else if (i == 6){
+
+				svg.append('text')
+				.text('In addition to the base rate for this HIT,')
+				.attr("x",360)
+				.attr("y",50);
+
+				svg.append('text')
+				.text(" you will receive a bonus of $0.10 for accurately identifying each anomaly.")
+				.attr("x",360)
+				.attr("y",70);
+
+				svg.append("text")
+				.text("If you correctly identify all anomalies with no errors,")
+				.attr("x",360)
+				.attr("y",90);
+
+				svg.append("text")
+				.text("you will receive an additional bonus of $0.25.")
+				.attr("x",360)
+				.attr("y",120);	
 
 
+			}
+			else {
 
-	} 
-	else {
+				d3.select("#container").attr("height", 150);
 
-		d3.select("#container").attr("height", 150);
-		
-		d3.select("body")
+				d3.select("body")
 
-		svg.append("text")
-		.style("font-weight", "bold")
-		.text("This completes the tutorial.")
-		.attr("x",360)
-		.attr("y",50);
+				svg.append("text")
+				.style("font-weight", "bold")
+				.text("This completes the tutorial.")
+				.attr("x",360)
+				.attr("y",50);
 
-		svg.append("text")
-		.text("When you are ready to begin the experiment,")
-		.attr("x",360)
-		.attr("y",80);
+				svg.append("text")
+				.text("When you are ready to begin the experiment,")
+				.attr("x",360)
+				.attr("y",80);
 
-		svg.append("text")
-		.text('please click the button "Next" below.')
-		.attr("x",360)
-		.attr("y",110);
+				svg.append("text")
+				.text('please click the button "Next" below.')
+				.attr("x",360)
+				.attr("y",110);
 
-		experimentr.showNext();
-		experimentr.release();	
+				experimentr.showNext();
+				experimentr.release();	
 
-	}
-}
+			}
+		}
 
-function type(d){
-	d.index = d.index;
-	d.value = d.value;
-	return d;
-}
+		function type(d){
+			d.index = d.index;
+			d.value = d.value;
+			return d;
+		}
 
-</script>
-</body>
+		</script>
+	</body>
