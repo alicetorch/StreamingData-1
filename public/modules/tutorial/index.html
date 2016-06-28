@@ -56,7 +56,7 @@ var step = 0;
 
 function checkKeyPressed(key) { 
 
-    if ((key == "right") && (step < 6)) {
+    if ((key == "right") && (step < 8)) {
     	step += 1;
     	update(step);
     }
@@ -106,12 +106,14 @@ update(step);
 
 
 function update(i){
-
+	console.log(i);
 	svg.selectAll(".line")
     	.remove();
     svg.selectAll("text")
     	.remove();
     svg.selectAll("#line")
+    	.remove();
+    svg.selectAll("image")
     	.remove();
     	
     d3.select("#container").attr("height", 450);
@@ -120,7 +122,7 @@ function update(i){
     if (i == 0) {
     	d3.select("#back-button").style("visibility", "hidden");
     	d3.select("#forward-button").style("visibility", "visible");
-    } else if (i == 6) {
+    } else if (i == 8) {
     	d3.select("#back-button").style("visibility", "visible");
     	d3.select("#forward-button").style("visibility", "hidden");
     } else {
@@ -241,7 +243,6 @@ function setUp(error, data1, data2, data3){
 		.attr("y",350)
 		.style("font-weight", "bold");
 
-	console.log('true lenght', disData1.length+disData2.length+disData3.length );
 
 	tick();
 
@@ -356,7 +357,34 @@ function validate() {
 				.attr("x",360)
 				.attr("y",310);
 			
-	} else {
+	} else if (i ==6){
+		svg.append("image")
+			.attr("xlink:href", "modules/tutorial/anomaly.png")
+      		.attr("width", 600)
+      		.attr("height", 600)			
+      		.attr("x",75)
+			.attr("y",-70);
+
+		svg.append('text')
+			.style("font-weight", "bold")
+			.text("Here is an example of an anomaly you might see")
+			.attr("x",360)
+			.attr("y",50);
+
+	}else if (i==7){
+		svg.append("image")
+			.attr("xlink:href", "modules/tutorial/compress.png")
+      		.attr("width", 600)
+      		.attr("height", 600)
+      		.attr("x",75)
+			.attr("y",-70);
+
+		svg.append('text')
+			.style("font-weight", "bold")
+			.text("Here is another example of an anomaly you might see")
+			.attr("x",360)
+			.attr("y",50);
+	}else {
 	
 		d3.select("#container").attr("height", 150);
 		

@@ -8,6 +8,7 @@ var express   = require('express')
 , redis       = require('redis')
 , io          = require('socket.io')
 , fs          = require('fs')
+, d3          = require('d3')
 , redisClient
 , port        = process.argv[2] || 4000
 , rport       = process.argv[3] || 6379
