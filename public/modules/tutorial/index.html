@@ -56,7 +56,7 @@ var step = 0;
 
 function checkKeyPressed(key) { 
 
-    if ((key == "right") && (step < 9)) {
+    if ((key == "right") && (step < 7)) {
     	step += 1;
     	update(step);
     }
@@ -132,7 +132,7 @@ function update(i){
 	
 	
 
-	if (i >=0 && i <=3 ){
+	if (i >=0 && i <=1 ){
 
 		var fileName = "data/file"+i+".tsv";
 		var modelName = "data"+i;
@@ -163,12 +163,28 @@ function update(i){
 					.attr("y",250);
 
 		if (i == 2) {
+
+		svg.append("image")
+			.attr("xlink:href", "modules/tutorial/anomaly.png")
+      		.attr("width", 600)
+      		.attr("height", 600)			
+      		.attr("x",75)
+			.attr("y",-70);
+
+
 			svg.append("text")
 				.text("This is an ANOMALY.")
 				.attr("x",360)
 				.attr("y",280);
 		} 
 		 if (i == 3) {
+		 	svg.append("image")
+			.attr("xlink:href", "modules/tutorial/compress.png")
+      		.attr("width", 600)
+      		.attr("height", 600)
+      		.attr("x",75)
+			.attr("y",-70);
+
 			svg.append("text")
 				.text("This is ALSO an ANOMALY.")
 				.attr("x",360)
@@ -235,12 +251,12 @@ function setUp(error, data1, data2, data3){
 	svg.append("text")
 		.text("During the experiment, you will be asked to monitor")
 		.attr("x",360)
-		.attr("y",320);
+		.attr("y",370);
 
 	svg.append("text")
 		.text("3 lines simultaneously.")
 		.attr("x",360)
-		.attr("y",350)
+		.attr("y",400)
 		.style("font-weight", "bold");
 
 
@@ -295,19 +311,6 @@ function setUp(error, data1, data2, data3){
 };
 
 
-function checkForAnamoly(){
-	allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
-	allNoise= allPoints.map(function(a) {return a.noise;});
-	console.log(allNoise);
-	return allNoise.includes("T");
-
-};
-
-function type(d){
-	d.index = +d.index;
-	d.value = +d.value;
-	return d;
-};
 
 function validate() {
 	experimentr.endTimer('demo');
@@ -316,46 +319,44 @@ function validate() {
 		
 	  } else if (i == 5){
 	
-		svg.append("text")
-				.text("Whenever you see an ANOMALY")
-				.attr("x",360)
-				.attr("y",50);
+		// svg.append("text")
+		// 		.text("Whenever you see an ANOMALY")
+		// 		.attr("x",360)
+		// 		.attr("y",50);
 			
-		svg.append("text")
-				.text("(shrinking, stretching or odd-looking value),")
-				.attr("x",360)
-				.attr("y",80);
+		// svg.append("text")
+		// 		.text("(shrinking, stretching or odd-looking value),")
+		// 		.attr("x",360)
+		// 		.attr("y",80);
 			
-		svg.append("text")
-				.text("press the ENTER key, SPACEBAR, or click your mouse.")
-				.attr("x",360)
-				.attr("y",110);
+		// svg.append("text")
+		// 		.text("press the ENTER key, SPACEBAR, or click your mouse.")
+		// 		.attr("x",360)
+		// 		.attr("y",110);
 
-		svg.append("text")
-				.text("Anomalies may be present in just one line,")
-				.attr("x",360)
-				.attr("y",180);
+
+     	svg.append("image")
+			.attr("xlink:href", "modules/tutorial/multiple.png")
+      		.attr("width", 600)
+      		.attr("height", 600)			
+      		.attr("x",75)
+			.attr("y", 220);
+
+		// svg.append("text")
+		// 		.text("You need only respond")
+		// 		.attr("x",250)
+		// 		.attr("y",280);
 			
-		svg.append("text")
-				.text("or in multiple lines at the same time.")
-				.attr("x",360)
-				.attr("y",210);
+		// svg.append("text")
+		// 		.text("ONCE per incident")
+		// 		.attr("x",475)
+		// 		.attr("y",450)
+		// 		.style("font-weight", "bold");
 			
-		svg.append("text")
-				.text("You need only respond")
-				.attr("x",250)
-				.attr("y",280);
-			
-		svg.append("text")
-				.text("ONCE per incident")
-				.attr("x",475)
-				.attr("y",280)
-				.style("font-weight", "bold");
-			
-		svg.append("text")
-				.text("regardless of how many lines contain the anomaly.")
-				.attr("x",360)
-				.attr("y",310);
+		// svg.append("text")
+		// 		.text("regardless of how many lines contain the anomaly.")
+		// 		.attr("x",360)
+		// 		.attr("y",500);
 			
 	} else if (i ==6){
 		svg.append("image")
@@ -371,28 +372,6 @@ function validate() {
 			.attr("x",360)
 			.attr("y",50);
 
-	}else if (i==7){
-		svg.append("image")
-			.attr("xlink:href", "modules/tutorial/compress.png")
-      		.attr("width", 600)
-      		.attr("height", 600)
-      		.attr("x",75)
-			.attr("y",-70);
-
-		svg.append('text')
-			.style("font-weight", "bold")
-			.text("Here is another example of an anomaly you might see")
-			.attr("x",360)
-			.attr("y",50);
-	}else if (i==8){
-		svg.append("text")
-			.text("For every anomaly correctly detected you will get a bonus.")
-			.attr("x",360)
-			.attr("y",50);
-		svg.append("text")
-			.text("For every incorrect detection there is a penalty.")
-			.attr("x",360)
-			.attr("y",80);
 	}
 	else {
 	
