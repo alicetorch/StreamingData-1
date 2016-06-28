@@ -49,6 +49,12 @@ svg text{
 		<script>
 
 
+		function validate() {
+			experimentr.endTimer('demo');
+			experimentr.release();
+		};
+
+
 		Mousetrap.bind('left', function(e, n) { checkKeyPressed(n); });
 		Mousetrap.bind('right',function(e, n) { checkKeyPressed(n); });
 
@@ -333,12 +339,6 @@ svg text{
 
 				};
 
-
-
-				function validate() {
-					experimentr.endTimer('demo');
-					experimentr.release();
-				};
 				break;
 			case 5:
 
