@@ -3,14 +3,14 @@ init = function(){
 	console.log('d1.js loaded');
 	
 	var socket;
-
+	var pageId = 'd1Spd1';
 	(function(){
 		socket = io.connect();
 		socket.on('connect',function() {
 			console.log('Client has connected to the server!');
 		});
 		document.onmousemove = experimentr.sendMouseMovement;
-		experimentr.startTimer('websocketTest')
+		experimentr.startTimer(className)
 		
 	})();
 
@@ -18,38 +18,6 @@ init = function(){
 
 	window.addEventListener("keydown", checkKeyPressed, false);
 
-
-	function checkKeyPressed(e) {
-		if (e.keyCode == "13" || e.keyCode == "32") {
-			pressed(e.keyCode, "key");
-			console.log('key pressed')
-		}
-	}
-
-	var pageId = 'd1Spd1';
-	function pressed(buttonTitle, type){
-			console.log('button title', buttonTitle);
-			d3.select(".border")
-			.transition()
-			.duration(500)
-			.attr("rx",70)
-			.attr("ry",70)
-			.transition()
-			.duration(500)
-			.attr("rx",20)
-			.attr("ry",20);
-
-		var isPresent = checkForAnamoly();
-		console.log('is anomolyPresent' + isPresent); 
-
-		var timePressed = experimentr.now('websocketTest');
-		timestamp = new Date().getTime();
-		// console.log('mouse pressed. Socket emit ')
-		var postId = experimentr.postId();
-		console.log('post id in experiment', postId);
-		console.log('this is pageID', pageId);
-		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
-	};
 
 	var n = 80;
 	var domain1 = -2.5;
@@ -83,7 +51,7 @@ d3.select("#"+className)
 .attr('id', 'button1')
 .attr('name','researchButton')
 .on('click',function(){
-	pressed(d3.select(this).attr('id') , "button");
+	pressed(d3.select(this).attr('id') , "button", pageId, socket);
 	console.log(' research button pressed');
 	});
 
@@ -245,57 +213,7 @@ function setUp(error, data1, data2, data3){
 };
 
 
-function checkForAnamoly(){
-	allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
-	allNoise= allPoints.map(function(a) {return a.noise;});
-	console.log('noise function',allNoise);
-	return allNoise.includes("T");
-
-};
-
-function type(d){
-	d.index = +d.index;
-	d.value = +d.value;
-	return d;
-};
-
-function validate() {
-	experimentr.endTimer('demo');
-	experimentr.release();
-};
-
-function countdown( elementName, minutes, seconds ){
-	var element, endTime, hours, mins, msLeft, time;
-	
-	function twoDigits( n )
-	{
-		return (n <= 9 ? "0" + n : n);
-	}
-	
-	function updateTimer()
-	{
-		msLeft = endTime - (+new Date);
-		if ( msLeft < 1000 ) {
-			element.innerHTML = "countdown's over!";
-			Mousetrap.reset();
-			document.onmousemove = experimentr.stopMouseMovementRec;
-     		pressed('next-button', "button");
-    		socket.emit('disconnect');
-		} else {
-			time = new Date( msLeft );
-			hours = time.getUTCHours();
-			mins = time.getUTCMinutes();
-			element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
-			setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
-		}
-	}
-	
-	element = document.getElementById( elementName );
-	endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
-	updateTimer();
-}
-
-countdown( "countdown", 5, 0 );
+countdown( "countdown", 1, 0 );
 
 }();
 
