@@ -108,7 +108,8 @@ svg text{
 
 
 		function update(i){
-			console.log(i);
+
+
 			svg.selectAll(".line")
 			.remove();
 			svg.selectAll("text")
@@ -132,8 +133,10 @@ svg text{
 				d3.select("#forward-button").style("visibility", "visible");
 			}
 
+			console.log(i);
+			switch(i){
 
-
+			default:
 			if (i >=0 && i <=3 ){
 
 				var fileName = "data/file"+i+".tsv";
@@ -209,8 +212,9 @@ svg text{
 					.attr("x",360)
 					.attr("y",250);
 				}
-
-			} else if (i == 4){
+}
+				break;
+			 case 4: 
 
 				var q = d3.queue();
 				q.defer(d3.tsv, "data/slow1.tsv")
@@ -335,8 +339,8 @@ svg text{
 					experimentr.endTimer('demo');
 					experimentr.release();
 				};
-
-			} else if (i == 5){
+				break;
+			case 5:
 
 				svg.append("text")
 				.text("Whenever you see an ANOMALY")
@@ -375,8 +379,8 @@ svg text{
 				.attr("x",360)
 				.attr("y",420);
 
-
-			} else if (i == 6){
+				break;
+			case 6: 
 
 				svg.append('text')
 				.text('In addition to the base rate for this HIT,')
@@ -398,9 +402,8 @@ svg text{
 				.attr("x",360)
 				.attr("y",120);	
 
-
-			}
-			else {
+				break;
+			case 7: 
 
 				d3.select("#container").attr("height", 150);
 
@@ -424,9 +427,10 @@ svg text{
 
 				experimentr.showNext();
 				experimentr.release();	
-
-			}
-		}
+			break;
+			
+		
+	}}
 
 		function type(d){
 			d.index = d.index;
