@@ -10,10 +10,19 @@ function checkKeyPressed(e) {
 };
 
 var socket, pageId; 
-function setPageVars(socket, pageId){
-	this.socket = socket; 
+function setPageVars( pageId){ 
 	this.pageId=pageId;
-}
+	console.log('pageId are set', this.pageId);
+};
+	(function(){
+		socket = io.connect();
+		socket.on('connect',function() {
+			console.log('Client has connected to the server!');
+		});
+			
+		document.onmousemove = experimentr.sendMouseMovement;
+		experimentr.startTimer(className);
+	})();
 
 function countdown( elementName, minutes, seconds ){
 	var element, endTime, hours, mins, msLeft, time;
@@ -74,7 +83,7 @@ function pressed(buttonTitle, type){
 	var isPresent = checkForAnamoly();
 	console.log('is anomolyPresent' + isPresent); 
 
-	var timePressed = experimentr.now('websocketTest');
+	var timePressed = experimentr.now(className);
 	timestamp = new Date().getTime();
 	var postId = experimentr.postId();
 		console.log('post id in experiment', postId);

@@ -4,15 +4,7 @@ init = function(){
 	
 	var socket;
 	var pageId = 'd1Spd1';
-	(function(){
-		socket = io.connect();
-		socket.on('connect',function() {
-			console.log('Client has connected to the server!');
-		});
-		setPageVars(pageId, socket);	
-		document.onmousemove = experimentr.sendMouseMovement;
-		experimentr.startTimer(className);
-	})();
+	setPageVars(pageId);
 
 	window.addEventListener("keydown", checkKeyPressed, false);
 
