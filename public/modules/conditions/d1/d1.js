@@ -9,7 +9,7 @@ init = function(){
 	createGraphViewer();
 	addGraph();
 
-countdown( "countdown", 1, 0 );
+countdown( "countdown", 5, 0 );
 
 }();
 
