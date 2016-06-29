@@ -42,7 +42,7 @@ init = function(){
 		var isPresent = checkForAnamoly();
 		console.log('is anomolyPresent' + isPresent); 
 
-		var timePressed = experimentr.now('websocketTest');
+		var timePressed = experimentr.now(className);
 		timestamp = new Date().getTime();
 		// console.log('mouse pressed. Socket emit ')
 		var postId = experimentr.postId();
@@ -261,7 +261,7 @@ function type(d){
 };
 
 function validate() {
-	experimentr.endTimer('demo');
+	experimentr.endTimer(className);
 	experimentr.release();
 };
 
