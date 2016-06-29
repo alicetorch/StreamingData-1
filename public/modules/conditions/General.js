@@ -1,3 +1,6 @@
+/* This file contains functions that are used by the three diffrent conditions. 
+These functions concern functionality*/
+
 function validate() {
 	experimentr.endTimer(className);
 	experimentr.release();
@@ -10,7 +13,7 @@ function checkKeyPressed(e) {
 };
 
 var socket, pageId; 
-function setPageVars( pageId){ 
+function setPageVars(pageId){ 
 	this.pageId=pageId;
 	console.log('pageId are set', this.pageId);
 };
