@@ -23,5 +23,17 @@
   },
   "devDependencies": {
     "jasmine": "^2.4.1"
-  }
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SmithCollegeHCV/StreamingData.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SmithCollegeHCV/StreamingData/issues"
+  },
+  "homepage": "https://github.com/SmithCollegeHCV/StreamingData#readme"
 }
