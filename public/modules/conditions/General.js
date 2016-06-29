@@ -9,6 +9,12 @@ function checkKeyPressed(e) {
 	}
 };
 
+var socket, pageId; 
+function setPageVars(socket, pageId){
+	this.socket = socket; 
+	this.pageId=pageId;
+}
+
 function countdown( elementName, minutes, seconds ){
 	var element, endTime, hours, mins, msLeft, time;
 	
@@ -60,7 +66,7 @@ function pushBorder()  {
 	.attr("ry",20);
 }
 
-function pressed(buttonTitle, type, pageId, socket){
+function pressed(buttonTitle, type){
 	console.log('button title', buttonTitle);
 	
 	pushBorder();

@@ -9,12 +9,10 @@ init = function(){
 		socket.on('connect',function() {
 			console.log('Client has connected to the server!');
 		});
+		setPageVars(pageId, socket);	
 		document.onmousemove = experimentr.sendMouseMovement;
-		experimentr.startTimer(className)
-		
+		experimentr.startTimer(className);
 	})();
-
-
 
 	window.addEventListener("keydown", checkKeyPressed, false);
 
@@ -51,7 +49,7 @@ d3.select("#"+className)
 .attr('id', 'button1')
 .attr('name','researchButton')
 .on('click',function(){
-	pressed(d3.select(this).attr('id') , "button", pageId, socket);
+	pressed(d3.select(this).attr('id') , "button");
 	console.log(' research button pressed');
 	});
 
