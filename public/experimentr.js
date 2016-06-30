@@ -99,6 +99,8 @@ experimentr.stopMouseMovementRec = function(event){
   experimentr.next = function() {
     experimentr.clearNext();
     experimentr.showNext();
+    console.log('next')
+    Mousetrap.reset();
     current = current + 1;
     activate(current);
   }
