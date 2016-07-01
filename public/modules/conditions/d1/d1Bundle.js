@@ -95,7 +95,7 @@ module.exports = {
 },{}],2:[function(require,module,exports){
 /* These functions set up the diffrent visual parts of the condition*/
 
-var generalCond = require("./General.js");
+// var general = require("./General.js");
 
 n = 80;
 var domain1 = -2.5;
@@ -122,7 +122,7 @@ var y3 = d3.scale.linear()
 
 module.exports = {
 	createGraphViewer:function(){
-		generalCond.test();
+		general.test();
 
 		d3.select("#"+className)
 		.append('div')
@@ -132,7 +132,7 @@ module.exports = {
 		.attr('id', 'button1')
 		.attr('name','researchButton')
 		.on('click',function(){
-			generalCond.pressed(d3.select(this).attr('id') , "button");
+			general.pressed(d3.select(this).attr('id') , "button");
 			console.log(' research button pressed');
 		});
 
@@ -288,7 +288,7 @@ module.exports = {
 					.each("end",tick);
 					disData3.shift();
 				}else{
-					generalCond.validate();
+					general.validate();
 
 				}
 
@@ -296,7 +296,7 @@ module.exports = {
 		};
 	}
 }
-},{"./General.js":1}],3:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 general = require("../General");
 component = require("../conditionComponents");
 
