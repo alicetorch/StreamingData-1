@@ -313,7 +313,7 @@ init = function(){
 	component.createGraphViewer();
 	component.addGraph();
 
-	general.countdown( "countdown", 1, 0 );
+	general.countdown( "countdown", 5, 0 );
 	
 }();
 
