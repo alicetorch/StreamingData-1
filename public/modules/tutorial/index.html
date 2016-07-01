@@ -259,7 +259,7 @@ svg text{
 							.transition()
 							.duration(100)
 							.ease("linear")
-							.attr("transform", "translate(" + x(-1) + ",0)")
+							.attr("transform", "translate(" + tx(-1) + ",0)")
 							disData1.shift();
 
 							disData2.push(data2.slice(0,1)[0]);
@@ -270,7 +270,7 @@ svg text{
 							.transition()
 							.duration(100)
 							.ease("linear")
-							.attr("transform", "translate(" + x(-1) + ",0)")
+							.attr("transform", "translate(" + tx(-1) + ",0)")
 							disData2.shift();
 
 							disData3.push(data3.slice(0,1)[0]);;
@@ -281,7 +281,7 @@ svg text{
 							.transition()
 							.duration(100)
 							.ease("linear")
-							.attr("transform", "translate(" + x(-1) + ",0)")
+							.attr("transform", "translate(" + tx(-1) + ",0)")
 							.each("end",tick);
 							disData3.shift();
 						}else{
