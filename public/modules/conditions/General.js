@@ -1,7 +1,24 @@
  
- var socket, pageId; 
+var socket, pageId; 
 
- module.exports = {
+ var pressed = function(buttonTitle, type){
+	console.log('button title', buttonTitle);
+
+	pushBorder();
+
+	var isPresent = checkForAnamoly();
+	console.log('is anomolyPresent' + isPresent); 
+
+	var timePressed = experimentr.now(className);
+	timestamp = new Date().getTime();
+	var postId = experimentr.postId();
+	console.log('post id in experiment', postId);
+	console.log('this is pageID', pageId);
+	socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
+};
+
+
+module.exports = {
 
 	validate: function () {
 		experimentr.endTimer(className);
@@ -74,21 +91,5 @@
 		.duration(500)
 		.attr("rx",20)
 		.attr("ry",20);
-	},
-	pressed:function(buttonTitle, type){
-		console.log('button title', buttonTitle);
-		
-		pushBorder();
-
-		var isPresent = checkForAnamoly();
-		console.log('is anomolyPresent' + isPresent); 
-
-		var timePressed = experimentr.now(className);
-		timestamp = new Date().getTime();
-		var postId = experimentr.postId();
-		console.log('post id in experiment', postId);
-		console.log('this is pageID', pageId);
-		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
 	}
-
 };

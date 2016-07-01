@@ -4,8 +4,7 @@ var component = require("../conditionComponents");
 
 init = function(){
 	console.log('d1.js loaded');
-
-    console.log("data");
+	general.connectSockets();
 
 	var pageId = 'd1Spd1';
 	general.setPageVars(pageId);

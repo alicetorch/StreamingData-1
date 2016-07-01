@@ -1,8 +1,25 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
  
- var socket, pageId; 
+var socket, pageId; 
 
- module.exports = {
+ var pressed = function(buttonTitle, type){
+	console.log('button title', buttonTitle);
+
+	pushBorder();
+
+	var isPresent = checkForAnamoly();
+	console.log('is anomolyPresent' + isPresent); 
+
+	var timePressed = experimentr.now(className);
+	timestamp = new Date().getTime();
+	var postId = experimentr.postId();
+	console.log('post id in experiment', postId);
+	console.log('this is pageID', pageId);
+	socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
+};
+
+
+module.exports = {
 
 	validate: function () {
 		experimentr.endTimer(className);
@@ -75,23 +92,7 @@
 		.duration(500)
 		.attr("rx",20)
 		.attr("ry",20);
-	},
-	pressed:function(buttonTitle, type){
-		console.log('button title', buttonTitle);
-		
-		pushBorder();
-
-		var isPresent = checkForAnamoly();
-		console.log('is anomolyPresent' + isPresent); 
-
-		var timePressed = experimentr.now(className);
-		timestamp = new Date().getTime();
-		var postId = experimentr.postId();
-		console.log('post id in experiment', postId);
-		console.log('this is pageID', pageId);
-		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
 	}
-
 };
 
 },{}],2:[function(require,module,exports){
@@ -304,8 +305,7 @@ var component = require("../conditionComponents");
 
 init = function(){
 	console.log('d1.js loaded');
-
-    console.log("data");
+	general.connectSockets();
 
 	var pageId = 'd1Spd1';
 	general.setPageVars(pageId);
