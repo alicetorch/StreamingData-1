@@ -1,6 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
  
-var socket, pageId; 
+var socket;
+exports.pageId; 
 
 
 module.exports = {
@@ -19,8 +20,8 @@ module.exports = {
 		timestamp = new Date().getTime();
 		var postId = experimentr.postId();
 		console.log('post id in experiment', postId);
-		console.log('this is pageID', pageId);
-		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
+		console.log('this is pageID', exports.pageId);
+		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
 	checkKeyPressed: function(e) {
 		if (e.keyCode == "13" || e.keyCode == "32") {
@@ -30,8 +31,8 @@ module.exports = {
 	},
 
 	setPageVars: function(pageId){ 
-		this.pageId=pageId;
-		console.log('pageId are set', this.pageId);
+		exports.pageId=pageId;
+		console.log('pageId are set', exports.pageId);
 	},
 	connectSockets: function(){
 		socket = io.connect();
@@ -95,7 +96,6 @@ module.exports = {
 },{}],2:[function(require,module,exports){
 /* These functions set up the diffrent visual parts of the condition*/
 
-// var general = require("./General.js");
 
 n = 80;
 var domain1 = -2.5;

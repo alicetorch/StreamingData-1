@@ -1,5 +1,6 @@
  
-var socket, pageId; 
+var socket;
+exports.pageId; 
 
 
 module.exports = {
@@ -18,8 +19,8 @@ module.exports = {
 		timestamp = new Date().getTime();
 		var postId = experimentr.postId();
 		console.log('post id in experiment', postId);
-		console.log('this is pageID', pageId);
-		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
+		console.log('this is pageID', exports.pageId);
+		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
 	checkKeyPressed: function(e) {
 		if (e.keyCode == "13" || e.keyCode == "32") {
@@ -29,8 +30,8 @@ module.exports = {
 	},
 
 	setPageVars: function(pageId){ 
-		this.pageId=pageId;
-		console.log('pageId are set', this.pageId);
+		exports.pageId=pageId;
+		console.log('pageId are set', exports.pageId);
 	},
 	connectSockets: function(){
 		socket = io.connect();
