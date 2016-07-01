@@ -1,30 +1,26 @@
  
 var socket, pageId; 
 
- var pressed = function(buttonTitle, type){
-	console.log('button title', buttonTitle);
-
-	pushBorder();
-
-	var isPresent = checkForAnamoly();
-	console.log('is anomolyPresent' + isPresent); 
-
-	var timePressed = experimentr.now(className);
-	timestamp = new Date().getTime();
-	var postId = experimentr.postId();
-	console.log('post id in experiment', postId);
-	console.log('this is pageID', pageId);
-	socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
-};
-
 
 module.exports = {
-
+	test : function(){
+		console.log("General.js can be used here");
+	},
 	validate: function () {
 		experimentr.endTimer(className);
 		experimentr.release();
 	},
+	pressed:function(buttonTitle, type){
+		var isPresent = general.checkForAnamoly();
+		console.log('is anomolyPresent' + isPresent); 
 
+		var timePressed = experimentr.now(className);
+		timestamp = new Date().getTime();
+		var postId = experimentr.postId();
+		console.log('post id in experiment', postId);
+		console.log('this is pageID', pageId);
+		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
+	},
 	checkKeyPressed: function(e) {
 		if (e.keyCode == "13" || e.keyCode == "32") {
 			pressed(e.keyCode, "key");
@@ -81,7 +77,7 @@ module.exports = {
 		console.log('noise function',allNoise);
 		return allNoise.includes("T");
 	},
-	pushBorder:function()  {
+	pushBorder: function(){
 		d3.select(".border")
 		.transition()
 		.duration(500)
@@ -92,4 +88,5 @@ module.exports = {
 		.attr("rx",20)
 		.attr("ry",20);
 	}
+	
 };

@@ -1,4 +1,7 @@
 /* These functions set up the diffrent visual parts of the condition*/
+
+var generalCond = require("./General.js");
+
 n = 80;
 var domain1 = -2.5;
 var domain2 = 2.5;
@@ -23,10 +26,8 @@ var y3 = d3.scale.linear()
 .range([height, height*2/3]);
 
 module.exports = {
-
-
 	createGraphViewer:function(){
-
+		generalCond.test();
 
 		d3.select("#"+className)
 		.append('div')
@@ -36,7 +37,7 @@ module.exports = {
 		.attr('id', 'button1')
 		.attr('name','researchButton')
 		.on('click',function(){
-			pressed(d3.select(this).attr('id') , "button");
+			generalCond.pressed(d3.select(this).attr('id') , "button");
 			console.log(' research button pressed');
 		});
 
@@ -192,7 +193,7 @@ module.exports = {
 					.each("end",tick);
 					disData3.shift();
 				}else{
-					validate();
+					generalCond.validate();
 
 				}
 

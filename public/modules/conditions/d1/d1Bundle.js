@@ -2,30 +2,26 @@
  
 var socket, pageId; 
 
- var pressed = function(buttonTitle, type){
-	console.log('button title', buttonTitle);
-
-	pushBorder();
-
-	var isPresent = checkForAnamoly();
-	console.log('is anomolyPresent' + isPresent); 
-
-	var timePressed = experimentr.now(className);
-	timestamp = new Date().getTime();
-	var postId = experimentr.postId();
-	console.log('post id in experiment', postId);
-	console.log('this is pageID', pageId);
-	socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
-};
-
 
 module.exports = {
-
+	test : function(){
+		console.log("General.js can be used here");
+	},
 	validate: function () {
 		experimentr.endTimer(className);
 		experimentr.release();
 	},
+	pressed:function(buttonTitle, type){
+		var isPresent = general.checkForAnamoly();
+		console.log('is anomolyPresent' + isPresent); 
 
+		var timePressed = experimentr.now(className);
+		timestamp = new Date().getTime();
+		var postId = experimentr.postId();
+		console.log('post id in experiment', postId);
+		console.log('this is pageID', pageId);
+		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
+	},
 	checkKeyPressed: function(e) {
 		if (e.keyCode == "13" || e.keyCode == "32") {
 			pressed(e.keyCode, "key");
@@ -82,7 +78,7 @@ module.exports = {
 		console.log('noise function',allNoise);
 		return allNoise.includes("T");
 	},
-	pushBorder:function()  {
+	pushBorder: function(){
 		d3.select(".border")
 		.transition()
 		.duration(500)
@@ -93,10 +89,14 @@ module.exports = {
 		.attr("rx",20)
 		.attr("ry",20);
 	}
+	
 };
 
 },{}],2:[function(require,module,exports){
 /* These functions set up the diffrent visual parts of the condition*/
+
+var generalCond = require("./General.js");
+
 n = 80;
 var domain1 = -2.5;
 var domain2 = 2.5;
@@ -121,10 +121,8 @@ var y3 = d3.scale.linear()
 .range([height, height*2/3]);
 
 module.exports = {
-
-
 	createGraphViewer:function(){
-
+		generalCond.test();
 
 		d3.select("#"+className)
 		.append('div')
@@ -134,7 +132,7 @@ module.exports = {
 		.attr('id', 'button1')
 		.attr('name','researchButton')
 		.on('click',function(){
-			pressed(d3.select(this).attr('id') , "button");
+			generalCond.pressed(d3.select(this).attr('id') , "button");
 			console.log(' research button pressed');
 		});
 
@@ -290,7 +288,7 @@ module.exports = {
 					.each("end",tick);
 					disData3.shift();
 				}else{
-					validate();
+					generalCond.validate();
 
 				}
 
@@ -298,14 +296,14 @@ module.exports = {
 		};
 	}
 }
-},{}],3:[function(require,module,exports){
-//var component = require("../conditionComponents");
-var general = require("../General");
-var component = require("../conditionComponents");
+},{"./General.js":1}],3:[function(require,module,exports){
+general = require("../General");
+component = require("../conditionComponents");
 
 init = function(){
 	console.log('d1.js loaded');
 	general.connectSockets();
+	general.test();
 
 	var pageId = 'd1Spd1';
 	general.setPageVars(pageId);

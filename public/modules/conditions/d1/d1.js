@@ -1,10 +1,10 @@
-//var component = require("../conditionComponents");
-var general = require("../General");
-var component = require("../conditionComponents");
+general = require("../General");
+component = require("../conditionComponents");
 
 init = function(){
 	console.log('d1.js loaded');
 	general.connectSockets();
+	general.test();
 
 	var pageId = 'd1Spd1';
 	general.setPageVars(pageId);
