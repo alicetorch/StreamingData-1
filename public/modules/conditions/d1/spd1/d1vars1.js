@@ -1,3 +1,6 @@
+
+
+
 console.log("VARS loaded");
 var className = "d1Spd1";
 var dataPath1 = "data/slow1.tsv";

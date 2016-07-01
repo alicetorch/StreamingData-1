@@ -1,15 +1,19 @@
+//var component = require("../conditionComponents");
+var general = require("../General");
+var component = require("../conditionComponents");
 
 init = function(){
 	console.log('d1.js loaded');
+
 	var pageId = 'd1Spd1';
-	setPageVars(pageId);
+	general.setPageVars(pageId);
 
 	window.addEventListener("keydown", checkKeyPressed, false);
 
-	createGraphViewer();
-	addGraph();
+	component.createGraphViewer();
+	component.addGraph();
 
-countdown( "countdown", 5, 0 );
+	general.countdown( "countdown", 1, 0 );
 
 }();
 
