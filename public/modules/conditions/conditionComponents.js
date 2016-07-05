@@ -1,6 +1,6 @@
 /**
 *These functions set up the diffrent visual components that apply across conditions
-*@module conditionComponents
+*@exports conditionComponents
 */
 
 
@@ -28,7 +28,9 @@ var y3 = d3.scale.linear()
 .range([height, height*2/3]);
 
 module.exports = {
-	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs*/ 
+	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs
+	*@memberof conditionComponents
+	*/ 
 	createGraphViewer:function(){
 		general.test();
 
@@ -98,7 +100,9 @@ module.exports = {
 
 
 	}, 
-	/** Imports data files and adds lines to the graph container */
+	/** Imports data files and adds lines to the graph container 
+	*@memberof conditionComponents
+	*/
 	addGraph:function (){
 		var q = d3.queue();
 		q.defer(d3.tsv, dataPath1)
