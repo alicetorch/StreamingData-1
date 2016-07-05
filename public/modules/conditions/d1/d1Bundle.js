@@ -1,18 +1,34 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
- 
+/**
+* Contains functions that are used by all experiment modules. This includes recording button events and checking for anamolies.
+* @module general 
+*/ 
+
 var socket;
+
+/**
+*module representing the pageId 
+*@module general
+*@type string
+*/
+
 exports.pageId; 
+
 var data = {};
  
 
 module.exports = {
+	/** Test to see if the module is loaded*/
 	test : function(){
 		console.log("General.js can be used here");
 	},
+	/** releases next botton and ends timer at the end of the experiment */
 	validate: function () {
 		experimentr.endTimer(exports.pageId);
 		experimentr.release();
-	},pushBorder: function(){
+	},
+	/** Adds visual cues that interaction has been detected*/
+	pushBorder: function(){
 		d3.select(".border")
 		.transition()
 		.duration(500)
@@ -23,6 +39,7 @@ module.exports = {
 		.attr("rx",20)
 		.attr("ry",20);
 	},
+	/** Sends interaction information to backend on button pressed */
 	pressed:function(buttonTitle, type){
 		general.pushBorder();
 		var isPresent = general.checkForAnamoly();
@@ -44,25 +61,27 @@ module.exports = {
 		
 		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
+	/** Checks to see if the spacebar or the enter key has been pressed*/
 	checkKeyPressed: function(e) {
 		if (e.keyCode == "13" || e.keyCode == "32") {
 			pressed(e.keyCode, "key");
 			console.log('key pressed')
 		}
 	},
-
+	/** Sets the page ID in this module*/
 	setPageVars: function(pageId){ 
 		exports.pageId=pageId;
 		console.log('pageId are set', exports.pageId);
 	},
+	/** Connects websockets to record user mouse movements*/
 	connectSockets: function(){
 		socket = io.connect();
 		socket.on('connect',function() {
 			console.log('Client has connected to the server!');
 		});
-
 		document.onmousemove = experimentr.sendMouseMovement;
 	},
+	/** Creates and initializes a countdown clock */
 	countdown: function( elementName, minutes, seconds ){
 		var element, endTime, hours, mins, msLeft, time;
 		
@@ -93,6 +112,7 @@ module.exports = {
 		endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
 		updateTimer();
 	},
+	/** Selects currently visible data and checks if an anamoly exists*/
 	checkForAnamoly: function(){
 		allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
 		allNoise= allPoints.map(function(a) {return a.noise;});
@@ -103,7 +123,10 @@ module.exports = {
 };
 
 },{}],2:[function(require,module,exports){
-/* These functions set up the diffrent visual parts of the condition*/
+/**
+*These functions set up the diffrent visual components that apply across conditions
+*@module conditionComponents
+*/
 
 
 n = 80;
@@ -130,6 +153,7 @@ var y3 = d3.scale.linear()
 .range([height, height*2/3]);
 
 module.exports = {
+	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs*/ 
 	createGraphViewer:function(){
 		general.test();
 
@@ -199,9 +223,8 @@ module.exports = {
 
 
 	}, 
+	/** Imports data files and adds lines to the graph container */
 	addGraph:function (){
-
-
 		var q = d3.queue();
 		q.defer(d3.tsv, dataPath1)
 		q.defer(d3.tsv, dataPath2)
@@ -306,6 +329,14 @@ module.exports = {
 	}
 }
 },{}],3:[function(require,module,exports){
+
+/**
+*Difficulty One Module. Creates the Difficulty one template. 
+*@module d1 
+*@see module:general
+*@see module:conditionComponents
+*/
+
 general = require("../General");
 component = require("../conditionComponents");
 

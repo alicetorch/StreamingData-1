@@ -1,3 +1,11 @@
+
+/**
+*Difficulty One Module. Creates the Difficulty one template. 
+*@module d1 
+*@see module:general
+*@see module:conditionComponents
+*/
+
 general = require("../General");
 component = require("../conditionComponents");
 
