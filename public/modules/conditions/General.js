@@ -1,7 +1,8 @@
  
 var socket;
 exports.pageId; 
-
+var data = {};
+ 
 
 module.exports = {
 	test : function(){
@@ -9,18 +10,29 @@ module.exports = {
 	},
 	validate: function () {
 		experimentr.endTimer(className);
+		experimentr.addData(data);
 		experimentr.release();
 	},
 	pressed:function(buttonTitle, type){
+		pushBorder();
 		var isPresent = general.checkForAnamoly();
-		console.log('is anomolyPresent' + isPresent); 
+		//console.log('is anomolyPresent' + isPresent); 
 
 		var timePressed = experimentr.now(className);
 		timestamp = new Date().getTime();
 		var postId = experimentr.postId();
-		console.log('post id in experiment', postId);
-		console.log('this is pageID', exports.pageId);
-		socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
+		d = {};
+
+		data[interactionType] = type;
+		data[buttonTitle] = buttonTitle;
+		data[timePressed] = timePressed;
+		data[postId] = postId; 
+		data[timestamp] = timestamp;
+		data[AnomalyPresent] = isPresent;
+		data[pageId] = exports.pageId;
+		
+		
+		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
 	checkKeyPressed: function(e) {
 		if (e.keyCode == "13" || e.keyCode == "32") {
@@ -56,9 +68,9 @@ module.exports = {
 			if ( msLeft < 1000 ) {
 				element.innerHTML = "countdown's over!";
 				Mousetrap.reset();
-				document.onmousemove = experimentr.stopMouseMovementRec;
+				// document.onmousemove = experimentr.stopMouseMovementRec;
 				general.pressed('next-button', "button");
-				socket.emit('disconnect');
+				// socket.emit('disconnect');
 			} else {
 				time = new Date( msLeft );
 				hours = time.getUTCHours();

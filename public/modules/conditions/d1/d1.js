@@ -3,9 +3,8 @@ component = require("../conditionComponents");
 
 init = function(){
 	console.log('d1.js loaded');
-	general.connectSockets();
-	general.test();
-
+	//general.connectSockets();
+	
 	var pageId = 'd1Spd1';
 	general.setPageVars(pageId);
 
@@ -17,5 +16,4 @@ init = function(){
 	general.countdown( "countdown", 5, 0 );
 	
 }();
-
 
