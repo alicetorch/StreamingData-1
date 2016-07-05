@@ -6,6 +6,7 @@ init = function(){
 	//general.connectSockets();
 	
 	var pageId = 'd1Spd1';
+	experimentr.startTimer(pageId);
 	general.setPageVars(pageId);
 
 	window.addEventListener("keydown", general.checkKeyPressed, false);

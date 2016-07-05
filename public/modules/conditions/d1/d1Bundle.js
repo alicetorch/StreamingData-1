@@ -12,7 +12,8 @@ module.exports = {
 	validate: function () {
 		experimentr.endTimer(exports.pageId);
 		experimentr.release();
-	},	pushBorder: function(){
+	},pushBorder: function(){
+		console.log("pushing a border");
 		d3.select(".border")
 		.transition()
 		.duration(500)
@@ -24,9 +25,8 @@ module.exports = {
 		.attr("ry",20);
 	},
 	pressed:function(buttonTitle, type){
-		//pushBorder();
+		general.pushBorder();
 		var isPresent = general.checkForAnamoly();
-		//console.log('is anomolyPresent' + isPresent); 
 		console.log(exports.pageId);
 		timePressed = experimentr.now(exports.pageId);
 		timestamp = new Date().getTime();
@@ -55,7 +55,6 @@ module.exports = {
 	setPageVars: function(pageId){ 
 		exports.pageId=pageId;
 		console.log('pageId are set', exports.pageId);
-		experimentr.startTimer(exports.pageId);
 	},
 	connectSockets: function(){
 		socket = io.connect();
@@ -316,6 +315,7 @@ init = function(){
 	//general.connectSockets();
 	
 	var pageId = 'd1Spd1';
+	experimentr.startTimer(pageId);
 	general.setPageVars(pageId);
 
 	window.addEventListener("keydown", general.checkKeyPressed, false);
