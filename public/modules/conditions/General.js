@@ -9,28 +9,38 @@ module.exports = {
 		console.log("General.js can be used here");
 	},
 	validate: function () {
-		experimentr.endTimer(className);
-		experimentr.addData(data);
+		experimentr.endTimer(exports.pageId);
 		experimentr.release();
+	},	pushBorder: function(){
+		d3.select(".border")
+		.transition()
+		.duration(500)
+		.attr("rx",70)
+		.attr("ry",70)
+		.transition()
+		.duration(500)
+		.attr("rx",20)
+		.attr("ry",20);
 	},
 	pressed:function(buttonTitle, type){
-		pushBorder();
+		//pushBorder();
 		var isPresent = general.checkForAnamoly();
 		//console.log('is anomolyPresent' + isPresent); 
-
-		var timePressed = experimentr.now(className);
+		console.log(exports.pageId);
+		timePressed = experimentr.now(exports.pageId);
 		timestamp = new Date().getTime();
 		var postId = experimentr.postId();
-		d = {};
-
-		data[interactionType] = type;
-		data[buttonTitle] = buttonTitle;
-		data[timePressed] = timePressed;
-		data[postId] = postId; 
-		data[timestamp] = timestamp;
-		data[AnomalyPresent] = isPresent;
-		data[pageId] = exports.pageId;
 		
+
+		data["interactionType"] = type;
+		data["buttonTitle"] = buttonTitle;
+		data["timePressed"] = timePressed;
+		data["postId"] = postId; 
+		data["timestamp"] = timestamp;
+		data["AnomalyPresent"] = isPresent;
+		data["pageId"] = exports.pageId;
+		experimentr.addData(data);
+		console.log(data);
 		
 		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
@@ -44,6 +54,7 @@ module.exports = {
 	setPageVars: function(pageId){ 
 		exports.pageId=pageId;
 		console.log('pageId are set', exports.pageId);
+		experimentr.startTimer(exports.pageId);
 	},
 	connectSockets: function(){
 		socket = io.connect();
@@ -52,7 +63,6 @@ module.exports = {
 		});
 
 		document.onmousemove = experimentr.sendMouseMovement;
-		experimentr.startTimer(className);
 	},
 	countdown: function( elementName, minutes, seconds ){
 		var element, endTime, hours, mins, msLeft, time;
@@ -89,17 +99,6 @@ module.exports = {
 		allNoise= allPoints.map(function(a) {return a.noise;});
 		console.log('noise function',allNoise);
 		return allNoise.includes("T");
-	},
-	pushBorder: function(){
-		d3.select(".border")
-		.transition()
-		.duration(500)
-		.attr("rx",70)
-		.attr("ry",70)
-		.transition()
-		.duration(500)
-		.attr("rx",20)
-		.attr("ry",20);
 	}
 	
 };
