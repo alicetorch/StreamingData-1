@@ -13,7 +13,6 @@ module.exports = {
 		experimentr.endTimer(exports.pageId);
 		experimentr.release();
 	},pushBorder: function(){
-		console.log("pushing a border");
 		d3.select(".border")
 		.transition()
 		.duration(500)
@@ -323,7 +322,7 @@ init = function(){
 	component.createGraphViewer();
 	component.addGraph();
 
-	general.countdown( "countdown", 1, 0 );
+	general.countdown( "countdown", 5, 0 );
 	
 }();
 
