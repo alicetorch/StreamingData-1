@@ -36,7 +36,7 @@ module.exports = {
 	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs
 	*@memberof ComponentsModule
 	*/ 
-	createGraphViewer:function(){
+	createGraphViewer:function(className){
 		general.test();
 
 		d3.select("#"+className)
@@ -108,7 +108,7 @@ module.exports = {
 	/** Imports data files and adds lines to the graph container 
 	*@memberof ComponentsModule
 	*/
-	addGraph:function (){
+	addGraph:function (className, dataPath1, dataPath2, dataPath3, duration){
 		var q = d3.queue();
 		q.defer(d3.tsv, dataPath1)
 		q.defer(d3.tsv, dataPath2)
