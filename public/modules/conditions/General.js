@@ -1,13 +1,17 @@
 /**
 * Contains functions that are used by all experiment modules. This includes recording button events and checking for anamolies.
-* @exports general 
+*@module general 
+*@nameSpace generalModule 
 */ 
 
 var socket;
 
+
+
 /**
 *module representing the pageId 
 *@module general
+*@global
 *@type string
 */
 
@@ -18,20 +22,23 @@ var data = {};
 
 module.exports = {
 	/** Test to see if the module is loaded
-	*@memberof general
+	*@memberof generalModule
+	*@function test
 	*/
 	test : function(){
 		console.log("General.js can be used here");
 	},
 	/** releases next botton and ends timer at the end of the experiment 
-	*@memberof general
+	*@memberof generalModule
+	*@function validate 
 	*/
 	validate: function () {
 		experimentr.endTimer(exports.pageId);
 		experimentr.release();
 	},
 	/** Adds visual cues that interaction has been detected
-	*@memberof general
+	*@memberof generalModule
+	*@function pushBorder
 	*/
 	pushBorder: function(){
 		d3.select(".border")
@@ -45,7 +52,8 @@ module.exports = {
 		.attr("ry",20);
 	},
 	/** Sends interaction information to backend on button pressed 
-	*@memberof general
+	*@memberof generalModule
+	*@function pressed
 	*@param {string}  buttonTitle
 	*@param {string}  type
 	*/
@@ -72,7 +80,8 @@ module.exports = {
 	},
 	/** 
 	*Checks to see if the spacebar or the enter key has been pressed
-	*@memberof general
+	*@memberof generalModule
+	*@function checkKeyPressed
 	*@param {event} e 
 	*/
 	checkKeyPressed: function(e) {
@@ -82,7 +91,8 @@ module.exports = {
 		}
 	},
 	/** Sets the page ID in this module
-	*@memberof general
+	*@memberof generalModule
+	*@function setPageVars
 	*@param {string} pageId 
 	*/
 	setPageVars: function(pageId){ 
@@ -90,7 +100,8 @@ module.exports = {
 		console.log('pageId are set', exports.pageId);
 	},
 	/** Connects websockets to record user mouse movements
-	*@memberof general
+	*@memberof generalModule
+	*@function connectSockets
 	*/
 	connectSockets: function(){
 		socket = io.connect();
@@ -100,7 +111,8 @@ module.exports = {
 		document.onmousemove = experimentr.sendMouseMovement;
 	},
 	/** Creates and initializes a countdown clock 
-	*@memberof general
+	*@memberof generalModule
+	*@function countdown
 	*@param {string} elementName
 	*@param {integer} minutes 
 	*@param {integer} seconds
@@ -136,7 +148,8 @@ module.exports = {
 		updateTimer();
 	},
 	/** Selects currently visible data and checks if an anamoly exists
-	*@memberof general
+	*@memberof generalModule
+	*@function checkForAnamoly
 	*@returns {boolean} If anamoly is present boolean is true
 	*/
 	checkForAnamoly: function(){

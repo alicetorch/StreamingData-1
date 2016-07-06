@@ -1,6 +1,11 @@
 /**
+
+*@nameSpace ComponentsModule
+*/
+
+/**
 *These functions set up the diffrent visual components that apply across conditions
-*@exports conditionComponents
+*@module conditionComponents
 */
 
 
@@ -29,7 +34,7 @@ var y3 = d3.scale.linear()
 
 module.exports = {
 	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs
-	*@memberof conditionComponents
+	*@memberof ComponentsModule
 	*/ 
 	createGraphViewer:function(){
 		general.test();
@@ -101,7 +106,7 @@ module.exports = {
 
 	}, 
 	/** Imports data files and adds lines to the graph container 
-	*@memberof conditionComponents
+	*@memberof ComponentsModule
 	*/
 	addGraph:function (){
 		var q = d3.queue();
