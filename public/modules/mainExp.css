@@ -20,42 +20,25 @@ svg {
 	stroke-width: 2px;
 	
 }
-.lineClick1{
-	fill: none;
-	stroke: black;
-	stroke-width: 2px;
-}
-#lineCopy1{
-	fill: none;
-	stroke: black;
-	stroke-width: 2px;
-}
-.lineClick2{
-	fill: none;
-	stroke: brown;
-	stroke-width: 2px;
-	opacity: 0.5;
-}
-#lineCopy2{
-	fill: none;
-	stroke: brown;
-	stroke-width: 2px;
-}
-.lineClick3{
-	fill: none;
-	stroke: steelblue;
-	stroke-width: 2px;
-	opacity: 0.5;
-}
-#lineCopy3{
-	fill: none;
-	stroke: steelblue;
-	stroke-width: 2px;
-}
+
 .axis path,
 .axis line{
 	fill:none;
 	stroke:black;
 	shape-rendering: crispEdges;
 
+}
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
+}
+#d2{
+  margin: 1em auto  1em auto;
+  width: 1200px;
+}
+
+#d1{
+  margin: 1em auto  1em auto;
+  width: 600px;
 }

@@ -1,6 +1,8 @@
 /* This file contains functions that are used by the three diffrent conditions. 
 These functions concern functionality*/
 
+console.log('general is loaded')
+
 function validate() {
 	experimentr.endTimer(className);
 	experimentr.release();
@@ -8,7 +10,7 @@ function validate() {
 function checkKeyPressed(e) {
 	if (e.keyCode == "13" || e.keyCode == "32") {
 		pressed(e.keyCode, "key");
-		console.log('key pressed')
+
 	}
 };
 
@@ -80,9 +82,13 @@ function pushBorder()  {
 
 function pressed(buttonTitle, type){
 	console.log('button title', buttonTitle);
-	
+	console.log(d3.select(".svg2")[0][0]);
 	pushBorder();
-
+	if (d3.select(".svg2")[0][0] != null){
+		var lines = d3.selectAll("#lineCopy");
+		lines.remove();
+		addCopy();
+	}
 	var isPresent = checkForAnamoly();
 	console.log('is anomolyPresent' + isPresent); 
 
@@ -93,5 +99,47 @@ function pressed(buttonTitle, type){
 		console.log('this is pageID', pageId);
 	socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
 };
+function addCopy(){
+  	points1 = d3.select(".line1").datum();
+	points2 = d3.select(".line2").datum();
+	points3 = d3.select(".line3").datum();
+	var copy1  = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){ return  y(parseFloat(d.value));})
+		.interpolate("basis");
 
+	var copy2 = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){ return  y2(parseFloat(d.value));})
+		.interpolate("basis");
+
+	var copy3 = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){ return  y3(parseFloat(d.value));})
+		.interpolate("basis");
+
+	var copyPath1 =svg2.append("g")
+		.attr("clip-path","url(#clip)")
+		.append("path")
+		.datum(points1)
+		.attr("class","line1")
+		.attr("id","lineCopy")
+		.attr("d",copy1);
+
+	var copyPath2 = svg2.append("g")
+		.attr("clip-path","url(#clip)")
+		.append("path")
+		.datum(points2)
+		.attr("class","line2")
+		.attr("id","lineCopy")
+		.attr("d",copy2);
+
+	var copyPath3= svg2.append("g")
+		.attr("clip-path","url(#clip)")
+		.append("path")
+		.datum(points3)
+		.attr("class","line3")
+		.attr("id","lineCopy")
+		.attr("d",copy3);
+};
 

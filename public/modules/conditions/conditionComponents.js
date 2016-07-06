@@ -24,6 +24,10 @@ console.log('components.js are loaded');
 	var y3 = d3.scale.linear()
 	.domain([domain1, domain2])
 	.range([height, height*2/3]);
+	
+	var svgContainer = d3.select("#"+className).append("svg")
+	.attr("width", 1500)
+	.attr("height", 500);
 
 function createGraphViewer(){
 
@@ -41,15 +45,47 @@ function createGraphViewer(){
 	});
 
 
-	var svgContainer = d3.select("#"+className).append("svg")
-	.attr("width", 1500)
-	.attr("height", 500);
 
 
-	var borderPath = svgContainer.append("rect")
+
+	var xAxis=d3.svg.axis().scale(x).orient("bottom");
+
+	svg1	= svgContainer.append("g")
+	.attr("class","svg1")
+	.attr("transform", "translate(" +40+ "," + 20 + ")");
+	
+	svg1.append("g")
+	.attr("class","x axis")
+	.attr("transform","translate(0," + y(0)+")")
+	.call(xAxis);
+
+	svg1.append("defs").append("clipPath")
+	.attr("id","clip")
+	.append("rect")
+	.attr("width",width)
+	.attr("height",height+500);
+
+	svg1.append("defs").append("clipPath")
+	.attr("id","clip2")
+	.append("rect")
+	.attr("transform","translate(0,0)")
+	.attr("width",width)
+	.attr("height",height+500);
+
+	svg1.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + y2(0) + ")")
+	.call(xAxis);
+
+	svg1.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + y3(0) + ")")
+	.call(xAxis);
+
+	var borderPath = svg1.append("rect")
 	.attr("class","border")
-	.attr("x",40)
-	.attr("y",20)
+	.attr("x",0)
+	.attr("y",0)
 	.attr("width",width)
 	.attr("height",height)
 	.style("stroke","#A4A4A4")
@@ -59,45 +95,9 @@ function createGraphViewer(){
 	.attr("ry",20);
 
 
-	var xAxis=d3.svg.axis().scale(x).orient("bottom");
-
-	svg	= svgContainer.append("g")
-	.attr("transform", "translate(" +40+ "," + 20 + ")");
-	svg.append("g")
-	.attr("class","x axis")
-	.attr("transform","translate(0," + y(0)+")")
-	.call(xAxis);
-
-	svg.append("defs").append("clipPath")
-	.attr("id","clip")
-	.append("rect")
-	.attr("width",width)
-	.attr("height",height+500);
-
-	svg.append("defs").append("clipPath")
-	.attr("id","clip2")
-	.append("rect")
-	.attr("transform","translate(0,0)")
-	.attr("width",width)
-	.attr("height",height+500);
-
-	svg.append("g")
-	.attr("class", "x axis")
-	.attr("transform", "translate(0," + y2(0) + ")")
-	.call(xAxis);
-
-	svg.append("g")
-	.attr("class", "x axis")
-	.attr("transform", "translate(0," + y3(0) + ")")
-	.call(xAxis);
-
-
-
 }; 
 
-
 function addGraph(){
-
 
 	var q = d3.queue();
 	q.defer(d3.tsv, dataPath1)
@@ -110,9 +110,9 @@ function addGraph(){
 		if (error) throw error;
 
 
-		var disData1 = data1.slice(0,n);
-		var disData2 = data2.slice(0,90);
-		var disData3 = data3.slice(0,n);
+		 var disData1 = data1.slice(0,n);
+		 var disData2 = data2.slice(0,90);
+		 var disData3 = data3.slice(0,n);
 
 		var line1  = d3.svg.line()
 		.x(function(d,i){return x(i);})
@@ -129,21 +129,21 @@ function addGraph(){
 		.y(function(d){ return  y3(parseFloat(d.value));})
 		.interpolate("basis");
 
-		var path1 =svg.append("g")
+		var path1 =svg1.append("g")
 		.attr("clip-path","url(#clip)")
 		.append("path")
 		.datum(disData1)
 		.attr("class","line1")
 		.attr("d",line1);
 
-		var path2 = svg.append("g")
+		var path2 = svg1.append("g")
 		.attr("clip-path","url(#clip)")
 		.append("path")
 		.datum(disData2)
 		.attr("class","line2")
 		.attr("d",line2);
 
-		var path3= svg.append("g")
+		var path3= svg1.append("g")
 		.attr("clip-path","url(#clip)")
 		.append("path")
 		.datum(disData3)
@@ -200,4 +200,63 @@ function addGraph(){
 
 		};
 	};
+}
+
+function createCopyViewer(){
+	var xAxis=d3.svg.axis().scale(x).orient("bottom");
+	
+	svg2	= svgContainer.append("g")
+	.attr("class","svg2")
+	.attr("transform", "translate(" +650+ "," + 20 + ")");
+	
+	svg2.append("g")
+	.attr("class","x axis")
+	.attr("transform","translate(0," + y(0)+")")
+	.call(xAxis);
+
+	svg2.append("defs").append("clipPath")
+	.attr("id","clip")
+	.append("rect")
+	.attr("width",width)
+	.attr("height",height+500);
+
+	svg2.append("defs").append("clipPath")
+	.attr("id","clip2")
+	.append("rect")
+	.attr("transform","translate(0,0)")
+	.attr("width",width)
+	.attr("height",height+500);
+
+	svg2.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + y2(0) + ")")
+	.call(xAxis);
+
+	svg2.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + y3(0) + ")")
+	.call(xAxis);
+
+	var borderPath = svg2.append("rect")
+	.attr("class","border")
+	.attr("x",0)
+	.attr("y",0)
+	.attr("width",width)
+	.attr("height",height)
+	.style("stroke","#A4A4A4")
+	.style("fill","none")
+	.style("stroke-width",3)
+	.attr("rx",20)
+	.attr("ry",20);
+
+}
+
+function addBrush(){
+	var brush = d3.svg.brush()
+		.x(x);
+	svg2.append("g")
+		.attr("class","brush")
+		.call(brush)
+		.selectAll("rect")
+		.attr("height",height);
 }
