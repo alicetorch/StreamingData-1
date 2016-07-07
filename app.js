@@ -44,7 +44,8 @@ var save = function save(d) {
 var app = express()
 app.use(express.bodyParser())
 app.use(express.static(__dirname + '/public'))
-app.use('/scripts', express.static(__dirname + '/node_modules/'));
+app.use('/scripts', express.static(__dirname + '/node_modules/'))
+app.use('/docs', express.static(__dirname +'/out/'));
 
 // If the study has finished, write the data to file
 app.post('/finish', function(req, res) {

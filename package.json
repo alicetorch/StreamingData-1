@@ -10,6 +10,7 @@
     "d3-request": "^1.0.0",
     "express": "^3.21.2",
     "forever": "0.15.x",
+    "jsdoc": "^3.4.0",
     "json2csv": "2.x",
     "lodash": "^4.13.1",
     "mousetrap": "^1.6.0",
