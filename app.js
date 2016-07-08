@@ -31,6 +31,10 @@ var mouseLocation = [];
 var save = function save(d) {
   console.log ('in save')
 
+  if(d.pageId == null ){
+    d.pageId ="Trail"
+  };
+  console.log(d)
   console.log('pageId in save', d.pageId);
   var stringD = JSON.stringify(d);
 

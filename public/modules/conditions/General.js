@@ -17,8 +17,9 @@ var socket;
 
 exports.pageId; 
 
-var data = [];
+var interactionGroup = [];
 var interaction = {}; 
+data = {};
 
 module.exports = {
 	/** Test to see if the module is loaded
@@ -33,8 +34,10 @@ module.exports = {
 	*@function validate 
 	*/
 	validate: function () {
-		experimentr.endTimer(exports.pageId);
+		data.pageId = "Trail";
+		data.mouseAction=interactionGroup;
 		experimentr.addData(data);
+		experimentr.endTimer(exports.pageId);
 		experimentr.release();
 	},
 	/** Adds visual cues that interaction has been detected
@@ -77,8 +80,7 @@ module.exports = {
 		interaction.pageId = exports.pageId;
 		console.log("interaction", interaction)
 
-		data.push(interaction);
-		console.log(data, Object.keys(data).length);
+		interactionGroup.push(interaction);
 		
 		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
@@ -122,7 +124,7 @@ module.exports = {
 	*@param {integer} seconds
 	*/
 	countdown: function( elementName, minutes, seconds ){
-		var element, endTime, hours, mins, msLeft, time;
+		var element, endTime, hours, mins, msLeft;
 		
 		function twoDigits( n )
 		{

@@ -208,6 +208,7 @@ experimentr.stopMouseMovementRec = function(event){
     return(timeSinceStart);
   }
 
+
   // End an existing timer (using a String key)
   // TODO throw an error if a start wasn't called.
   experimentr.endTimer = function(x) {
