@@ -34,10 +34,11 @@ module.exports = {
 	*@function validate 
 	*/
 	validate: function () {
+		experimentr.setPageType("Trail");
+		experimentr.endTimer(exports.pageId);
 		data.pageId = "Trail";
 		data.mouseAction=interactionGroup;
 		experimentr.addData(data);
-		experimentr.endTimer(exports.pageId);
 		experimentr.release();
 	},
 	/** Adds visual cues that interaction has been detected

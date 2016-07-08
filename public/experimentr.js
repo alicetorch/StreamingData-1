@@ -121,6 +121,9 @@ experimentr.stopMouseMovementRec = function(event){
     experimentr.save();
   }
 
+  experimentr.setPageType = function(pageType){
+    data['pageId'] = pageType;
+  }
 
   // The HTTP POST code for saving experiment data.
   experimentr.save = function(d) {
