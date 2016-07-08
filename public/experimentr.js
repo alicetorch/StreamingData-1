@@ -113,10 +113,17 @@ experimentr.stopMouseMovementRec = function(event){
   // Adds the data in `d` to the experiment data, and saves to server.
   experimentr.addData = function(d) {
     console.log(d);
+    console.log("data before merge", Object.keys(data).length);
     merge(data, d);
+    console.log("d passed in", Object.keys(d).length);
+    console.log("data after merge" , Object.keys(data).length);
+    console.log("data contents", data)
     experimentr.save();
   }
 
+  experimentr.setPageType = function(pageType){
+    data['pageId'] = pageType;
+  }
 
   // The HTTP POST code for saving experiment data.
   experimentr.save = function(d) {
@@ -129,7 +136,13 @@ experimentr.stopMouseMovementRec = function(event){
 
   // Merges object o2 into o1.
   function merge(o1, o2) {
-    for (var attr in o2) { o1[attr] = o2[attr]; }
+    for (var attr in o2) { 
+     // console.log("this is the attribute in the merge",attr) 
+      o1[attr] = o2[attr]; }
+  }
+
+  function concatenate(o1, o2){
+    o1.concat(o2);
   }
 
   // Enables the Next button so the user can proceed in the experiment.
@@ -197,6 +210,7 @@ experimentr.stopMouseMovementRec = function(event){
     var timeSinceStart = timeNow - parseFloat(data['time_start_'+x]);
     return(timeSinceStart);
   }
+
 
   // End an existing timer (using a String key)
   // TODO throw an error if a start wasn't called.
