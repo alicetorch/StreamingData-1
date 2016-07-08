@@ -18,8 +18,8 @@ var socket;
 
 exports.pageId; 
 
-var data = {};
- 
+var data = [];
+var interaction = {}; 
 
 module.exports = {
 	/** Test to see if the module is loaded
@@ -35,6 +35,7 @@ module.exports = {
 	*/
 	validate: function () {
 		experimentr.endTimer(exports.pageId);
+		experimentr.addData(data);
 		experimentr.release();
 	},
 	/** Adds visual cues that interaction has been detected
@@ -65,17 +66,20 @@ module.exports = {
 		timePressed = experimentr.now(exports.pageId);
 		timestamp = new Date().getTime();
 		var postId = experimentr.postId();
+
 		
 
-		data["interactionType"] = type;
-		data["buttonTitle"] = buttonTitle;
-		data["timePressed"] = timePressed;
-		data["postId"] = postId; 
-		data["timestamp"] = timestamp;
-		data["AnomalyPresent"] = isPresent;
-		data["pageId"] = exports.pageId;
-		experimentr.addData(data);
-		console.log(data);
+		interaction.interactionType = type;
+		interaction. buttonTitle = buttonTitle;
+		interaction.timePressed = timePressed;
+		interaction. postId = postId; 
+		interaction.timestamp = timestamp;
+		interaction.AnomalyPresent = isPresent;
+		interaction.pageId = exports.pageId;
+		console.log("interaction", interaction)
+
+		data.push(interaction);
+		console.log(data, Object.keys(data).length);
 		
 		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
@@ -423,7 +427,7 @@ init = function(){
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 
-	general.countdown( "countdown", 5, 0 );
+	general.countdown( "countdown", 1, 0 );
 	
 }();
 
