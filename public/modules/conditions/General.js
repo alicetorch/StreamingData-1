@@ -18,7 +18,6 @@ var socket;
 exports.pageId; 
 
 var interactionGroup = [];
-var interaction = {}; 
 data = {};
 
 module.exports = {
@@ -65,6 +64,7 @@ module.exports = {
 	*@param {string}  type
 	*/
 	pressed:function(buttonTitle, type){
+		var interaction = {}; 
 		general.pushBorder();
 		var isPresent = general.checkForAnamoly();
 		console.log('pressed page id', exports.pageId);
@@ -144,6 +144,7 @@ module.exports = {
 				element.innerHTML = "countdown's over!";
 				Mousetrap.reset();
 				// document.onmousemove = experimentr.stopMouseMovementRec;
+				general.pressed('next-button', "button");
 				// socket.emit('disconnect');
 			} else {
 				time = new Date( msLeft );
