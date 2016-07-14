@@ -74,7 +74,7 @@ module.exports = {
 		var postId = experimentr.postId();
 
 		
-
+		console.log("button title", buttonTitle)
 		interaction.interactionType = type;
 		interaction. buttonTitle = buttonTitle;
 		interaction.timePressed = timePressed;
@@ -83,9 +83,12 @@ module.exports = {
 		interaction.AnomalyPresent = isPresent;
 		interaction.pageId = exports.pageId;
 		console.log("interaction", interaction)
-
+		console.log("before push")
+		console.log(interactionGroup)
 		interactionGroup.push(interaction);
-		
+		console.log("after push")
+		console.log(interactionGroup)
+
 		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, f: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
 	/** 
@@ -142,7 +145,6 @@ module.exports = {
 				element.innerHTML = "countdown's over!";
 				Mousetrap.reset();
 				// document.onmousemove = experimentr.stopMouseMovementRec;
-				general.pressed('next-button', "button");
 				// socket.emit('disconnect');
 			} else {
 				time = new Date( msLeft );

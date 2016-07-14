@@ -124,6 +124,7 @@ experimentr.stopMouseMovementRec = function(event){
     }
 
     experimentr.save();
+    console.log(" about to save" + data )
     data ={};
     data.postId=savePostId;
     data.time_start_experiment = startTime
@@ -171,7 +172,7 @@ experimentr.stopMouseMovementRec = function(event){
     var timeSinceStart = timeNow - parseFloat(data['time_start_'+x]);
     return(timeSinceStart);
   }
-  
+
   // On some multi-part modules, it is helpful to hide the next button until it is needed.
   experimentr.hideNext = function() {
     d3.select('#next-button').style('display', 'none');

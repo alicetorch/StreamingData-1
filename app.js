@@ -84,7 +84,7 @@ function handleCollectedDataPost(postId , pageId){
 app.post('/', function handlePost(req, res) {
   // Get experiment data from request body
   var d = req.body
-  console.log('backend post: ', d.postId);
+  console.log('backend post: ', d);
   // If a postId doesn't exist, add one (it's random, based on date)
   if (!d.postId) d.postId = (+new Date()).toString(36)
   // Add a timestamp
