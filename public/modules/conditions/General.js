@@ -37,6 +37,7 @@ module.exports = {
 		experimentr.setPageType(exports.pageId);
 		console.log('exports page id' + exports.pageId)
 		data.mouseAction = interactionGroup;
+		console.log(interactionGroup)
 		console.log('data on merge' + data)
 		experimentr.merge(data);
 		experimentr.endTimer( exports.pageId);
@@ -166,5 +167,6 @@ module.exports = {
 		console.log('noise function',allNoise);
 		return allNoise.includes("T");
 	}
+
 	
 };

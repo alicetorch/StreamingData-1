@@ -48,7 +48,7 @@ module.exports = {
 		.attr('name','researchButton')
 		.on('click',function(){
 			general.pressed(d3.select(this).attr('id') , "button");
-			console.log(' research button pressed');
+			console.log(' research button pressed'+ d3.select(this).attr('id'));
 		});
 
 
