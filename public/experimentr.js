@@ -58,6 +58,7 @@ experimentr.stopMouseMovementRec = function(event){
     init();
     current = 0;
     activate(current);
+    console.log('IN START')
     experimentr.startTimer('experiment');
   };
 
@@ -112,13 +113,19 @@ experimentr.stopMouseMovementRec = function(event){
 
   // Adds the data in `d` to the experiment data, and saves to server.
   experimentr.addData = function(d) {
-    console.log(d);
-    console.log("data before merge", Object.keys(data).length);
-    merge(data, d);
-    console.log("d passed in", Object.keys(d).length);
-    console.log("data after merge" , Object.keys(data).length);
-    console.log("data contents", data)
+    savePostId= experimentr.postId();
+
+    console.log("post id in addData"+ savePostId)
+    if (typeof(d) != "undefined"){
+      console.log("in if");
+      console.log(experimentr.postId);
+      experimentr.merge(d);
+      console.log(data);
+    }
+
     experimentr.save();
+    data ={};
+    data.postId=savePostId;
   }
 
   experimentr.setPageType = function(pageType){
@@ -135,10 +142,17 @@ experimentr.stopMouseMovementRec = function(event){
   }
 
   // Merges object o2 into o1.
-  function merge(o1, o2) {
-    for (var attr in o2) { 
-     // console.log("this is the attribute in the merge",attr) 
-      o1[attr] = o2[attr]; }
+  experimentr.merge = function (o2) {
+    savePostId = experimentr.postId();
+    console.log(savePostId);
+
+    for (var attr in o2) {
+    console.log("merge data"+ data)
+    data[attr] = o2[attr];
+    console.log("merge data"+ data) }
+
+    data.postId = savePostId
+
   }
 
   function concatenate(o1, o2){
@@ -218,7 +232,13 @@ experimentr.stopMouseMovementRec = function(event){
     console.log('ending timer: '+x);
     data['time_end_'+x] = Date.now();
     data['time_diff_'+x] = parseFloat(data['time_end_'+x]) - parseFloat(data['time_start_'+x]);
-    experimentr.save();
+    console.log("in end timer", data)
+
+    if (x == 'experiment'){
+      console.log('x equals experiment')
+      data.pageId== "totalExperimentTime"
+    }
+    experimentr.addData();
   }
 
   // attachTimer lets you show participants a visual countdown before advancing the experiment.

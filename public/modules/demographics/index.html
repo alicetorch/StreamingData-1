@@ -73,8 +73,8 @@ Thank you! The experiment is almost complete. Please fill out the following demo
   
   function validate() {
 	  if(data.age && data.sex && data.degree && data.monitor) {
-	    experimentr.endTimer('demo');
-	    experimentr.addData(data);
+	    experimentr.merge(data);
+      experimentr.endTimer('demo');
 	    experimentr.release();
 	  }
 	}

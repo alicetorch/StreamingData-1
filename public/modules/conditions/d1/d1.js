@@ -35,14 +35,14 @@ init = function(){
 
 
 	startCondition= function(className, path1, path2, path3, duration){
-		console.log(className);
+		console.log('classname in start condition', className);
 		experimentr.startTimer(className);
 		general.setPageVars(className);
 		component.createGraphViewer(className);
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 
-	general.countdown( "countdown", 5, 0 );
+	general.countdown( "countdown", 1, 0 );
 	
 }();
 

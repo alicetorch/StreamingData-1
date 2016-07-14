@@ -35,11 +35,12 @@ module.exports = {
 	*@function validate 
 	*/
 	validate: function () {
-		experimentr.setPageType("Trail");
-		experimentr.endTimer(exports.pageId);
-		data.pageId = "Trail";
-		data.mouseAction=interactionGroup;
-		experimentr.addData(data);
+		experimentr.setPageType(exports.pageId);
+		console.log('exports page id' + exports.pageId)
+		data.mouseAction = interactionGroup;
+		console.log('data on merge' + data)
+		experimentr.merge(data);
+		experimentr.endTimer( exports.pageId);
 		experimentr.release();
 	},
 	/** Adds visual cues that interaction has been detected
@@ -66,7 +67,7 @@ module.exports = {
 	pressed:function(buttonTitle, type){
 		general.pushBorder();
 		var isPresent = general.checkForAnamoly();
-		console.log(exports.pageId);
+		console.log('pressed page id', exports.pageId);
 		timePressed = experimentr.now(exports.pageId);
 		timestamp = new Date().getTime();
 		var postId = experimentr.postId();
@@ -84,7 +85,7 @@ module.exports = {
 
 		interactionGroup.push(interaction);
 		
-		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
+		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, f: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
 	/** 
 	*Checks to see if the spacebar or the enter key has been pressed
@@ -423,14 +424,14 @@ init = function(){
 
 
 	startCondition= function(className, path1, path2, path3, duration){
-		console.log(className);
+		console.log('classname in start condition', className);
 		experimentr.startTimer(className);
 		general.setPageVars(className);
 		component.createGraphViewer(className);
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 
-	general.countdown( "countdown", 5, 0 );
+	general.countdown( "countdown", 1, 0 );
 	
 }();
 
