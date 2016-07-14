@@ -114,7 +114,7 @@ experimentr.stopMouseMovementRec = function(event){
   // Adds the data in `d` to the experiment data, and saves to server.
   experimentr.addData = function(d) {
     savePostId= experimentr.postId();
-
+    startTime = data.time_start_experiment
     console.log("post id in addData"+ savePostId)
     if (typeof(d) != "undefined"){
       console.log("in if");
@@ -126,6 +126,7 @@ experimentr.stopMouseMovementRec = function(event){
     experimentr.save();
     data ={};
     data.postId=savePostId;
+    data.time_start_experiment = startTime
   }
 
   experimentr.setPageType = function(pageType){
@@ -232,12 +233,13 @@ experimentr.stopMouseMovementRec = function(event){
     console.log('ending timer: '+x);
     data['time_end_'+x] = Date.now();
     data['time_diff_'+x] = parseFloat(data['time_end_'+x]) - parseFloat(data['time_start_'+x]);
-    console.log("in end timer", data)
 
     if (x == 'experiment'){
-      console.log('x equals experiment')
-      data.pageId== "totalExperimentTime"
+      console.log('x equals experiment');
+      data.pageId = "totalExperimentTime";
     }
+
+    console.log("in end timer", data)
     experimentr.addData();
   }
 
