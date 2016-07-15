@@ -53,7 +53,7 @@ Thank you! The experiment is almost complete. Please fill out the following demo
 (function() {
   var data = {};
   data.pageId = "demographics";
-  experimentr.startTimer('demo');
+  experimentr.startTimer('demographics');
 
   d3.selectAll('input')
   .filter(function(d) { return this.name === 'age' ? this : null; })
@@ -74,7 +74,7 @@ Thank you! The experiment is almost complete. Please fill out the following demo
   function validate() {
 	  if(data.age && data.sex && data.degree && data.monitor) {
 	    experimentr.merge(data);
-      experimentr.endTimer('demo');
+      experimentr.endTimer('demographics');
 	    experimentr.release();
 	  }
 	}

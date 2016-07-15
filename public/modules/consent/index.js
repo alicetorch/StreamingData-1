@@ -25,8 +25,10 @@
   function validate() {
     if( data.workerId ) {
       data.pageId = "consent";
-      experimentr.addData(data);
-
+      experimentr.merge(data);
+      experimentr.addData();
+      experimentr.release();
+      
       if( workers.indexOf(data.workerId) == -1 ) {
         d3.select('#consentYes').attr('disabled', null);
         d3.select('#validMessage').style('display', 'inline');
