@@ -33,7 +33,6 @@
 
 /**
 *These functions set up the diffrent visual components that apply across conditions
-*{@link  ComponentsModule}
 *@module conditionComponents
 */
 
@@ -49,23 +48,32 @@ height = 500 - margin.top - margin.bottom;
 x = d3.scale.linear()
 .domain([0,n-1])
 .range([0,width]);
-var y = d3.scale.linear()
+
+y = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height/3, 0]);
 
-var y2 = d3.scale.linear()
+y2 = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height*2/3, height/3]);
 
-var y3 = d3.scale.linear()
+y3 = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height, height*2/3]);
+
+var selectedPoints=[];
+
 
 module.exports = {
 	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs
 	*@memberof ComponentsModule
+	*@function createGraphViewer
 	*/ 
-	createGraphViewer:function(){
+	createGraphViewer:function(className){
+		brush = d3.svg.brush()
+		.x(x)
+		.on("brushend",component.brushed);
+
 		general.test();
 
 		d3.select("#"+className)
@@ -77,19 +85,51 @@ module.exports = {
 		.attr('name','researchButton')
 		.on('click',function(){
 			general.pressed(d3.select(this).attr('id') , "button");
-			console.log(' research button pressed');
+			console.log(' research button pressed'+ d3.select(this).attr('id'));
 		});
-
 
 		var svgContainer = d3.select("#"+className).append("svg")
 		.attr("width", 1500)
 		.attr("height", 500);
 
+		var xAxis=d3.svg.axis().scale(x).orient("bottom");
 
-		var borderPath = svgContainer.append("rect")
+		svg1 = svgContainer.append("g")
+		.attr("class","svg1")
+		.attr("transform", "translate(" +40+ "," + 20 + ")");
+
+		svg1.append("g")
+		.attr("class","x axis")
+		.attr("transform","translate(0," + y(0)+")")
+		.call(xAxis);
+
+		svg1.append("defs").append("clipPath")
+		.attr("id","clip")
+		.append("rect")
+		.attr("width",width)
+		.attr("height",height+500);
+
+		svg1.append("defs").append("clipPath")
+		.attr("id","clip2")
+		.append("rect")
+		.attr("transform","translate(0,0)")
+		.attr("width",width)
+		.attr("height",height+500);
+
+		svg1.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + y2(0) + ")")
+		.call(xAxis);
+
+		svg1.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + y3(0) + ")")
+		.call(xAxis);
+
+		var borderPath = svg1.append("rect")
 		.attr("class","border")
-		.attr("x",40)
-		.attr("y",20)
+		.attr("x",0)
+		.attr("y",0)
 		.attr("width",width)
 		.attr("height",height)
 		.style("stroke","#A4A4A4")
@@ -97,61 +137,30 @@ module.exports = {
 		.style("stroke-width",3)
 		.attr("rx",20)
 		.attr("ry",20);
+	},
 
-
-		var xAxis=d3.svg.axis().scale(x).orient("bottom");
-
-		svg	= svgContainer.append("g")
-		.attr("transform", "translate(" +40+ "," + 20 + ")");
-		svg.append("g")
-		.attr("class","x axis")
-		.attr("transform","translate(0," + y(0)+")")
-		.call(xAxis);
-
-		svg.append("defs").append("clipPath")
-		.attr("id","clip")
-		.append("rect")
-		.attr("width",width)
-		.attr("height",height+500);
-
-		svg.append("defs").append("clipPath")
-		.attr("id","clip2")
-		.append("rect")
-		.attr("transform","translate(0,0)")
-		.attr("width",width)
-		.attr("height",height+500);
-
-		svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + y2(0) + ")")
-		.call(xAxis);
-
-		svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + y3(0) + ")")
-		.call(xAxis);
-
-
-
-	}, 
 	/** Imports data files and adds lines to the graph container 
 	*@memberof ComponentsModule
+	*@function addGraph
 	*/
-	addGraph:function (){
+	addGraph:function(className, dataPath1, dataPath2, dataPath3, duration){
 		var q = d3.queue();
 		q.defer(d3.tsv, dataPath1)
 		q.defer(d3.tsv, dataPath2)
 		q.defer(d3.tsv, dataPath3)
 		.await(setUp); 
 
-
 		function setUp(error, data1, data2, data3){
 			if (error) throw error;
 
 
 			var disData1 = data1.slice(0,n);
-			var disData2 = data2.slice(0,90);
+			var disData2 = data2.slice(0,n);
 			var disData3 = data3.slice(0,n);
+			
+			data1.splice(0,n);
+			data2.splice(0,n);
+			data3.splice(0,n);
 
 			var line1  = d3.svg.line()
 			.x(function(d,i){return x(i);})
@@ -168,21 +177,21 @@ module.exports = {
 			.y(function(d){ return  y3(parseFloat(d.value));})
 			.interpolate("basis");
 
-			var path1 =svg.append("g")
+			var path1 =svg1.append("g")
 			.attr("clip-path","url(#clip)")
 			.append("path")
 			.datum(disData1)
 			.attr("class","line1")
 			.attr("d",line1);
 
-			var path2 = svg.append("g")
+			var path2 = svg1.append("g")
 			.attr("clip-path","url(#clip)")
 			.append("path")
 			.datum(disData2)
 			.attr("class","line2")
 			.attr("d",line2);
 
-			var path3= svg.append("g")
+			var path3= svg1.append("g")
 			.attr("clip-path","url(#clip)")
 			.append("path")
 			.datum(disData3)
@@ -239,7 +248,106 @@ module.exports = {
 
 			};
 		};
+	},
+/** Creates the view for selected data for the view to analyze
+*@memberof ComponentsModule
+*@function createCopyViewer
+*@param {string} className
+*/
+createCopyViewer:function(className){
+	d3.select("#button1").remove();
+	var xAxis=d3.svg.axis().scale(x).orient("bottom");
+	
+	var svgContainer = d3.select("svg")
+	
+	svg2	= svgContainer.append("g")
+	.attr("class","svg2")
+	.attr("transform", "translate(" +650+ "," + 20 + ")");
+	
+	svg2.append("g")
+	.attr("class","x axis")
+	.attr("transform","translate(0," + y(0)+")")
+	.call(xAxis);
+
+	svg2.append("defs").append("clipPath")
+	.attr("id","clip")
+	.append("rect")
+	.attr("width",width)
+	.attr("height",height+500);
+
+	svg2.append("defs").append("clipPath")
+	.attr("id","clip2")
+	.append("rect")
+	.attr("transform","translate(0,0)")
+	.attr("width",width)
+	.attr("height",height+500);
+
+	svg2.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + y2(0) + ")")
+	.call(xAxis);
+
+	svg2.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + y3(0) + ")")
+	.call(xAxis);
+
+	var borderPath = svg2.append("rect")
+	.attr("class","border")
+	.attr("x",0)
+	.attr("y",0)
+	.attr("width",width)
+	.attr("height",height)
+	.style("stroke","#A4A4A4")
+	.style("fill","none")
+	.style("stroke-width",3)
+	.attr("rx",20)
+	.attr("ry",20);
+	
+	var submitButton = d3.select("#"+className)
+	.append("button")
+	.text('submit')
+	.attr('class', 'submitButton')
+	.attr('name','researchButton');
+
+},
+
+/** creates brush component for user graph analysis
+*@memberof ComponentsModule
+*@function addBrush
+*/
+addBrush:function(){
+	console.log("add Brush called")
+	svg2.append("g")
+	.attr("class","brush")
+	.call(brush)
+	.selectAll("rect")
+	.attr("height",height);
+},
+
+/*Creates an array of data selected by brush component
+*@memberof ComponentsModule
+*@function brushed
+*/
+brushed:function(){
+	var extent = brush.extent();
+	var min = Math.round(extent[0]);
+	var max = Math.round(extent[1]);
+	console.log("min"+ min+ "max" + max);
+	if (d3.select(".copy3")[0][0] != null){
+		selectedPoints = lines.noise1.slice(min,max).concat(lines.noise2.slice(min,max)).concat(lines.noise3.slice(min,max));
+		console.log('in create components: selected Points = ',selectedPoints);
 	}
+},
+
+/** a getter method for the selected points from brush for the General module
+*@memberof ComponentsModule
+*@function getSelected
+*@returns {string|Array} all selected points of brush component
+*/
+getSelected: function(){
+	return selectedPoints;
+}
 }</code></pre>
         </article>
     </section>
@@ -250,13 +358,13 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-conditionComponents.html">conditionComponents</a></li><li><a href="module-d1.html">d1</a></li><li><a href="module-general.html">general</a></li></ul><h3>Namespaces</h3><ul><li><a href="ComponentsModule.html">ComponentsModule</a></li><li><a href="generalModule.html">generalModule</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-conditionComponents.html">conditionComponents</a></li><li><a href="module-d2.html">d2</a></li><li><a href="module-general.html">general</a></li></ul><h3>Namespaces</h3><ul><li><a href="ComponentsModule.html">ComponentsModule</a></li><li><a href="generalModule.html">generalModule</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Jul 06 2016 11:20:20 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Jul 18 2016 15:32:37 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
