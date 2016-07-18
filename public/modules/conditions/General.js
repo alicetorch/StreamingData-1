@@ -59,8 +59,8 @@ module.exports = {
 	/** Sends interaction information to backend on button pressed 
 	*@memberof generalModule
 	*@function pressed
-	*@param {string}  buttonTitle
-	*@param {string}  type
+	*@param {string}  buttonTitle indicates what button is pressed
+	*@param {string}  type indicates what type of button 
 	*/
 	pressed:function(buttonTitle, type){
 
@@ -85,7 +85,7 @@ module.exports = {
 	*Checks to see if the spacebar or the enter key has been pressed
 	*@memberof generalModule
 	*@function checkKeyPressed
-	*@param {event} e 
+	*@param {event} e events from users
 	*/
 	checkKeyPressed: function(e) {
 		if (e.keyCode == "13" || e.keyCode == "32") {
@@ -96,7 +96,7 @@ module.exports = {
 	/** Sets the page ID in this module
 	*@memberof generalModule
 	*@function setPageVars
-	*@param {string} pageId 
+	*@param {string} pageId pageID from html id 
 	*/
 	setPageVars: function(pageId){ 
 		exports.pageId=pageId;
@@ -117,7 +117,7 @@ module.exports = {
 	/** Creates and initializes a countdown clock 
 	*@memberof generalModule
 	*@function countdown
-	*@param {string} elementName
+	*@param {string} elementName 
 	*@param {integer} minutes 
 	*@param {integer} seconds
 	*/

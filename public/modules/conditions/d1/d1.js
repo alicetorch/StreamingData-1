@@ -10,7 +10,7 @@ general = require("../General");
 component = require("../conditionComponents");
 
 init = function(){
-	console.log('d1.js loaded';	//general.connectSockets();
+	console.log('d1.js loaded');
 	//general.connectSockets();
 	
 
@@ -33,8 +33,6 @@ init = function(){
 			startCondition(data.vars.className, data.vars.dataPath1, data.vars.dataPath2, data.vars.dataPath3, data.vars.duration);
 		})
 	}
-
-}();
 
 	startCondition= function(className, path1, path2, path3, duration){
 		console.log('classname in start condition', className);

@@ -224,7 +224,7 @@ module.exports = {
 /** Creates the view for selected data for the view to analyze
 *@memberof ComponentsModule
 *@function createCopyViewer
-*@param {string} className
+*@param {string} className indicates what id to attach to 
 */
 createCopyViewer:function(className){
 	d3.select("#button1").remove();
