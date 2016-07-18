@@ -315,6 +315,7 @@ brushed:function(){
 /** a getter method for the selected points from brush for the General module
 *@memberof ComponentsModule
 *@function getSelected
+*@returns {string|Array} all selected points of brush component
 */
 getSelected: function(){
 	return selectedPoints;
