@@ -50,8 +50,10 @@ svg text{
 
 
 		function validate() {
+
 			experimentr.endTimer('demo');
 			experimentr.release();
+
 		};
 
 
@@ -76,28 +78,28 @@ svg text{
 		}
 
 		var n = 10;
-		var duration = 200000;
+		var tduration = 200000;
 
-		var x = d3.scale.linear()
+		var tx = d3.scale.linear()
 		.domain([0,40])
 		.range([0,350]);
 
-		var x2 = d3.scale.linear()
+		var tx2 = d3.scale.linear()
 		.domain([0,10])
 		.range([0,350]);			
-		var y = d3.scale.linear()
+		var ty = d3.scale.linear()
 		.domain([-0.6,0.6])
 		.range([200,0]);
 
-		var y1 = d3.scale.linear()
+		var ty1 = d3.scale.linear()
 		.domain([-2.5, 2.5])
 		.range([150, 50]);
 
-		var y2 = d3.scale.linear()
+		var ty2 = d3.scale.linear()
 		.domain([-2.5, 2.5])
 		.range([250, 150]);
 
-		var y3 = d3.scale.linear()
+		var ty3 = d3.scale.linear()
 		.domain([-2.5, 2.5])
 		.range([350, 250]);
 
@@ -108,7 +110,7 @@ svg text{
 		.attr("height",450)
 		.append("g");
 		
-		d3.select("body").attr("align","center");
+		d3.select(".content").attr("align","center");
 
 		update(step);
 
@@ -151,8 +153,8 @@ svg text{
 				d3.tsv(fileName, type, function(error,data){
 
 						var line = d3.svg.line()
-						.x(function(d,i){return x2(d.index);})
-						.y(function(d,i){return y(d.value);})
+						.x(function(d,i){return tx2(d.index);})
+						.y(function(d,i){return ty(d.value);})
 						.interpolate("cardinal");
 
 						var path = svg.append("g")
@@ -161,9 +163,9 @@ svg text{
 						.attr("class","line")
 						.attr("d",line)
 						.transition()
-						.duration(duration)
+						.duration(tduration)
 						.ease("linear")
-						.attr("transform","translate("+x(-1999)+",0)");
+						.attr("transform","translate("+tx(-1999)+",0)");
 					});	
 
 				var stringList = ["This is a normal pattern.", "This is also a normal pattern."];
@@ -193,18 +195,18 @@ svg text{
 
 
 					var line1  = d3.svg.line()
-					.x(function(d,i){return x(i);})
-					.y(function(d){ return  y1(parseFloat(d.value));})
+					.x(function(d,i){return tx(i);})
+					.y(function(d){ return  ty1(parseFloat(d.value));})
 					.interpolate("basis");
 
 					var line2 = d3.svg.line()
-					.x(function(d,i){return x(i);})
-					.y(function(d){ return  y2(parseFloat(d.value));})
+					.x(function(d,i){return tx(i);})
+					.y(function(d){ return  ty2(parseFloat(d.value));})
 					.interpolate("basis");
 
 					var line3 = d3.svg.line()
-					.x(function(d,i){return x(i);})
-					.y(function(d){ return  y3(parseFloat(d.value));})
+					.x(function(d,i){return tx(i);})
+					.y(function(d){ return  ty3(parseFloat(d.value));})
 					.interpolate("basis");
 
 					var path1 =svg.append("g")
@@ -257,7 +259,7 @@ svg text{
 							.transition()
 							.duration(100)
 							.ease("linear")
-							.attr("transform", "translate(" + x(-1) + ",0)")
+							.attr("transform", "translate(" + tx(-1) + ",0)")
 							disData1.shift();
 
 							disData2.push(data2.slice(0,1)[0]);
@@ -268,7 +270,7 @@ svg text{
 							.transition()
 							.duration(100)
 							.ease("linear")
-							.attr("transform", "translate(" + x(-1) + ",0)")
+							.attr("transform", "translate(" + tx(-1) + ",0)")
 							disData2.shift();
 
 							disData3.push(data3.slice(0,1)[0]);;
@@ -279,7 +281,7 @@ svg text{
 							.transition()
 							.duration(100)
 							.ease("linear")
-							.attr("transform", "translate(" + x(-1) + ",0)")
+							.attr("transform", "translate(" + tx(-1) + ",0)")
 							.each("end",tick);
 							disData3.shift();
 						}else{
@@ -412,7 +414,7 @@ svg text{
 
 				d3.select("#container").attr("height", 150);
 
-				d3.select("body")
+
 
 				svg.append("text")
 					.style("font-weight", "bold")

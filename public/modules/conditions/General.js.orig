@@ -4,7 +4,21 @@
 *@nameSpace generalModule 
 */ 
 
+<<<<<<< HEAD
+console.log('general is loaded')
+
+function validate() {
+	experimentr.endTimer(className);
+	experimentr.release();
+};
+function checkKeyPressed(e) {
+		if (e.keyCode == "13" || e.keyCode == "32") {
+			pressed(e.keyCode, "key");
+		}
+};
+=======
 var socket;
+>>>>>>> 06b294cfeb1728c45a41a451e305ff5b09e45bca
 
 
 
@@ -98,7 +112,7 @@ module.exports = {
 	*/
 	checkKeyPressed: function(e) {
 		if (e.keyCode == "13" || e.keyCode == "32") {
-			general.pressed(e.keyCode, "key");
+			pressed(e.keyCode, "key");
 			console.log('key pressed')
 		}
 	},
@@ -120,7 +134,6 @@ module.exports = {
 		socket.on('connect',function() {
 			console.log('Client has connected to the server!');
 		});
-			
 		document.onmousemove = experimentr.sendMouseMovement;
 	},
 	/** Creates and initializes a countdown clock 
@@ -166,18 +179,30 @@ module.exports = {
 	*@returns {boolean} If anamoly is present boolean is true
 	*/
 	checkForAnamoly: function(){
-
-	if (d3.select(".svg2")[0][0] == null){
-	lines = new general.getPoints();
-	}
-	allNoise= d3.select(".svg2")[0][0] == null ? lines.noise : selectedPoints;
+		allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
+		allNoise= allPoints.map(function(a) {return a.noise;});
 		console.log('noise function',allNoise);
 		return allNoise.includes("T");
+	}
+
+<<<<<<< HEAD
+function checkForAnamoly(){
+	//console.log(selectedPoints);
+	//console.log()
+	//allPoints = d3.select(".svg2")[0][0] == null ? d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum()) : selectedPoints;
+	//allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
+	//console.log(lines);
+	//allPoints = d3.select(".copy1").datum();
+	//console.log(allPoints);
+	if (d3.select(".svg2")[0][0] == null){
+	lines = new getPoints();
+	}
+	allNoise= d3.select(".svg2")[0][0] == null ? lines.noise : selectedPoints;
 	console.log('noise function',allNoise);
 	return allNoise.includes("T");
-},
+};
 
-pushBorder: function()  {
+function pushBorder()  {
 	d3.select(".border")
 	.transition()
 	.duration(500)
@@ -187,23 +212,25 @@ pushBorder: function()  {
 	.duration(500)
 	.attr("rx",20)
 	.attr("ry",20);
-},
+}
 
-pressed: function(buttonTitle, type){
-	general.pushBorder();
+function pressed(buttonTitle, type){
+	console.log('button title', buttonTitle);
+	//console.log(d3.select(".svg2")[0][0]);
+	pushBorder();
 	if (d3.select(".svg2")[0][0] != null){
 		var linesOnDisplay = d3.selectAll("#lineCopy");
 		linesOnDisplay.remove();
-		general.addCopy();
+		addCopy();
 		//addBrush();
 		submitButton = d3.select(".submitButton")
 			.on("mousedown",feedBack);
 	}
 	else{
-		general.feedBack(buttonTitle, type);
+		feedBack(buttonTitle, type);
 	}
-},
-feedBack:function(buttonTitle, type){
+};
+function feedBack(buttonTitle, type){
 	var isPresent = checkForAnamoly();
 	var linesOnDisplay = d3.selectAll("#lineCopy");
 		linesOnDisplay.remove();
@@ -215,10 +242,9 @@ feedBack:function(buttonTitle, type){
 		console.log('post id in experiment', postId);
 		console.log('this is pageID', pageId);
 	socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
-},
 
-
-getPoints:function(){
+}
+function getPoints(){
 	var line1 = d3.select(".line1").datum().map(function(a) {return [a.value, a.noise];});
 	var line2 = d3.select(".line2").datum().map(function(a) {return [a.value, a.noise];});
 	var line3 = d3.select(".line3").datum().map(function(a) {return [a.value, a.noise];});
@@ -230,10 +256,10 @@ getPoints:function(){
 	this.noise2 = line2.map(function(a){return a[1]});
 	this.noise3 = line3.map(function(a){return a[1]});
 	//console.log(this.noise);
-},
-addCopy:function(){
+}
+function addCopy(){
 
-	lines = new general.getPoints();
+	lines = new getPoints();
 	points1 = lines.points1;
 	points2 = lines.points2;
 	points3 = lines.points3;
@@ -274,6 +300,9 @@ addCopy:function(){
 		.attr("class","line3 copy3")
 		.attr("id","lineCopy")
 		.attr("d",copy3);
-	}
 };
 
+=======
+	
+};
+>>>>>>> 06b294cfeb1728c45a41a451e305ff5b09e45bca

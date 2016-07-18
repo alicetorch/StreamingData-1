@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: General.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: General.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+* Contains functions that are used by all experiment modules. This includes recording button events and checking for anamolies.
+*@module general 
+*{@link generalModule}
+*@nameSpace generalModule 
+*/ 
+
+var socket;
+
+
+
+/**
+*module representing the pageId 
+*@module general
+*@global
+*@type string
+*/
+
+exports.pageId; 
+
+var data = {};
+ 
+
+module.exports = {
+	/** Test to see if the module is loaded
+	*@memberof generalModule
+	*@function test
+	*/
+	test : function(){
+		console.log("General.js can be used here");
+	},
+	/** releases next botton and ends timer at the end of the experiment 
+	*@memberof generalModule
+	*@function validate 
+	*/
+	validate: function () {
+		experimentr.endTimer(exports.pageId);
+		experimentr.release();
+	},
+	/** Adds visual cues that interaction has been detected
+	*@memberof generalModule
+	*@function pushBorder
+	*/
+	pushBorder: function(){
+		d3.select(".border")
+		.transition()
+		.duration(500)
+		.attr("rx",70)
+		.attr("ry",70)
+		.transition()
+		.duration(500)
+		.attr("rx",20)
+		.attr("ry",20);
+	},
+	/** Sends interaction information to backend on button pressed 
+	*@memberof generalModule
+	*@function pressed
+	*@param {string}  buttonTitle
+	*@param {string}  type
+	*/
+	pressed:function(buttonTitle, type){
+		general.pushBorder();
+		var isPresent = general.checkForAnamoly();
+		console.log(exports.pageId);
+		timePressed = experimentr.now(exports.pageId);
+		timestamp = new Date().getTime();
+		var postId = experimentr.postId();
+		
+
+		data["interactionType"] = type;
+		data["buttonTitle"] = buttonTitle;
+		data["timePressed"] = timePressed;
+		data["postId"] = postId; 
+		data["timestamp"] = timestamp;
+		data["AnomalyPresent"] = isPresent;
+		data["pageId"] = exports.pageId;
+		experimentr.addData(data);
+		console.log(data);
+		
+		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
+	},
+	/** 
+	*Checks to see if the spacebar or the enter key has been pressed
+	*@memberof generalModule
+	*@function checkKeyPressed
+	*@param {event} e 
+	*/
+	checkKeyPressed: function(e) {
+		if (e.keyCode == "13" || e.keyCode == "32") {
+			pressed(e.keyCode, "key");
+			console.log('key pressed')
+		}
+	},
+	/** Sets the page ID in this module
+	*@memberof generalModule
+	*@function setPageVars
+	*@param {string} pageId 
+	*/
+	setPageVars: function(pageId){ 
+		exports.pageId=pageId;
+		console.log('pageId are set', exports.pageId);
+	},
+	/** Connects websockets to record user mouse movements
+	*@memberof generalModule
+	*@function connectSockets
+	*/
+	connectSockets: function(){
+		socket = io.connect();
+		socket.on('connect',function() {
+			console.log('Client has connected to the server!');
+		});
+		document.onmousemove = experimentr.sendMouseMovement;
+	},
+	/** Creates and initializes a countdown clock 
+	*@memberof generalModule
+	*@function countdown
+	*@param {string} elementName
+	*@param {integer} minutes 
+	*@param {integer} seconds
+	*/
+	countdown: function( elementName, minutes, seconds ){
+		var element, endTime, hours, mins, msLeft, time;
+		
+		function twoDigits( n )
+		{
+			return (n &lt;= 9 ? "0" + n : n);
+		}
+		
+		function updateTimer()
+		{
+			msLeft = endTime - (+new Date);
+			if ( msLeft &lt; 1000 ) {
+				element.innerHTML = "countdown's over!";
+				Mousetrap.reset();
+				// document.onmousemove = experimentr.stopMouseMovementRec;
+				general.pressed('next-button', "button");
+				// socket.emit('disconnect');
+			} else {
+				time = new Date( msLeft );
+				hours = time.getUTCHours();
+				mins = time.getUTCMinutes();
+				element.innerHTML = (hours ? hours + ':' + twoDigits( mins ) : mins) + ':' + twoDigits( time.getUTCSeconds() );
+				setTimeout( updateTimer, time.getUTCMilliseconds() + 500 );
+			}
+		}
+		
+		element = document.getElementById( elementName );
+		endTime = (+new Date) + 1000 * (60*minutes + seconds) + 500;
+		updateTimer();
+	},
+	/** Selects currently visible data and checks if an anamoly exists
+	*@memberof generalModule
+	*@function checkForAnamoly
+	*@returns {boolean} If anamoly is present boolean is true
+	*/
+	checkForAnamoly: function(){
+		allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
+		allNoise= allPoints.map(function(a) {return a.noise;});
+		console.log('noise function',allNoise);
+		return allNoise.includes("T");
+	}
+	
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-conditionComponents.html">conditionComponents</a></li><li><a href="module-d1.html">d1</a></li><li><a href="module-general.html">general</a></li></ul><h3>Namespaces</h3><ul><li><a href="ComponentsModule.html">ComponentsModule</a></li><li><a href="generalModule.html">generalModule</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Jul 06 2016 11:20:20 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

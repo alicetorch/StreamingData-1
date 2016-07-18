@@ -31,6 +31,7 @@ var mouseLocation = [];
 var save = function save(d) {
   console.log ('in save')
 
+  console.log(d)
   console.log('pageId in save', d.pageId);
   var stringD = JSON.stringify(d);
 
@@ -44,7 +45,8 @@ var save = function save(d) {
 var app = express()
 app.use(express.bodyParser())
 app.use(express.static(__dirname + '/public'))
-app.use('/scripts', express.static(__dirname + '/node_modules/'));
+app.use('/scripts', express.static(__dirname + '/node_modules/'))
+app.use('/docs', express.static(__dirname +'/out/'));
 
 // If the study has finished, write the data to file
 app.post('/finish', function(req, res) {
@@ -82,7 +84,7 @@ function handleCollectedDataPost(postId , pageId){
 app.post('/', function handlePost(req, res) {
   // Get experiment data from request body
   var d = req.body
-  console.log('backend post: ', d.postId);
+  console.log('backend post: ', d);
   // If a postId doesn't exist, add one (it's random, based on date)
   if (!d.postId) d.postId = (+new Date()).toString(36)
   // Add a timestamp
@@ -103,13 +105,13 @@ var server = http.createServer(app).listen(port, function (err) {
 server.listen(socketPort)
 
 io.listen(server).on('connection', function (socket) {
+  console.log("connection established");
   socket.on('mouseMove', function (msg) {
-    
     mouseLocation.push({'timestamp': msg.timestamp, 'X': msg.mouseX, 'Y': msg.mouseY})
   });
 
   socket.on('disconnect', function(){
-    console.log('disconnected');
+    console.log(' connection disconnected');
   })
 
   socket.on('mouseClick', function(msg){

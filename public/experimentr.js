@@ -58,6 +58,7 @@ experimentr.stopMouseMovementRec = function(event){
     init();
     current = 0;
     activate(current);
+    console.log('IN START')
     experimentr.startTimer('experiment');
   };
 
@@ -99,6 +100,8 @@ experimentr.stopMouseMovementRec = function(event){
   experimentr.next = function() {
     experimentr.clearNext();
     experimentr.showNext();
+    console.log('next')
+    Mousetrap.reset();
     current = current + 1;
     activate(current);
   }
@@ -110,10 +113,26 @@ experimentr.stopMouseMovementRec = function(event){
 
   // Adds the data in `d` to the experiment data, and saves to server.
   experimentr.addData = function(d) {
-    merge(data, d);
+    savePostId= experimentr.postId();
+    startTime = data.time_start_experiment
+    console.log("post id in addData"+ savePostId)
+    if (typeof(d) != "undefined"){
+      console.log("in if");
+      console.log(experimentr.postId);
+      experimentr.merge(d);
+      console.log(data);
+    }
+
     experimentr.save();
+    console.log(" about to save" + data )
+    data ={};
+    data.postId=savePostId;
+    data.time_start_experiment = startTime
   }
 
+  experimentr.setPageType = function(pageType){
+    data['pageId'] = pageType;
+  }
 
   // The HTTP POST code for saving experiment data.
   experimentr.save = function(d) {
@@ -125,14 +144,33 @@ experimentr.stopMouseMovementRec = function(event){
   }
 
   // Merges object o2 into o1.
-  function merge(o1, o2) {
-    for (var attr in o2) { o1[attr] = o2[attr]; }
+  experimentr.merge = function (o2) {
+    savePostId = experimentr.postId();
+    console.log(savePostId);
+
+    for (var attr in o2) {
+    console.log("merge data"+ data)
+    data[attr] = o2[attr];
+    console.log("merge data"+ data) }
+
+    data.postId = savePostId
+
+  }
+
+  function concatenate(o1, o2){
+    o1.concat(o2);
   }
 
   // Enables the Next button so the user can proceed in the experiment.
   experimentr.release = function() {
     d3.select('#next-button').attr('disabled', null);
 
+  }
+
+   experimentr.now = function(x){
+    var timeNow = Date.now();
+    var timeSinceStart = timeNow - parseFloat(data['time_start_'+x]);
+    return(timeSinceStart);
   }
 
   // On some multi-part modules, it is helpful to hide the next button until it is needed.
@@ -195,13 +233,21 @@ experimentr.stopMouseMovementRec = function(event){
     return(timeSinceStart);
   }
 
+
   // End an existing timer (using a String key)
   // TODO throw an error if a start wasn't called.
   experimentr.endTimer = function(x) {
     console.log('ending timer: '+x);
     data['time_end_'+x] = Date.now();
     data['time_diff_'+x] = parseFloat(data['time_end_'+x]) - parseFloat(data['time_start_'+x]);
-    experimentr.save();
+
+    if (x == 'experiment'){
+      console.log('x equals experiment');
+      data.pageId = "totalExperimentTime";
+    }
+
+    console.log("in end timer", data)
+    experimentr.addData();
   }
 
   // attachTimer lets you show participants a visual countdown before advancing the experiment.

@@ -10,6 +10,7 @@
 <script src = "/scripts/socket.io-client/socket.io.js"></script>
 <script src = "/scripts/d3-queue/build/d3-queue.js"></script>
 <script src = "/scripts/mousetrap/mousetrap.min.js"></script>
+<script sr ="/scripts/rsvp/lib/rsvp.js"></script>
 
 
 <link rel="stylesheet" type="text/css" href="css/main.css" />
@@ -19,9 +20,9 @@
 
 <script>
 experimentr.sequence([	
-  //'modules/consent/',
-  //'modules/tutorial/',
-  'modules/conditions/d2/spd1',
+  'modules/consent/',
+  'modules/tutorial/',
+  'modules/conditions/d1/spd1',
   'modules/nasa-tlx',
   'modules/demographics',
   'modules/debrief/'

@@ -93,8 +93,8 @@ Very Low<input type="range" name ="frustration" min="0.0" max="1.0" value="0" st
       data.effort && data.frustration) {
 
         grade(data);
+        experimentr.merge(data);
         experimentr.endTimer('nasatlx');
-        experimentr.addData(data);
         experimentr.release();
 
     }
