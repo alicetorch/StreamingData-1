@@ -25,7 +25,7 @@ y = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height/3, 0]);
 
- y2 = d3.scale.linear()
+y2 = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height*2/3, height/3]);
 
@@ -39,12 +39,13 @@ var selectedPoints=[];
 module.exports = {
 	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs
 	*@memberof ComponentsModule
+	*@function createGraphViewer
 	*/ 
 	createGraphViewer:function(className){
 		brush = d3.svg.brush()
-			.x(x)
-			.on("brushend",component.brushed);
-	
+		.x(x)
+		.on("brushend",component.brushed);
+
 		general.test();
 
 		d3.select("#"+className)
@@ -57,60 +58,62 @@ module.exports = {
 		.on('click',function(){
 			general.pressed(d3.select(this).attr('id') , "button");
 			console.log(' research button pressed'+ d3.select(this).attr('id'));
-			});
-			
+		});
+
 		var svgContainer = d3.select("#"+className).append("svg")
-			.attr("width", 1500)
-			.attr("height", 500);
+		.attr("width", 1500)
+		.attr("height", 500);
 
 		var xAxis=d3.svg.axis().scale(x).orient("bottom");
 
 		svg1 = svgContainer.append("g")
-			.attr("class","svg1")
-			.attr("transform", "translate(" +40+ "," + 20 + ")");
-	
+		.attr("class","svg1")
+		.attr("transform", "translate(" +40+ "," + 20 + ")");
+
 		svg1.append("g")
-			.attr("class","x axis")
-			.attr("transform","translate(0," + y(0)+")")
-			.call(xAxis);
+		.attr("class","x axis")
+		.attr("transform","translate(0," + y(0)+")")
+		.call(xAxis);
 
 		svg1.append("defs").append("clipPath")
-			.attr("id","clip")
-			.append("rect")
-			.attr("width",width)
-			.attr("height",height+500);
+		.attr("id","clip")
+		.append("rect")
+		.attr("width",width)
+		.attr("height",height+500);
 
 		svg1.append("defs").append("clipPath")
-			.attr("id","clip2")
-			.append("rect")
-			.attr("transform","translate(0,0)")
-			.attr("width",width)
-			.attr("height",height+500);
+		.attr("id","clip2")
+		.append("rect")
+		.attr("transform","translate(0,0)")
+		.attr("width",width)
+		.attr("height",height+500);
 
 		svg1.append("g")
-			.attr("class", "x axis")
-			.attr("transform", "translate(0," + y2(0) + ")")
-			.call(xAxis);
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + y2(0) + ")")
+		.call(xAxis);
 
 		svg1.append("g")
-			.attr("class", "x axis")
-			.attr("transform", "translate(0," + y3(0) + ")")
-			.call(xAxis);
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + y3(0) + ")")
+		.call(xAxis);
 
 		var borderPath = svg1.append("rect")
-			.attr("class","border")
-			.attr("x",0)
-			.attr("y",0)
-			.attr("width",width)
-			.attr("height",height)
-			.style("stroke","#A4A4A4")
-			.style("fill","none")
-			.style("stroke-width",3)
-			.attr("rx",20)
-			.attr("ry",20);
+		.attr("class","border")
+		.attr("x",0)
+		.attr("y",0)
+		.attr("width",width)
+		.attr("height",height)
+		.style("stroke","#A4A4A4")
+		.style("fill","none")
+		.style("stroke-width",3)
+		.attr("rx",20)
+		.attr("ry",20);
 	},
+
 	/** Imports data files and adds lines to the graph container 
 	*@memberof ComponentsModule
+	*@function addGraph
 	*/
 	addGraph:function(className, dataPath1, dataPath2, dataPath3, duration){
 		var q = d3.queue();
@@ -127,9 +130,9 @@ module.exports = {
 			var disData2 = data2.slice(0,n);
 			var disData3 = data3.slice(0,n);
 			
-		 	data1.splice(0,n);
+			data1.splice(0,n);
 			data2.splice(0,n);
-		 	data3.splice(0,n);
+			data3.splice(0,n);
 
 			var line1  = d3.svg.line()
 			.x(function(d,i){return x(i);})
@@ -147,25 +150,25 @@ module.exports = {
 			.interpolate("basis");
 
 			var path1 =svg1.append("g")
-				.attr("clip-path","url(#clip)")
-				.append("path")
-				.datum(disData1)
-				.attr("class","line1")
-				.attr("d",line1);
+			.attr("clip-path","url(#clip)")
+			.append("path")
+			.datum(disData1)
+			.attr("class","line1")
+			.attr("d",line1);
 
 			var path2 = svg1.append("g")
-				.attr("clip-path","url(#clip)")
-				.append("path")
-				.datum(disData2)
-				.attr("class","line2")
-				.attr("d",line2);
+			.attr("clip-path","url(#clip)")
+			.append("path")
+			.datum(disData2)
+			.attr("class","line2")
+			.attr("d",line2);
 
 			var path3= svg1.append("g")
-				.attr("clip-path","url(#clip)")
-				.append("path")
-				.datum(disData3)
-				.attr("class","line3")
-				.attr("d",line3);
+			.attr("clip-path","url(#clip)")
+			.append("path")
+			.datum(disData3)
+			.attr("class","line3")
+			.attr("d",line3);
 
 			tick();
 
@@ -217,8 +220,12 @@ module.exports = {
 
 			};
 		};
-},
-
+	},
+/** Creates the view for selected data for the view to analyze
+*@memberof ComponentsModule
+*@function createCopyViewer
+*@param {string} className
+*/
 createCopyViewer:function(className){
 	d3.select("#button1").remove();
 	var xAxis=d3.svg.axis().scale(x).orient("bottom");
@@ -277,15 +284,23 @@ createCopyViewer:function(className){
 
 },
 
+/** creates brush component for user graph analysis
+*@memberof ComponentsModule
+*@function addBrush
+*/
 addBrush:function(){
 	console.log("add Brush called")
 	svg2.append("g")
-		.attr("class","brush")
-		.call(brush)
-		.selectAll("rect")
-		.attr("height",height);
+	.attr("class","brush")
+	.call(brush)
+	.selectAll("rect")
+	.attr("height",height);
 },
 
+/*Creates an array of data selected by brush component
+*@memberof ComponentsModule
+*@function brushed
+*/
 brushed:function(){
 	var extent = brush.extent();
 	var min = Math.round(extent[0]);
@@ -295,7 +310,12 @@ brushed:function(){
 		selectedPoints = lines.noise1.slice(min,max).concat(lines.noise2.slice(min,max)).concat(lines.noise3.slice(min,max));
 		console.log('in create components: selected Points = ',selectedPoints);
 	}
-	},
+},
+
+/** a getter method for the selected points from brush for the General module
+*@memberof ComponentsModule
+*@function getSelected
+*/
 getSelected: function(){
 	return selectedPoints;
 }
