@@ -70,6 +70,7 @@ pressed:function(buttonTitle, type){
 		
 		if (d3.select(".svg2")[0][0] != null){
 			var linesOnDisplay = d3.selectAll("#lineCopy");
+			d3.selectAll(".brush").remove();
 			linesOnDisplay.remove();
 			general.addCopy();
 			component.addBrush();

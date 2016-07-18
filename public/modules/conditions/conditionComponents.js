@@ -35,7 +35,7 @@ y3 = d3.scale.linear()
 
 var selectedPoints=[];
 
-var brush; 
+
 module.exports = {
 	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs
 	*@memberof ComponentsModule
