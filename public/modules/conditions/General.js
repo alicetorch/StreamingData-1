@@ -8,10 +8,9 @@ function validate() {
 	experimentr.release();
 };
 function checkKeyPressed(e) {
-	if (e.keyCode == "13" || e.keyCode == "32") {
-		pressed(e.keyCode, "key");
-
-	}
+		if (e.keyCode == "13" || e.keyCode == "32") {
+			pressed(e.keyCode, "key");
+		}
 };
 
 var socket, pageId; 
@@ -62,8 +61,17 @@ function countdown( elementName, minutes, seconds ){
 
 
 function checkForAnamoly(){
-	allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
-	allNoise= allPoints.map(function(a) {return a.noise;});
+	//console.log(selectedPoints);
+	//console.log()
+	//allPoints = d3.select(".svg2")[0][0] == null ? d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum()) : selectedPoints;
+	//allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
+	//console.log(lines);
+	//allPoints = d3.select(".copy1").datum();
+	//console.log(allPoints);
+	if (d3.select(".svg2")[0][0] == null){
+	lines = new getPoints();
+	}
+	allNoise= d3.select(".svg2")[0][0] == null ? lines.noise : selectedPoints;
 	console.log('noise function',allNoise);
 	return allNoise.includes("T");
 };
@@ -82,55 +90,80 @@ function pushBorder()  {
 
 function pressed(buttonTitle, type){
 	console.log('button title', buttonTitle);
-	console.log(d3.select(".svg2")[0][0]);
+	//console.log(d3.select(".svg2")[0][0]);
 	pushBorder();
 	if (d3.select(".svg2")[0][0] != null){
-		var lines = d3.selectAll("#lineCopy");
-		lines.remove();
+		var linesOnDisplay = d3.selectAll("#lineCopy");
+		linesOnDisplay.remove();
 		addCopy();
+		//addBrush();
+		submitButton = d3.select(".submitButton")
+			.on("mousedown",feedBack);
 	}
+	else{
+		feedBack(buttonTitle, type);
+	}
+};
+function feedBack(buttonTitle, type){
 	var isPresent = checkForAnamoly();
+	var linesOnDisplay = d3.selectAll("#lineCopy");
+		linesOnDisplay.remove();
+	d3.select(".brush").call(brush.clear());
 	console.log('is anomolyPresent' + isPresent); 
-
 	var timePressed = experimentr.now(className);
 	timestamp = new Date().getTime();
 	var postId = experimentr.postId();
 		console.log('post id in experiment', postId);
 		console.log('this is pageID', pageId);
 	socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
-};
+
+}
+function getPoints(){
+	var line1 = d3.select(".line1").datum().map(function(a) {return [a.value, a.noise];});
+	var line2 = d3.select(".line2").datum().map(function(a) {return [a.value, a.noise];});
+	var line3 = d3.select(".line3").datum().map(function(a) {return [a.value, a.noise];});
+	this.points1 = line1.map(function(a){return a[0]});
+	this.points2 = line2.map(function(a){return a[0]});
+	this.points3 = line3.map(function(a){return a[0]});
+	this.noise = line1.map(function(a){return a[1]}).concat(line2.map(function(a){return a[1]}).concat(line3.map(function(a){return a[1]})));
+	this.noise1 = line1.map(function(a){return a[1]});
+	this.noise2 = line2.map(function(a){return a[1]});
+	this.noise3 = line3.map(function(a){return a[1]});
+	//console.log(this.noise);
+}
 function addCopy(){
-  	points1 = d3.select(".line1").datum();
-	points2 = d3.select(".line2").datum();
-	points3 = d3.select(".line3").datum();
+
+	lines = new getPoints();
+	points1 = lines.points1;
+	points2 = lines.points2;
+	points3 = lines.points3;
 	var copy1  = d3.svg.line()
 		.x(function(d,i){return x(i);})
-		.y(function(d){ return  y(parseFloat(d.value));})
+		.y(function(d){ return  y(parseFloat(d));})
 		.interpolate("basis");
 
 	var copy2 = d3.svg.line()
 		.x(function(d,i){return x(i);})
-		.y(function(d){ return  y2(parseFloat(d.value));})
+		.y(function(d){ return  y2(parseFloat(d));})
 		.interpolate("basis");
 
 	var copy3 = d3.svg.line()
 		.x(function(d,i){return x(i);})
-		.y(function(d){ return  y3(parseFloat(d.value));})
+		.y(function(d){ return  y3(parseFloat(d));})
 		.interpolate("basis");
 
 	var copyPath1 =svg2.append("g")
 		.attr("clip-path","url(#clip)")
 		.append("path")
 		.datum(points1)
-		.attr("class","line1")
+		.attr("class","line1 copy1")
 		.attr("id","lineCopy")
 		.attr("d",copy1);
-
 	var copyPath2 = svg2.append("g")
 		.attr("clip-path","url(#clip)")
 		.append("path")
 		.datum(points2)
-		.attr("class","line2")
+		.attr("class","line2 copy2")
 		.attr("id","lineCopy")
 		.attr("d",copy2);
 
@@ -138,7 +171,7 @@ function addCopy(){
 		.attr("clip-path","url(#clip)")
 		.append("path")
 		.datum(points3)
-		.attr("class","line3")
+		.attr("class","line3 copy3")
 		.attr("id","lineCopy")
 		.attr("d",copy3);
 };

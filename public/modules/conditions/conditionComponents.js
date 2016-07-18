@@ -29,24 +29,10 @@ console.log('components.js are loaded');
 	.attr("width", 1500)
 	.attr("height", 500);
 
+	var brush = d3.svg.brush()
+		.x(x)
+		.on("brushend",brushed);
 function createGraphViewer(){
-
-
-	d3.select("#"+className)
-	.append('div')
-	.attr('id', 'test-buttons')
-	.append("button")
-	.text('Anomaly Detected')
-	.attr('id', 'button1')
-	.attr('name','researchButton')
-	.on('click',function(){
-		pressed(d3.select(this).attr('id') , "button");
-		console.log(' research button pressed');
-	});
-
-
-
-
 
 	var xAxis=d3.svg.axis().scale(x).orient("bottom");
 
@@ -111,8 +97,11 @@ function addGraph(){
 
 
 		 var disData1 = data1.slice(0,n);
-		 var disData2 = data2.slice(0,90);
+		 var disData2 = data2.slice(0,n);
 		 var disData3 = data3.slice(0,n);
+		 data1.splice(0,n);
+		 data2.splice(0,n);
+		 data3.splice(0,n);
 
 		var line1  = d3.svg.line()
 		.x(function(d,i){return x(i);})
@@ -248,15 +237,36 @@ function createCopyViewer(){
 	.style("stroke-width",3)
 	.attr("rx",20)
 	.attr("ry",20);
-
+	
+	var submitButton = d3.select("#"+className)
+	.append("button")
+	.text('submit')
+	.attr('class', 'submitButton')
+	.attr('name','researchButton');
+	
+	/*var cancelButton = d3.select("#"+className)
+	.append("button")
+	.text('cancel')
+	.attr('class', 'cancelButton')
+	.attr('name','researchButton');
+	//console.log(submitButton);*/
 }
 
 function addBrush(){
-	var brush = d3.svg.brush()
-		.x(x);
 	svg2.append("g")
 		.attr("class","brush")
 		.call(brush)
 		.selectAll("rect")
 		.attr("height",height);
+}
+
+function brushed(){
+	var extent = brush.extent();
+	var min = Math.round(extent[0]);
+	var max = Math.round(extent[1]);
+	console.log("min"+ min+ "max" + max);
+	if (d3.select(".copy3")[0][0] != null){
+		selectedPoints = lines.noise1.slice(min,max).concat(lines.noise2.slice(min,max)).concat(lines.noise3.slice(min,max));
+		//console.log(selectedPoints);
+	}
 }
