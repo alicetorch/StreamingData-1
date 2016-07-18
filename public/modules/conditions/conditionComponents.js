@@ -39,7 +39,7 @@ module.exports = {
 	createGraphViewer:function(className){
 		var brush = d3.svg.brush()
 			.x(x)
-			.on("brushend",brushed);
+			.on("brushend",component.brushed);
 		
 		general.test();
 

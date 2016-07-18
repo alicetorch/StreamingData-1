@@ -321,7 +321,7 @@ module.exports = {
 	createGraphViewer:function(className){
 		var brush = d3.svg.brush()
 			.x(x)
-			.on("brushend",brushed);
+			.on("brushend",component.brushed);
 		
 		general.test();
 
@@ -613,7 +613,7 @@ init = function(){
 		experimentr.startTimer(className);
 		general.setPageVars(className);
 		component.createGraphViewer(className);
-		component.creatCopyViewer();
+		component.createCopyViewer();
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 
