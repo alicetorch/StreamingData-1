@@ -17,7 +17,6 @@ var socket;
 */
 exports.pageId; 
 var interactionGroup = [];
-var interaction = {}
 data = {};
 
 module.exports = {
@@ -75,6 +74,8 @@ module.exports = {
 			submitButton = d3.select(".submitButton")
 			.on("mousedown", function (){
 				general.feedBack("submit", "button");
+				d3.select(".brush").call(brush.clear());
+
 			})
 		}else{
 			general.feedBack(buttonTitle, type);
@@ -176,7 +177,6 @@ module.exports = {
 	feedBack:function(buttonTitle, type){
 		var interaction = {}; 
 		var isPresent = general.checkForAnamoly();
-		d3.select(".brush").call(brush.clear());
 		console.log("is Anomoly present?", isPresent);
 		console.log('pressed page id', exports.pageId);
 		timePressed = experimentr.now(exports.pageId);
@@ -369,6 +369,11 @@ module.exports = {
 		.attr("rx",20)
 		.attr("ry",20);
 	},
+	/** Adds the button for condition one based on className
+	*@memberof ComponentsModule
+	*@function addAnomalyButton
+	*@param {string} className
+	*/
 	addAnomalyButton:function(className){
 		d3.select("#"+className)
 		.append('div')
@@ -507,7 +512,7 @@ createCopyViewer:function(className){
 	
 	var svgContainer = d3.select("svg")
 	
-	svg2	= svgContainer.append("g")
+	svg2 = svgContainer.append("g")
 	.attr("class","svg2")
 	.attr("transform", "translate(" +650+ "," + 20 + ")");
 	
@@ -641,7 +646,7 @@ init = function(){
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 
-	general.countdown( "countdown", 1, 0 );
+	general.countdown( "countdown", 5, 0 );
 	
 }();
 
