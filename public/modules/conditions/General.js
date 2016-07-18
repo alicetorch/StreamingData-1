@@ -16,8 +16,8 @@ var socket;
 */
 
 exports.pageId; 
-
 var interactionGroup = [];
+var interaction = {}
 data = {};
 
 module.exports = {
@@ -63,7 +63,7 @@ module.exports = {
 	*@param {string}  buttonTitle
 	*@param {string}  type
 	*/
-	pressed:function(buttonTitle, type){
+pressed:function(buttonTitle, type){
 	
 		var interaction = {}; 
 		general.pushBorder();
@@ -75,34 +75,13 @@ module.exports = {
 			general.addCopy();
 			component.addBrush();
 			submitButton = d3.select(".submitButton")
-			.on("mousedown",general.feedBack);
-			}
-		else{
+			.on("mousedown", function (){
+				general.feedBack("submit", "button");
+				})
+		}else{
 			general.feedBack(buttonTitle, type);
 		}
 		
-		var isPresent = general.checkForAnamoly();
-		console.log('pressed page id', exports.pageId);
-		timePressed = experimentr.now(exports.pageId);
-		timestamp = new Date().getTime();
-		var postId = experimentr.postId();
-
-		
-		console.log("button title", buttonTitle)
-		interaction.interactionType = type;
-		interaction. buttonTitle = buttonTitle;
-		interaction.timePressed = timePressed;
-		interaction. postId = postId; 
-		interaction.timestamp = timestamp;
-		interaction.AnomalyPresent = isPresent;
-		interaction.pageId = exports.pageId;
-		console.log("interaction", interaction)
-		console.log("before push")
-		console.log(interactionGroup)
-		interactionGroup.push(interaction);
-		console.log("after push")
-		console.log(interactionGroup)
-
 		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, f: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
 	/** 
@@ -180,13 +159,13 @@ module.exports = {
 	*@function checkForAnamoly
 	*@returns {boolean} If anamoly is present boolean is true
 	*/
-	checkForAnamoly: function(){
-
+checkForAnamoly: function(){
+	selectedPoints = component.getSelected();
 	if (d3.select(".svg2")[0][0] == null){
 	lines = new general.getPoints();
 	}
-	allNoise= d3.select(".svg2")[0][0] == null ? lines.noise : exports.selectedPoints;
-		console.log('selected points from general = '+exports.selectedPoints)
+	allNoise= d3.select(".svg2")[0][0] == null ? lines.noise : selectedPoints;
+		console.log('selected points from general = '+selectedPoints)
 		console.log('noise function',allNoise);
 		return allNoise.includes("T");
 	console.log('noise function',allNoise);
@@ -205,19 +184,31 @@ pushBorder: function()  {
 	.attr("ry",20);
 },
 
-
 feedBack:function(buttonTitle, type){
-	var isPresent = checkForAnamoly();
-	var linesOnDisplay = d3.selectAll("#lineCopy");
-		linesOnDisplay.remove();
+	var isPresent = general.checkForAnamoly();
 	d3.select(".brush").call(brush.clear());
-	console.log('is anomolyPresent' + isPresent); 
-	var timePressed = experimentr.now(className);
-	timestamp = new Date().getTime();
-	var postId = experimentr.postId();
-		console.log('post id in experiment', postId);
-		console.log('this is pageID', pageId);
-	socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, postId: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:pageId});
+	console.log("is Anomoly present?", isPresent);
+		console.log('pressed page id', exports.pageId);
+		timePressed = experimentr.now(exports.pageId);
+		timestamp = new Date().getTime();
+		var postId = experimentr.postId();
+
+		
+		console.log("button title", buttonTitle)
+		interaction.interactionType = type;
+		interaction. buttonTitle = buttonTitle;
+		interaction.timePressed = timePressed;
+		interaction. postId = postId; 
+		interaction.timestamp = timestamp;
+		interaction.AnomalyPresent = isPresent;
+		interaction.pageId = exports.pageId;
+		console.log("interaction", interaction)
+		console.log("before push")
+		console.log(interactionGroup)
+		interactionGroup.push(interaction);
+		console.log("after push")
+		console.log(interactionGroup)
+
 },
 
 

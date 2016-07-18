@@ -33,7 +33,7 @@ y3 = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height, height*2/3]);
 
-exports.selectedPoints;
+var selectedPoints=[];
 
 var brush; 
 module.exports = {
@@ -291,8 +291,11 @@ brushed:function(){
 	var max = Math.round(extent[1]);
 	console.log("min"+ min+ "max" + max);
 	if (d3.select(".copy3")[0][0] != null){
-		exports.selectedPoints = lines.noise1.slice(min,max).concat(lines.noise2.slice(min,max)).concat(lines.noise3.slice(min,max));
-		console.log('in create components: selected Points = ',exports.selectedPoints);
+		selectedPoints = lines.noise1.slice(min,max).concat(lines.noise2.slice(min,max)).concat(lines.noise3.slice(min,max));
+		console.log('in create components: selected Points = ',selectedPoints);
 	}
-	}
-};
+	},
+getSelected: function(){
+	return selectedPoints;
+}
+}
