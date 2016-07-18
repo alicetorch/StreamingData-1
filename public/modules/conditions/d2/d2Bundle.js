@@ -497,8 +497,10 @@ module.exports = {
 		};
 },
 
-createCopyViewer:function(){
+createCopyViewer:function(className){
 	var xAxis=d3.svg.axis().scale(x).orient("bottom");
+	
+	var svgContainer = d3.select("svg")
 	
 	svg2	= svgContainer.append("g")
 	.attr("class","svg2")
@@ -613,7 +615,7 @@ init = function(){
 		experimentr.startTimer(className);
 		general.setPageVars(className);
 		component.createGraphViewer(className);
-		component.createCopyViewer();
+		component.createCopyViewer(className);
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 

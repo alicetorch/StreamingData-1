@@ -32,7 +32,7 @@ init = function(){
 		experimentr.startTimer(className);
 		general.setPageVars(className);
 		component.createGraphViewer(className);
-		component.createCopyViewer();
+		component.createCopyViewer(className);
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 

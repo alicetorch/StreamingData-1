@@ -215,8 +215,10 @@ module.exports = {
 		};
 },
 
-createCopyViewer:function(){
+createCopyViewer:function(className){
 	var xAxis=d3.svg.axis().scale(x).orient("bottom");
+	
+	var svgContainer = d3.select("svg")
 	
 	svg2	= svgContainer.append("g")
 	.attr("class","svg2")
