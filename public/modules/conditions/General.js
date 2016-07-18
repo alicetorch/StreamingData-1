@@ -65,7 +65,6 @@ module.exports = {
 	*/
 pressed:function(buttonTitle, type){
 	
-		var interaction = {}; 
 		general.pushBorder();
 		
 		
@@ -185,6 +184,7 @@ pushBorder: function()  {
 },
 
 feedBack:function(buttonTitle, type){
+	var interaction = {}; 
 	var isPresent = general.checkForAnamoly();
 	d3.select(".brush").call(brush.clear());
 	console.log("is Anomoly present?", isPresent);

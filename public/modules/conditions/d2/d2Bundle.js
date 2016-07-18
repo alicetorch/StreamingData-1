@@ -66,7 +66,6 @@ module.exports = {
 	*/
 pressed:function(buttonTitle, type){
 	
-		var interaction = {}; 
 		general.pushBorder();
 		
 		
@@ -186,8 +185,9 @@ pushBorder: function()  {
 },
 
 feedBack:function(buttonTitle, type){
+	var interaction = {}; 
 	var isPresent = general.checkForAnamoly();
-	d3.selectAll(".brush").call(brush.clear());
+	d3.select(".brush").call(brush.clear());
 	console.log("is Anomoly present?", isPresent);
 		console.log('pressed page id', exports.pageId);
 		timePressed = experimentr.now(exports.pageId);
@@ -310,6 +310,7 @@ y3 = d3.scale.linear()
 .range([height, height*2/3]);
 
 var selectedPoints=[];
+
 
 module.exports = {
 	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs
@@ -495,6 +496,7 @@ module.exports = {
 },
 
 createCopyViewer:function(className){
+	d3.select("#button1").remove();
 	var xAxis=d3.svg.axis().scale(x).orient("bottom");
 	
 	var svgContainer = d3.select("svg")
@@ -613,7 +615,7 @@ init = function(){
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 
-	general.countdown( "countdown", 5, 0 );
+	general.countdown( "countdown", 1, 0 );
 	
 }();
 

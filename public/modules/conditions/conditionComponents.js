@@ -220,6 +220,7 @@ module.exports = {
 },
 
 createCopyViewer:function(className){
+	d3.select("#button1").remove();
 	var xAxis=d3.svg.axis().scale(x).orient("bottom");
 	
 	var svgContainer = d3.select("svg")
