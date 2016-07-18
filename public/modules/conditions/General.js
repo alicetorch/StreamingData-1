@@ -16,7 +16,6 @@ var socket;
 */
 exports.pageId; 
 var interactionGroup = [];
-var interaction = {}
 data = {};
 
 module.exports = {
@@ -74,6 +73,8 @@ module.exports = {
 			submitButton = d3.select(".submitButton")
 			.on("mousedown", function (){
 				general.feedBack("submit", "button");
+				d3.select(".brush").call(brush.clear());
+
 			})
 		}else{
 			general.feedBack(buttonTitle, type);
@@ -175,7 +176,6 @@ module.exports = {
 	feedBack:function(buttonTitle, type){
 		var interaction = {}; 
 		var isPresent = general.checkForAnamoly();
-		d3.select(".brush").call(brush.clear());
 		console.log("is Anomoly present?", isPresent);
 		console.log('pressed page id', exports.pageId);
 		timePressed = experimentr.now(exports.pageId);

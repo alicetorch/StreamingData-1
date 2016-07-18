@@ -98,6 +98,11 @@ module.exports = {
 		.attr("rx",20)
 		.attr("ry",20);
 	},
+	/** Adds the button for condition one based on className
+	*@memberof ComponentsModule
+	*@function addAnomalyButton
+	*@param {string} className
+	*/
 	addAnomalyButton:function(className){
 		d3.select("#"+className)
 		.append('div')
@@ -236,7 +241,7 @@ createCopyViewer:function(className){
 	
 	var svgContainer = d3.select("svg")
 	
-	svg2	= svgContainer.append("g")
+	svg2 = svgContainer.append("g")
 	.attr("class","svg2")
 	.attr("transform", "translate(" +650+ "," + 20 + ")");
 	
