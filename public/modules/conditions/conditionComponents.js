@@ -44,17 +44,9 @@ module.exports = {
 	createGraphViewer:function(className){
 		general.test();
 
-		d3.select("#"+className)
-		.append('div')
-		.attr('id', 'test-buttons')
-		.append("button")
-		.text('Anomaly Detected')
-		.attr('id', 'button1')
-		.attr('name','researchButton')
-		.on('click',function(){
-			general.pressed(d3.select(this).attr('id') , "button");
-			console.log(' research button pressed'+ d3.select(this).attr('id'));
-		});
+		if(className.substring(0,2)=="d1"){
+			component.addAnomalyButton(className);
+		}
 
 		var svgContainer = d3.select("#"+className).append("svg")
 		.attr("width", 1500)
@@ -106,7 +98,19 @@ module.exports = {
 		.attr("rx",20)
 		.attr("ry",20);
 	},
-
+	addAnomalyButton:function(className){
+		d3.select("#"+className)
+		.append('div')
+		.attr('id', 'test-buttons')
+		.append("button")
+		.text('Anomaly Detected')
+		.attr('id', 'button1')
+		.attr('name','researchButton')
+		.on('click',function(){
+			general.pressed(d3.select(this).attr('id') , "button");
+			console.log(' research button pressed'+ d3.select(this).attr('id'));
+		});
+	},
 	/** Imports data files and adds lines to the graph container 
 	*@memberof ComponentsModule
 	*@function addGraph
@@ -228,7 +232,6 @@ createCopyViewer:function(className){
 		.x(x)
 		.on("brushend",component.brushed);
 
-	d3.select("#button1").remove();
 	var xAxis=d3.svg.axis().scale(x).orient("bottom");
 	
 	var svgContainer = d3.select("svg")
