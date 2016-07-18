@@ -20,27 +20,31 @@ height = 500 - margin.top - margin.bottom;
 x = d3.scale.linear()
 .domain([0,n-1])
 .range([0,width]);
-var y = d3.scale.linear()
+
+y = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height/3, 0]);
 
-var y2 = d3.scale.linear()
+ y2 = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height*2/3, height/3]);
 
-var y3 = d3.scale.linear()
+y3 = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height, height*2/3]);
-	
+
+exports.selectedPoints;
+
+var brush; 
 module.exports = {
 	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs
 	*@memberof ComponentsModule
 	*/ 
 	createGraphViewer:function(className){
-		var brush = d3.svg.brush()
+		brush = d3.svg.brush()
 			.x(x)
 			.on("brushend",component.brushed);
-		
+	
 		general.test();
 
 		d3.select("#"+className)
@@ -123,9 +127,9 @@ module.exports = {
 			var disData2 = data2.slice(0,n);
 			var disData3 = data3.slice(0,n);
 			
-		 data1.splice(0,n);
-		 data2.splice(0,n);
-		 data3.splice(0,n);
+		 	data1.splice(0,n);
+			data2.splice(0,n);
+		 	data3.splice(0,n);
 
 			var line1  = d3.svg.line()
 			.x(function(d,i){return x(i);})
@@ -142,26 +146,26 @@ module.exports = {
 			.y(function(d){ return  y3(parseFloat(d.value));})
 			.interpolate("basis");
 
-		var path1 =svg1.append("g")
-			.attr("clip-path","url(#clip)")
-			.append("path")
-			.datum(disData1)
-			.attr("class","line1")
-			.attr("d",line1);
+			var path1 =svg1.append("g")
+				.attr("clip-path","url(#clip)")
+				.append("path")
+				.datum(disData1)
+				.attr("class","line1")
+				.attr("d",line1);
 
-		var path2 = svg1.append("g")
-			.attr("clip-path","url(#clip)")
-			.append("path")
-			.datum(disData2)
-			.attr("class","line2")
-			.attr("d",line2);
+			var path2 = svg1.append("g")
+				.attr("clip-path","url(#clip)")
+				.append("path")
+				.datum(disData2)
+				.attr("class","line2")
+				.attr("d",line2);
 
-		var path3= svg1.append("g")
-			.attr("clip-path","url(#clip)")
-			.append("path")
-			.datum(disData3)
-			.attr("class","line3")
-			.attr("d",line3);
+			var path3= svg1.append("g")
+				.attr("clip-path","url(#clip)")
+				.append("path")
+				.datum(disData3)
+				.attr("class","line3")
+				.attr("d",line3);
 
 			tick();
 
@@ -269,16 +273,11 @@ createCopyViewer:function(className){
 	.text('submit')
 	.attr('class', 'submitButton')
 	.attr('name','researchButton');
-	
-	/*var cancelButton = d3.select("#"+className)
-	.append("button")
-	.text('cancel')
-	.attr('class', 'cancelButton')
-	.attr('name','researchButton');
-	//console.log(submitButton);*/
+
 },
 
 addBrush:function(){
+	console.log("add Brush called")
 	svg2.append("g")
 		.attr("class","brush")
 		.call(brush)
@@ -292,8 +291,8 @@ brushed:function(){
 	var max = Math.round(extent[1]);
 	console.log("min"+ min+ "max" + max);
 	if (d3.select(".copy3")[0][0] != null){
-		selectedPoints = lines.noise1.slice(min,max).concat(lines.noise2.slice(min,max)).concat(lines.noise3.slice(min,max));
-		//console.log(selectedPoints);
+		exports.selectedPoints = lines.noise1.slice(min,max).concat(lines.noise2.slice(min,max)).concat(lines.noise3.slice(min,max));
+		console.log('in create components: selected Points = ',exports.selectedPoints);
 	}
 	}
 };

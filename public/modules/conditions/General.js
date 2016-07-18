@@ -64,8 +64,23 @@ module.exports = {
 	*@param {string}  type
 	*/
 	pressed:function(buttonTitle, type){
+	
 		var interaction = {}; 
 		general.pushBorder();
+		
+		
+		if (d3.select(".svg2")[0][0] != null){
+			var linesOnDisplay = d3.selectAll("#lineCopy");
+			linesOnDisplay.remove();
+			general.addCopy();
+			component.addBrush();
+			submitButton = d3.select(".submitButton")
+			.on("mousedown",general.feedBack);
+			}
+		else{
+			general.feedBack(buttonTitle, type);
+		}
+		
 		var isPresent = general.checkForAnamoly();
 		console.log('pressed page id', exports.pageId);
 		timePressed = experimentr.now(exports.pageId);
@@ -170,7 +185,8 @@ module.exports = {
 	if (d3.select(".svg2")[0][0] == null){
 	lines = new general.getPoints();
 	}
-	allNoise= d3.select(".svg2")[0][0] == null ? lines.noise : selectedPoints;
+	allNoise= d3.select(".svg2")[0][0] == null ? lines.noise : exports.selectedPoints;
+		console.log('selected points from general = '+exports.selectedPoints)
 		console.log('noise function',allNoise);
 		return allNoise.includes("T");
 	console.log('noise function',allNoise);
@@ -189,20 +205,7 @@ pushBorder: function()  {
 	.attr("ry",20);
 },
 
-pressed: function(buttonTitle, type){
-	general.pushBorder();
-	if (d3.select(".svg2")[0][0] != null){
-		var linesOnDisplay = d3.selectAll("#lineCopy");
-		linesOnDisplay.remove();
-		general.addCopy();
-		//addBrush();
-		submitButton = d3.select(".submitButton")
-			.on("mousedown",feedBack);
-	}
-	else{
-		general.feedBack(buttonTitle, type);
-	}
-},
+
 feedBack:function(buttonTitle, type){
 	var isPresent = checkForAnamoly();
 	var linesOnDisplay = d3.selectAll("#lineCopy");
