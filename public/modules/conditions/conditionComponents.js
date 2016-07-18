@@ -42,10 +42,6 @@ module.exports = {
 	*@function createGraphViewer
 	*/ 
 	createGraphViewer:function(className){
-		brush = d3.svg.brush()
-		.x(x)
-		.on("brushend",component.brushed);
-
 		general.test();
 
 		d3.select("#"+className)
@@ -227,6 +223,11 @@ module.exports = {
 *@param {string} className indicates what id to attach to 
 */
 createCopyViewer:function(className){
+
+	brush = d3.svg.brush()
+		.x(x)
+		.on("brushend",component.brushed);
+
 	d3.select("#button1").remove();
 	var xAxis=d3.svg.axis().scale(x).orient("bottom");
 	
