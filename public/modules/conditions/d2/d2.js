@@ -30,9 +30,6 @@ init = function(){
 		})
 	}
 
-
-
-
 	startCondition= function(className, path1, path2, path3, duration){
 		console.log('classname in start condition', className);
 		experimentr.startTimer(className);

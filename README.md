@@ -1,3 +1,81 @@
+Streaming Data Experiment 
+=========================
+
+
+Getting Started
+--------------
+
+This experiment was forked from experimentr which you can view more of below.
+In order to run this experiment you must download [Node](https://github.com/codementum/experimentr/blob/master/public/experimentr.js). 
+From there you must run npm install and install all the packages that this experiment requires.
+You must also download Redis. 
+
+
+One you have downloaded all packages and redis you can run: 
+
+'nodemon app.js '
+
+and that should start the app at 'localhost:4000'. 
+
+All of the experiment modules are located in public/modules/conditions/ and are divided into three difficulties. Within each difficulty there is a speed. 
+
+To add or remove pages to the experimentr module go to the index.html page within public/ and add a module. They are listed by folder name. 
+
+
+ Redis-cli
+----------
+We rely on redis to save all data from the experiments.  You can download [Redis here](http://redis.io/download). The configuration file is known as redis.conf and the appendonly.aof also is a redis file. 
+
+To start the redis server type: 
+
+'redis-server redis.conf'
+
+To monitor all data coming to the backend type:
+
+'redis-cli monitor'
+
+Look at the documentation to find out more on how to query the database. 
+
+
+CommonJS
+------------
+
+We use browserfiy and watchify to make sure all the modules are loaded correctly. This allows us to keep several core javascript files that are used by all the experiments. These files include General.js and conditionsComponentents.js.
+
+In order to use browserify and watchify you must install globally by typeing 'npm install -g browserify' and 'npm install -g watchify'
+
+Each difficulty level should have its own d_.js and you can make a browserfiy file from that js file. 
+An example of this like so: 
+
+'browserify public/modules/conditions/d1/d1.js -o public/modules/conditions/d1/d1Bundle.js'
+This command in terminal will create a browserify js file. This will not look for changes so each change you make to those files must be followed by the browserify command. 
+
+To automatically do this you can use watchify. 
+
+'watchify public/modules/conditions/d1/d1.js -o public/modules/conditions/d1/d1Bundle.js'
+
+For more details on browserify check out [their website](http://browserify.org/).
+
+Fore more details on watchify check out [their website](https://github.com/substack/watchify).
+
+Documentation
+-------------
+For Documentaion we are using jsdocs. It should be installed when 'npm install' is called. The location of all the documentation is the public/out folder. In app.js this is rereouted to be localhost:4000/docs. To add or remove documenation just change it in the js files and then use the following command to load the documenation:
+
+'./node_modules/.bin/jsdoc public/modules/conditions/General.js public/modules/conditions/conditionComponents.js public/modules/conditions/d2/d2.js public/modules/conditions/d1/d1.js'
+
+
+For more details check out the [jsdocs website](http://usejsdoc.org/). 
+
+Testing
+-------------
+We are currently working on creating a testing framework. We will be using tape and testling. Check back soon. 
+
+Grunt
+------------
+To automatically test, bundle, and run the experiments we will be using grunt. Check back soon. 
+
+
 <img src="https://raw.github.com/codementum/experimentr/master/experimentr-logo.png" title="Experimentr" alt="Experimentr" />
 ========
 
