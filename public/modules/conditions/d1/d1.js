@@ -20,16 +20,16 @@ init = function(){
 	console.log("slice", slice);
 
 	if(slice == 1){
-		d3.json("modules/conditions/d2/spd1/d2Vars1.json", function(error, data){
+		d3.json("modules/conditions/d1/spd1/d1Vars1.json", function(error, data){
 			startCondition(data.vars.className, data.vars.dataPath1, data.vars.dataPath2, data.vars.dataPath3, data.vars.duration);
 		})
 	}else if(slice == 2){
-		d3.json("modules/conditions/d2/spd2/d2Vars2.json", function(error, data){
+		d3.json("modules/conditions/d1/spd2/d1Vars2.json", function(error, data){
 			startCondition(data.vars.className, data.vars.dataPath1, data.vars.dataPath2, data.vars.dataPath3, data.vars.duration);
 		})
 
  	}else{
- 		d3.json("modules/conditions/d2/spd3/d2Vars3.json", function(error, data){
+ 		d3.json("modules/conditions/d1/spd3/d1Vars3.json", function(error, data){
 			startCondition(data.vars.className, data.vars.dataPath1, data.vars.dataPath2, data.vars.dataPath3, data.vars.duration);
 		})
 	}

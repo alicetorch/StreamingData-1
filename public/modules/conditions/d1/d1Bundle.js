@@ -15,10 +15,9 @@ var socket;
 *@global
 *@type string
 */
-
 exports.pageId; 
-
 var interactionGroup = [];
+var interaction = {}
 data = {};
 
 module.exports = {
@@ -61,52 +60,44 @@ module.exports = {
 	/** Sends interaction information to backend on button pressed 
 	*@memberof generalModule
 	*@function pressed
-	*@param {string}  buttonTitle
-	*@param {string}  type
+	*@param {string}  buttonTitle indicates what button is pressed
+	*@param {string}  type indicates what type of button 
 	*/
 	pressed:function(buttonTitle, type){
-		var interaction = {}; 
+
 		general.pushBorder();
-		var isPresent = general.checkForAnamoly();
-		console.log('pressed page id', exports.pageId);
-		timePressed = experimentr.now(exports.pageId);
-		timestamp = new Date().getTime();
-		var postId = experimentr.postId();
-
+		if (d3.select(".svg2")[0][0] != null){
+			var linesOnDisplay = d3.selectAll("#lineCopy");
+			d3.selectAll(".brush").remove();
+			linesOnDisplay.remove();
+			general.addCopy();
+			component.addBrush();
+			submitButton = d3.select(".submitButton")
+			.on("mousedown", function (){
+				general.feedBack("submit", "button");
+			})
+		}else{
+			general.feedBack(buttonTitle, type);
+		}
 		
-		console.log("button title", buttonTitle)
-		interaction.interactionType = type;
-		interaction. buttonTitle = buttonTitle;
-		interaction.timePressed = timePressed;
-		interaction. postId = postId; 
-		interaction.timestamp = timestamp;
-		interaction.AnomalyPresent = isPresent;
-		interaction.pageId = exports.pageId;
-		console.log("interaction", interaction)
-		console.log("before push")
-		console.log(interactionGroup)
-		interactionGroup.push(interaction);
-		console.log("after push")
-		console.log(interactionGroup)
-
 		//socket.emit('mouseClick',{interactionType: type, buttonTitle: buttonTitle, timePressed: timePressed, f: postId, timestamp:timestamp, AnomalyPresent: isPresent, pageId:exports.pageId});
 	},
 	/** 
 	*Checks to see if the spacebar or the enter key has been pressed
 	*@memberof generalModule
 	*@function checkKeyPressed
-	*@param {event} e 
+	*@param {event} e events from users
 	*/
 	checkKeyPressed: function(e) {
 		if (e.keyCode == "13" || e.keyCode == "32") {
-			pressed(e.keyCode, "key");
+			general.pressed(e.keyCode, "key");
 			console.log('key pressed')
 		}
 	},
 	/** Sets the page ID in this module
 	*@memberof generalModule
 	*@function setPageVars
-	*@param {string} pageId 
+	*@param {string} pageId pageID from html id 
 	*/
 	setPageVars: function(pageId){ 
 		exports.pageId=pageId;
@@ -121,12 +112,13 @@ module.exports = {
 		socket.on('connect',function() {
 			console.log('Client has connected to the server!');
 		});
+
 		document.onmousemove = experimentr.sendMouseMovement;
 	},
 	/** Creates and initializes a countdown clock 
 	*@memberof generalModule
 	*@function countdown
-	*@param {string} elementName
+	*@param {string} elementName 
 	*@param {integer} minutes 
 	*@param {integer} seconds
 	*/
@@ -166,14 +158,115 @@ module.exports = {
 	*@returns {boolean} If anamoly is present boolean is true
 	*/
 	checkForAnamoly: function(){
-		allPoints = d3.select(".line3").datum().concat(d3.select(".line2").datum()).concat(d3.select(".line1").datum());
-		allNoise= allPoints.map(function(a) {return a.noise;});
+		selectedPoints = component.getSelected();
+		if (d3.select(".svg2")[0][0] == null){
+			lines = new general.getPoints();
+		}
+		allNoise= d3.select(".svg2")[0][0] == null ? lines.noise : selectedPoints;
+		console.log('selected points from general = '+selectedPoints)
 		console.log('noise function',allNoise);
 		return allNoise.includes("T");
-	}
+		console.log('noise function',allNoise);
+		return allNoise.includes("T");
+	},
+	/** Clears brush component and saves all selected data
+	*@memberof generalModule
+	*@function feedBack
+	*/
+	feedBack:function(buttonTitle, type){
+		var interaction = {}; 
+		var isPresent = general.checkForAnamoly();
+		d3.select(".brush").call(brush.clear());
+		console.log("is Anomoly present?", isPresent);
+		console.log('pressed page id', exports.pageId);
+		timePressed = experimentr.now(exports.pageId);
+		timestamp = new Date().getTime();
+		var postId = experimentr.postId();
 
-	
+		
+		console.log("button title", buttonTitle)
+		interaction.interactionType = type;
+		interaction. buttonTitle = buttonTitle;
+		interaction.timePressed = timePressed;
+		interaction. postId = postId; 
+		interaction.timestamp = timestamp;
+		interaction.AnomalyPresent = isPresent;
+		interaction.pageId = exports.pageId;
+		console.log("interaction", interaction)
+		console.log("before push")
+		console.log(interactionGroup)
+		interactionGroup.push(interaction);
+		console.log("after push")
+		console.log(interactionGroup)
+
+	},
+
+	/* Creates a copy of all the data currently displayed 
+	*@memberof generalModule
+	*@function getPoints
+	*/
+	getPoints:function(){
+		var line1 = d3.select(".line1").datum().map(function(a) {return [a.value, a.noise];});
+		var line2 = d3.select(".line2").datum().map(function(a) {return [a.value, a.noise];});
+		var line3 = d3.select(".line3").datum().map(function(a) {return [a.value, a.noise];});
+		this.points1 = line1.map(function(a){return a[0]});
+		this.points2 = line2.map(function(a){return a[0]});
+		this.points3 = line3.map(function(a){return a[0]});
+		this.noise = line1.map(function(a){return a[1]}).concat(line2.map(function(a){return a[1]}).concat(line3.map(function(a){return a[1]})));
+		this.noise1 = line1.map(function(a){return a[1]});
+		this.noise2 = line2.map(function(a){return a[1]});
+		this.noise3 = line3.map(function(a){return a[1]});
+	},
+
+	/*Appends the copy of the active graph to the analysis graph for the user
+	*@memberof generalModule
+	*@fuction addCopy 
+	*/
+	addCopy:function(){
+		lines = new general.getPoints();
+		points1 = lines.points1;
+		points2 = lines.points2;
+		points3 = lines.points3;
+		var copy1  = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){ return  y(parseFloat(d));})
+		.interpolate("basis");
+
+		var copy2 = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){ return  y2(parseFloat(d));})
+		.interpolate("basis");
+
+		var copy3 = d3.svg.line()
+		.x(function(d,i){return x(i);})
+		.y(function(d){ return  y3(parseFloat(d));})
+		.interpolate("basis");
+
+		var copyPath1 =svg2.append("g")
+		.attr("clip-path","url(#clip)")
+		.append("path")
+		.datum(points1)
+		.attr("class","line1 copy1")
+		.attr("id","lineCopy")
+		.attr("d",copy1);
+		var copyPath2 = svg2.append("g")
+		.attr("clip-path","url(#clip)")
+		.append("path")
+		.datum(points2)
+		.attr("class","line2 copy2")
+		.attr("id","lineCopy")
+		.attr("d",copy2);
+
+		var copyPath3= svg2.append("g")
+		.attr("clip-path","url(#clip)")
+		.append("path")
+		.datum(points3)
+		.attr("class","line3 copy3")
+		.attr("id","lineCopy")
+		.attr("d",copy3);
+	}
 };
+
 
 },{}],2:[function(require,module,exports){
 /**
@@ -198,21 +291,26 @@ height = 500 - margin.top - margin.bottom;
 x = d3.scale.linear()
 .domain([0,n-1])
 .range([0,width]);
-var y = d3.scale.linear()
+
+y = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height/3, 0]);
 
-var y2 = d3.scale.linear()
+y2 = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height*2/3, height/3]);
 
-var y3 = d3.scale.linear()
+y3 = d3.scale.linear()
 .domain([domain1, domain2])
 .range([height, height*2/3]);
+
+var selectedPoints=[];
+
 
 module.exports = {
 	/** Creates the buttons for detecting an anamoly and also the axis and container for graphs
 	*@memberof ComponentsModule
+	*@function createGraphViewer
 	*/ 
 	createGraphViewer:function(className){
 		general.test();
@@ -229,16 +327,48 @@ module.exports = {
 			console.log(' research button pressed'+ d3.select(this).attr('id'));
 		});
 
-
 		var svgContainer = d3.select("#"+className).append("svg")
 		.attr("width", 1500)
 		.attr("height", 500);
 
+		var xAxis=d3.svg.axis().scale(x).orient("bottom");
 
-		var borderPath = svgContainer.append("rect")
+		svg1 = svgContainer.append("g")
+		.attr("class","svg1")
+		.attr("transform", "translate(" +40+ "," + 20 + ")");
+
+		svg1.append("g")
+		.attr("class","x axis")
+		.attr("transform","translate(0," + y(0)+")")
+		.call(xAxis);
+
+		svg1.append("defs").append("clipPath")
+		.attr("id","clip")
+		.append("rect")
+		.attr("width",width)
+		.attr("height",height+500);
+
+		svg1.append("defs").append("clipPath")
+		.attr("id","clip2")
+		.append("rect")
+		.attr("transform","translate(0,0)")
+		.attr("width",width)
+		.attr("height",height+500);
+
+		svg1.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + y2(0) + ")")
+		.call(xAxis);
+
+		svg1.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + y3(0) + ")")
+		.call(xAxis);
+
+		var borderPath = svg1.append("rect")
 		.attr("class","border")
-		.attr("x",40)
-		.attr("y",20)
+		.attr("x",0)
+		.attr("y",0)
 		.attr("width",width)
 		.attr("height",height)
 		.style("stroke","#A4A4A4")
@@ -246,61 +376,30 @@ module.exports = {
 		.style("stroke-width",3)
 		.attr("rx",20)
 		.attr("ry",20);
+	},
 
-
-		var xAxis=d3.svg.axis().scale(x).orient("bottom");
-
-		svg	= svgContainer.append("g")
-		.attr("transform", "translate(" +40+ "," + 20 + ")");
-		svg.append("g")
-		.attr("class","x axis")
-		.attr("transform","translate(0," + y(0)+")")
-		.call(xAxis);
-
-		svg.append("defs").append("clipPath")
-		.attr("id","clip")
-		.append("rect")
-		.attr("width",width)
-		.attr("height",height+500);
-
-		svg.append("defs").append("clipPath")
-		.attr("id","clip2")
-		.append("rect")
-		.attr("transform","translate(0,0)")
-		.attr("width",width)
-		.attr("height",height+500);
-
-		svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + y2(0) + ")")
-		.call(xAxis);
-
-		svg.append("g")
-		.attr("class", "x axis")
-		.attr("transform", "translate(0," + y3(0) + ")")
-		.call(xAxis);
-
-
-
-	}, 
 	/** Imports data files and adds lines to the graph container 
 	*@memberof ComponentsModule
+	*@function addGraph
 	*/
-	addGraph:function (className, dataPath1, dataPath2, dataPath3, duration){
+	addGraph:function(className, dataPath1, dataPath2, dataPath3, duration){
 		var q = d3.queue();
 		q.defer(d3.tsv, dataPath1)
 		q.defer(d3.tsv, dataPath2)
 		q.defer(d3.tsv, dataPath3)
 		.await(setUp); 
 
-
 		function setUp(error, data1, data2, data3){
 			if (error) throw error;
 
 
 			var disData1 = data1.slice(0,n);
-			var disData2 = data2.slice(0,90);
+			var disData2 = data2.slice(0,n);
 			var disData3 = data3.slice(0,n);
+			
+			data1.splice(0,n);
+			data2.splice(0,n);
+			data3.splice(0,n);
 
 			var line1  = d3.svg.line()
 			.x(function(d,i){return x(i);})
@@ -317,21 +416,21 @@ module.exports = {
 			.y(function(d){ return  y3(parseFloat(d.value));})
 			.interpolate("basis");
 
-			var path1 =svg.append("g")
+			var path1 =svg1.append("g")
 			.attr("clip-path","url(#clip)")
 			.append("path")
 			.datum(disData1)
 			.attr("class","line1")
 			.attr("d",line1);
 
-			var path2 = svg.append("g")
+			var path2 = svg1.append("g")
 			.attr("clip-path","url(#clip)")
 			.append("path")
 			.datum(disData2)
 			.attr("class","line2")
 			.attr("d",line2);
 
-			var path3= svg.append("g")
+			var path3= svg1.append("g")
 			.attr("clip-path","url(#clip)")
 			.append("path")
 			.datum(disData3)
@@ -388,9 +487,112 @@ module.exports = {
 
 			};
 		};
-	}
-}
+	},
+/** Creates the view for selected data for the view to analyze
+*@memberof ComponentsModule
+*@function createCopyViewer
+*@param {string} className indicates what id to attach to 
+*/
+createCopyViewer:function(className){
 
+	brush = d3.svg.brush()
+		.x(x)
+		.on("brushend",component.brushed);
+
+	d3.select("#button1").remove();
+	var xAxis=d3.svg.axis().scale(x).orient("bottom");
+	
+	var svgContainer = d3.select("svg")
+	
+	svg2	= svgContainer.append("g")
+	.attr("class","svg2")
+	.attr("transform", "translate(" +650+ "," + 20 + ")");
+	
+	svg2.append("g")
+	.attr("class","x axis")
+	.attr("transform","translate(0," + y(0)+")")
+	.call(xAxis);
+
+	svg2.append("defs").append("clipPath")
+	.attr("id","clip")
+	.append("rect")
+	.attr("width",width)
+	.attr("height",height+500);
+
+	svg2.append("defs").append("clipPath")
+	.attr("id","clip2")
+	.append("rect")
+	.attr("transform","translate(0,0)")
+	.attr("width",width)
+	.attr("height",height+500);
+
+	svg2.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + y2(0) + ")")
+	.call(xAxis);
+
+	svg2.append("g")
+	.attr("class", "x axis")
+	.attr("transform", "translate(0," + y3(0) + ")")
+	.call(xAxis);
+
+	var borderPath = svg2.append("rect")
+	.attr("class","border")
+	.attr("x",0)
+	.attr("y",0)
+	.attr("width",width)
+	.attr("height",height)
+	.style("stroke","#A4A4A4")
+	.style("fill","none")
+	.style("stroke-width",3)
+	.attr("rx",20)
+	.attr("ry",20);
+	
+	var submitButton = d3.select("#"+className)
+	.append("button")
+	.text('submit')
+	.attr('class', 'submitButton')
+	.attr('name','researchButton');
+
+},
+
+/** creates brush component for user graph analysis
+*@memberof ComponentsModule
+*@function addBrush
+*/
+addBrush:function(){
+	console.log("add Brush called")
+	svg2.append("g")
+	.attr("class","brush")
+	.call(brush)
+	.selectAll("rect")
+	.attr("height",height);
+},
+
+/*Creates an array of data selected by brush component
+*@memberof ComponentsModule
+*@function brushed
+*/
+brushed:function(){
+	var extent = brush.extent();
+	var min = Math.round(extent[0]);
+	var max = Math.round(extent[1]);
+	console.log("min"+ min+ "max" + max);
+	if (d3.select(".copy3")[0][0] != null){
+		selectedPoints = lines.noise1.slice(min,max).concat(lines.noise2.slice(min,max)).concat(lines.noise3.slice(min,max));
+		console.log('in create components: selected Points = ',selectedPoints);
+	}
+},
+
+/** a getter method for the selected points from brush for the General module
+*@memberof ComponentsModule
+*@function getSelected
+*@returns {string|Array} all selected points of brush component
+*/
+getSelected: function(){
+	return selectedPoints;
+}
+}
 },{}],3:[function(require,module,exports){
 
 /**
@@ -406,6 +608,7 @@ component = require("../conditionComponents");
 init = function(){
 	console.log('d1.js loaded');
 	//general.connectSockets();
+	
 
 	window.addEventListener("keydown", general.checkKeyPressed, false);
 	var currentPage = d3.select("#module").selectAll("div")[0][1].getAttribute("id");
@@ -426,7 +629,6 @@ init = function(){
 			startCondition(data.vars.className, data.vars.dataPath1, data.vars.dataPath2, data.vars.dataPath3, data.vars.duration);
 		})
 	}
-
 
 	startCondition= function(className, path1, path2, path3, duration){
 		console.log('classname in start condition', className);
