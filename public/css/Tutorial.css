@@ -2,6 +2,11 @@ svg {
   font: 10px sans-serif;
 }
 
+#tutorial{
+	margin: auto;
+	padding-left: 15%;
+}
+
 .axis text { display: none; }
 
 .line1{

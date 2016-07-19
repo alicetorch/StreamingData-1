@@ -7,9 +7,7 @@
 
 
 #experimentr {
-  margin: auto;
   width: 80%;
-  padding: 10px;
 }
 
 #control {
@@ -30,3 +28,7 @@ p.center {
 }
 
 
+#consent{
+	margin:auto;
+	padding-left: 20%;
+}
