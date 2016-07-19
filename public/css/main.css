@@ -7,8 +7,9 @@
 
 
 #experimentr {
-  margin: 4em auto 1em 0px;
-  width: 600px;
+  margin: auto;
+  width: 80%;
+  padding: 10px;
 }
 
 #control {
