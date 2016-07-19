@@ -137,6 +137,7 @@ module.exports = {
 				element.innerHTML = "countdown's over!";
 				Mousetrap.reset();
 				// document.onmousemove = experimentr.stopMouseMovementRec;
+				experimentr.showNext();
 				general.pressed('next-button', "button");
 				// socket.emit('disconnect');
 			} else {
