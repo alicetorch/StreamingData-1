@@ -28,7 +28,7 @@ p.center {
 }
 
 
-#consent{
+#consent, #nasa, #demographics, #debrief{
 	margin:auto;
 	padding-left: 20%;
 }
