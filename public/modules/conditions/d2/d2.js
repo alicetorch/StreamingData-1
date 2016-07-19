@@ -40,7 +40,7 @@ init = function(){
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 
-	general.countdown( "countdown", 0, 5 );
+	general.countdown( "countdown", 5, 0 );
 	
 }();
 

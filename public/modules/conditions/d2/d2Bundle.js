@@ -140,6 +140,10 @@ module.exports = {
 				// document.onmousemove = experimentr.stopMouseMovementRec;
 				experimentr.showNext();
 				general.pressed('next-button', "button");
+	
+				if(d3.select(".submitButton").empty()==false){
+					d3.select(".submitButton").remove();
+				}
 				// socket.emit('disconnect');
 			} else {
 				time = new Date( msLeft );
@@ -645,7 +649,7 @@ init = function(){
     	component.addGraph(className, path1, path2, path3,duration);
 	};
 
-	general.countdown( "countdown", 0, 5 );
+	general.countdown( "countdown", 5, 0 );
 	
 }();
 
