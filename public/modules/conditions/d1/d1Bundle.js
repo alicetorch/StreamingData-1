@@ -138,7 +138,12 @@ module.exports = {
 				element.innerHTML = "countdown's over!";
 				Mousetrap.reset();
 				// document.onmousemove = experimentr.stopMouseMovementRec;
+				experimentr.showNext();
 				general.pressed('next-button', "button");
+	
+				if(d3.select(".submitButton").empty()==false){
+					d3.select(".submitButton").remove();
+				}
 				// socket.emit('disconnect');
 			} else {
 				time = new Date( msLeft );
