@@ -25,7 +25,7 @@ init = function(){
 		})
 
  	}else{
- 		d3.json("modules/conditions/d2/spd3/d2Vars3.json", function(error, data){
+ 		d3.json("modules/conditions/d2/spd0/d2Vars0.json", function(error, data){
 			startCondition(data.vars.className, data.vars.dataPath1, data.vars.dataPath2, data.vars.dataPath3, data.vars.duration);
 		})
 	}
