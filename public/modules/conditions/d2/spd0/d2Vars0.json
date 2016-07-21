@@ -1,0 +1,9 @@
+{
+	"vars": {
+		"className": "d2Spd0",
+		"dataPath1": "data/vSlow1.tsv",
+		"dataPath2": "data/vSlow2.tsv",
+		"dataPath3": "data/vSlow3.tsv",
+		"duration": "200"
+	}
+}
